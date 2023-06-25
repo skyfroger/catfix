@@ -4,6 +4,7 @@
  */
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { InboxOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd";
 import { Upload } from "antd";
@@ -17,6 +18,8 @@ interface uploadProjectProps {
 }
 
 function UploadProject({ onUpload }: uploadProjectProps) {
+    const { t} = useTranslation();
+
     const uploadProps: UploadProps = {
         name: "file",
         multiple: false,
@@ -24,19 +27,20 @@ function UploadProject({ onUpload }: uploadProjectProps) {
         maxCount: 1,
         action: "",
         beforeUpload(file: RcFile, FileList: RcFile[]) {
-            console.log("file type", file.type);
             onUpload(file);
-
-            return false;
+            return false; // отменяем загрузку файла
         },
     };
     return (
-        <Dragger {...uploadProps}>
-            <p className="ant-upload-drag-icon">
-                <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">{"Загрузка проекта"}</p>
-        </Dragger>
+        <>
+            <p>{t("ui.upload_comment")}</p>
+            <Dragger {...uploadProps}>
+                <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                </p>
+                <p className="ant-upload-text">{t("ui.upload")}</p>
+            </Dragger>
+        </>
     );
 }
 
