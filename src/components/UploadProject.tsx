@@ -20,7 +20,7 @@ function UploadProject({ onUpload }: uploadProjectProps) {
     const uploadProps: UploadProps = {
         name: "file",
         multiple: false,
-        showUploadList: true,
+        showUploadList: false,
         maxCount: 1,
         action: "",
         beforeUpload(file: RcFile, FileList: RcFile[]) {
@@ -35,10 +35,7 @@ function UploadProject({ onUpload }: uploadProjectProps) {
             <p className="ant-upload-drag-icon">
                 <InboxOutlined />
             </p>
-            <p className="ant-upload-text">
-                Щёлкни или перетащи сюда файл с проектом, который хочешь
-                проверить
-            </p>
+            <p className="ant-upload-text">{"Загрузка проекта"}</p>
         </Dragger>
     );
 }

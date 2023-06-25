@@ -18,15 +18,19 @@ function MainPage() {
          * Обработка загруженного файла. Архив распаковывается, из него извлекается
          * project.json и сохраняется в state-переменную projectJSON
          */
+
+        // сбрасываем json
+        setProjectJSON(() => {
+            return {} as JSON;
+        });
+
+        // распаковываем архив
         loadAsync(project)
             .then(function (content) {
-                console.log("loading project file");
                 return content.files["project.json"].async("text");
             })
             .then(function (txt) {
-                console.log("archive loaded.");
                 const projectJSON = JSON.parse(txt);
-                console.log(projectJSON);
                 setProjectJSON(projectJSON);
             })
             .catch(function (error) {
