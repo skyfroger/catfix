@@ -9,9 +9,11 @@ import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";
 import GradesList from "./GradesList";
 
+import {ScratchProject} from "../../@types/scratch";
+
 function MainPage() {
     // json со структурой проекта
-    const [projectJSON, setProjectJSON] = useState<JSON>({} as JSON);
+    const [project, setProject] = useState<ScratchProject|undefined>(undefined);
 
     const handleUpload = (project: RcFile) => {
         /**
@@ -20,8 +22,8 @@ function MainPage() {
          */
 
         // сбрасываем json
-        setProjectJSON(() => {
-            return {} as JSON;
+        setProject(() => {
+            return undefined;
         });
 
         // распаковываем архив
@@ -30,8 +32,8 @@ function MainPage() {
                 return content.files["project.json"].async("text");
             })
             .then(function (txt) {
-                const projectJSON = JSON.parse(txt);
-                setProjectJSON(projectJSON);
+                const projectJSON: ScratchProject = JSON.parse(txt);
+                setProject(projectJSON);
             })
             .catch(function (error) {
                 console.log("error while uploading project");
@@ -41,7 +43,7 @@ function MainPage() {
     return (
         <>
             <UploadProject onUpload={handleUpload} />
-            <GradesList project={projectJSON} />
+            <GradesList project={project} />
         </>
     );
 }
