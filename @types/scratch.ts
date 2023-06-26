@@ -1,3 +1,7 @@
+/**
+ * Описание типов для JSON-файла, полученного после распаковыки проекта.
+ */
+
 type JSONValue =
     | string
     | number
@@ -30,6 +34,15 @@ type Block = {
     fields: JSONValue,
     shadow: boolean,
     topLevel: boolean,
+    mutation: {
+        tagName: string,
+        children: Array<JSONValue>,
+        proccode: string,
+        argumentids: Array<JSONValue>,
+        argumentnames: Array<JSONValue>,
+        argumentdefaults: Array<JSONValue>,
+        warp: boolean
+    },
     x?: number,
     y?: number
 }
@@ -37,11 +50,19 @@ type Block = {
 export type Target = {
     isStage: boolean,
     name: string,
-    variables: JSONValue,
-    lists: JSONValue,
-    broadcasts: JSONValue,
+    variables: {[key: string]: Array<string|number>},
+    lists: {[key: string]: Array<string|number>},
+    broadcasts: {[key: string]: string},
     blocks: {[key: string]: Block},
-    comments: JSONValue,
+    comments: {[key: string]: {
+        blockId: string,
+            x: number,
+            y: number,
+            width: number,
+            height: number,
+            minimized: boolean,
+            text: string
+        }},
     currentCostume: number,
     costumes: JSONValue,
     sounds: JSONValue,
