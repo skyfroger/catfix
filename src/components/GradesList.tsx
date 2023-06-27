@@ -3,19 +3,14 @@
  */
 
 import React, { useState } from "react";
-import {Project} from "../../@types/parsedProject";
+import { Project } from "../../@types/parsedProject";
 
 interface gradesListProps {
-    project: Project | undefined;
+  project: Project | null;
 }
 
 function GradesList({ project }: gradesListProps) {
-
-    return (
-        <div>
-            {project?.sprites[0].name}
-        </div>
-    );
+  return <div>{project?.sprites[0].name}</div>;
 }
 
 export default GradesList;
