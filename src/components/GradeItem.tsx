@@ -4,7 +4,7 @@
 
 import React from "react";
 import { categories, gradesEnum } from "../graders";
-import { Progress } from "antd";
+import { Col, Progress, Row } from "antd";
 import { useTranslation } from "react-i18next";
 
 interface GradeItemProps {
@@ -19,13 +19,23 @@ function GradeItem({ category, grade }: GradeItemProps) {
     // округление происходит вверх
     return (
         <>
-            <h2>{t(`${category}.title`)}</h2>
-            <p>{t(`${category}.${grade}`)}</p>
-            <Progress
-                type="circle"
-                percent={Math.ceil(33.3 * grade)}
-                format={(percent) => grade}
-            />
+            <Row>
+                <Col span={24}>
+                    <h2>{t(`${category}.title`)}</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col span={2}>
+                    <Progress
+                        type="circle"
+                        percent={Math.ceil(33.3 * grade)}
+                        format={(percent) => grade}
+                    />
+                </Col>
+                <Col span={22}>
+                    <p>{t(`${category}.${grade}`)}</p>
+                </Col>
+            </Row>
         </>
     );
 }
