@@ -17,3 +17,9 @@ export const ifThenElseRE = new RegExp(
 
 // поиск составных условий с and, or и not
 export const compConditionsRE = new RegExp("<(.)+> (and|or) <(.)+>|<not (.)+>");
+
+// инициализация переменных
+export const setVarsRE = new RegExp("set \\[(.)+\\] to ");
+
+// поиск переменных в числовых слотах, которые используются в скриптах
+export const roundVarsRE = new RegExp("[^to ]\\((.)+::variables\\)");

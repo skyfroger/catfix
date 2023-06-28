@@ -5,6 +5,8 @@ import {
     foreverLoopRE,
     ifThenElseRE,
     ifThenRE,
+    roundVarsRE,
+    setVarsRE,
     untilLoopRE,
 } from "./searchPatterns";
 
@@ -63,7 +65,24 @@ function dataRepresentationGrader(project: Project): gradesEnum {
      * Представление данных: использование переменных и списков
      */
     let g: gradesEnum = gradesEnum.zero;
-    // todo реализовать функцию
+
+    // даём 1 балл, если в блоках используются только числа-литералы
+    if (new RegExp("\\(\\d+\\)").test(project.allScripts)) {
+        g = gradesEnum.one;
+    }
+
+    // даём 2 балл, если переменной задаётся начальное значение и переменные есть в блоках скрипта
+    if (
+        setVarsRE.test(project.allScripts) &&
+        roundVarsRE.test(project.allScripts)
+    ) {
+        g = gradesEnum.two;
+    }
+
+    // даём 3 балла, если в скриптах есть списки
+    if (new RegExp("\\((.)+::list\\)").test(project.allScripts)) {
+        g = gradesEnum.three;
+    }
     return g;
 }
 
