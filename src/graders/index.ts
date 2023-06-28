@@ -5,6 +5,10 @@ import { countLoopRE, foreverLoopRE, untilLoopRE } from "./searchPatterns";
 Интерфейс для описания типа оценки
  */
 
+// список названий категорий оценивания
+export type categories = "flow" | "data";
+
+// список возможных оценок
 export enum gradesEnum {
     zero = 0,
     one = 1,
@@ -44,15 +48,23 @@ function flowGrader(project: Project): gradesEnum {
         g = 3;
     }
 
-    // TODO регулярное выражение для цикла n повторений: repeat \(.+\)\n.+\nend
-
     return g;
 }
 
-function grader(project: Project): Map<string, number> {
-    let res: Map<string, number> = new Map();
+function dataRepresentationGrader(project: Project): gradesEnum {
+    /**
+     * Представление данных: использование переменных и списков
+     */
+    let g: gradesEnum = 0;
+    // todo реализовать функцию
+    return g;
+}
+
+function grader(project: Project): Map<categories, gradesEnum> {
+    let res: Map<categories, gradesEnum> = new Map();
 
     res.set("flow", flowGrader(project)); // оценка потока выполнения;
+    res.set("data", dataRepresentationGrader(project)); // оценка представления данных
 
     return res;
 }
