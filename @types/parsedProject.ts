@@ -3,15 +3,16 @@
  */
 
 export type Sprite = {
-    name: string,
-    scripts: string[],
-    customBlocks: string[],
-    localVars: string[],
-    localLists: string[]
-}
+    name: string;
+    scripts: string[];
+    customBlocks: string[];
+    localVars: string[];
+    localLists: string[];
+};
 
 export type Project = {
-    sprites: Sprite[],
-    stage: Sprite | undefined,
-    broadcasts: string[],
-}
+    sprites: Sprite[];
+    stage: Sprite;
+    broadcasts: string[];
+    allScripts: string;
+};
