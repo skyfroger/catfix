@@ -44,14 +44,14 @@ function parseTarget(sprite: Target): Sprite {
      * Парсинг полей отдельного спрайта
      */
 
-        // заготовка спрайта
+    // заготовка спрайта
     let parsedSprite: Sprite = {
-            name: "",
-            scripts: [],
-            customBlocks: [],
-            localVars: [],
-            localLists: [],
-        };
+        name: "",
+        scripts: [],
+        customBlocks: [],
+        localVars: [],
+        localLists: [],
+    };
 
     // сохраняем имя спрайта
     parsedSprite.name = sprite.name;
@@ -114,12 +114,21 @@ function parseProject(scratchProject: ScratchProject): Project {
      * Парсинг полей проекта
      */
 
-        // заготовка итогового проекта
+    let s: Sprite = {
+        name: "",
+        scripts: [],
+        customBlocks: [],
+        localVars: [],
+        localLists: [],
+    };
+
+    // заготовка итогового проекта
     let project: Project = {
-            broadcasts: [],
-            stage: undefined,
-            sprites: [],
-        };
+        broadcasts: [],
+        stage: s,
+        sprites: [],
+        allScripts: "",
+    };
 
     // парсим сцену проекта
     const stage = scratchProject.targets.filter((t: Target) => t.isStage)[0];
@@ -132,6 +141,16 @@ function parseProject(scratchProject: ScratchProject): Project {
     targets.forEach((t: Target) => {
         project.sprites.push(parseTarget(t));
     });
+
+    // cохраняем все скрипты проекта в одну строку, чтобы использовать её для поиска по регулярным выражениям
+    let scriptsString: string = project.sprites.reduce(
+        (previousValue: string, currentSprite: Sprite) => {
+            return previousValue + "\n\n" + currentSprite.scripts.join("\n\n");
+        },
+        ""
+    );
+    scriptsString += "\n\n" + project.stage.scripts.join("\n\n");
+    project.allScripts = scriptsString;
 
     // получаем список передаваемых сообщений
     project.broadcasts = Object.values(stage.broadcasts);
