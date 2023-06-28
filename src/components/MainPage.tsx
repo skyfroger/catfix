@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Card } from "antd";
+import { Card, message } from "antd";
 import UploadProject from "./UploadProject";
 import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";
@@ -13,11 +13,20 @@ import parseProject from "../utils";
 
 import { ScratchProject } from "../../@types/scratch";
 import { Project } from "../../@types/parsedProject";
+import Loader from "./Loader";
+import { useTranslation } from "react-i18next";
+
+// статусы загрузки файла
+type fileStatus = "loading" | "loaded";
 
 function MainPage() {
     // json со структурой проекта
     const [projectJSON, setProjectJSON] = useState<ScratchProject | null>(null);
     const [project, setProject] = useState<Project | null>(null);
+    const [uploadState, setUploadState] = useState<fileStatus>("loaded");
+
+    const [messageApi, contextHolder] = message.useMessage();
+    const { t } = useTranslation();
 
     const handleUpload = (project: RcFile) => {
         /**
@@ -30,6 +39,9 @@ function MainPage() {
             return null;
         });
 
+        // началась загрузка файла
+        setUploadState("loading");
+
         // распаковываем архив
         loadAsync(project)
             .then(function (content) {
@@ -40,7 +52,15 @@ function MainPage() {
                 setProjectJSON(projectJSON);
             })
             .catch(function (error) {
-                console.log("error while uploading project");
+                // вывод сообщения в случае, если загрузили НЕ scratch файл
+                messageApi.open({
+                    type: "error",
+                    content: t("ui.uploadError"),
+                });
+            })
+            .finally(function () {
+                // в любом случае меняем статус загрузки файла на "завершённый"
+                setUploadState("loaded");
             });
     };
 
@@ -57,11 +77,13 @@ function MainPage() {
 
     return (
         <>
+            {contextHolder}
             <Card style={{ margin: 16 }}>
                 <UploadProject onUpload={handleUpload} />
             </Card>
             <Card style={{ margin: 16 }}>
-                <GradesList project={project} />
+                {uploadState === "loading" && <Loader />}
+                {uploadState === "loaded" && <GradesList project={project} />}
             </Card>
         </>
     );

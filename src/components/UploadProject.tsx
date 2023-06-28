@@ -18,7 +18,7 @@ interface uploadProjectProps {
 }
 
 function UploadProject({ onUpload }: uploadProjectProps) {
-    const { t} = useTranslation();
+    const { t } = useTranslation();
 
     const uploadProps: UploadProps = {
         name: "file",
@@ -33,7 +33,7 @@ function UploadProject({ onUpload }: uploadProjectProps) {
     };
     return (
         <>
-            <p>{t("ui.upload_comment")}</p>
+            <p>{t("ui.uploadcComment")}</p>
             <Dragger {...uploadProps}>
                 <p className="ant-upload-drag-icon">
                     <InboxOutlined />
