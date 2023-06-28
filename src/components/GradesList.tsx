@@ -13,24 +13,28 @@ interface gradesListProps {
 }
 
 function GradesList({ project }: gradesListProps) {
-    const [grades, setGrades] = useState<Map<categories, gradesEnum>>(
-        new Map()
-    );
-
     const { t } = useTranslation();
 
-    useEffect(() => {
-        if (project) {
-            const grades: Map<categories, gradesEnum> = grader(project);
-            setGrades(grades);
-            console.log(grades);
-            console.log(project.allScripts);
-        }
-    }, [project]);
+    let grades: Map<categories, gradesEnum> = new Map();
+    if (project) {
+        grades = grader(project);
+        console.log(grades);
+        console.log(project.allScripts);
+    }
 
     const gradeKeys = Array.from(grades.keys());
+
+    // суммарная оценка
+    const totalGrade = Array.from(grades.values()).reduce(
+        (previousValue, currentValue, currentIndex, array) => {
+            return previousValue + currentValue;
+        },
+        0
+    );
+
     return (
         <div>
+            {project && <h1>{t("totalGrade", { totalGrade: totalGrade })}</h1>}
             {project &&
                 gradeKeys.map((category, index) => (
                     <GradeItem
