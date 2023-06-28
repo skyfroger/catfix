@@ -1,12 +1,19 @@
 import { Project, Sprite } from "../../@types/parsedProject";
-import { countLoopRE, foreverLoopRE, untilLoopRE } from "./searchPatterns";
+import {
+    compConditionsRE,
+    countLoopRE,
+    foreverLoopRE,
+    ifThenElseRE,
+    ifThenRE,
+    untilLoopRE,
+} from "./searchPatterns";
 
 /*
 Интерфейс для описания типа оценки
  */
 
 // список названий категорий оценивания
-export type categories = "flow" | "data";
+export type categories = "flow" | "data" | "logic";
 
 // список возможных оценок
 export enum gradesEnum {
@@ -20,7 +27,7 @@ function flowGrader(project: Project): gradesEnum {
     /**
      * Поток выполнения: только следование или использование различных циклов.
      */
-    let g: gradesEnum = 0;
+    let g: gradesEnum = gradesEnum.zero;
 
     // считаем количество скриптов в спрайтах проекта
     const scriptsCount = project.sprites.reduce(
@@ -32,7 +39,7 @@ function flowGrader(project: Project): gradesEnum {
 
     // даём 1 балл, если есть хотя бы 1 скрипт на сцене или в спрайте
     if (project.stage.scripts.length > 0 || scriptsCount > 0) {
-        g = 1;
+        g = gradesEnum.one;
     }
 
     // даём 2 балла, если есть бесконечный цикл или счётный цикл
@@ -40,12 +47,12 @@ function flowGrader(project: Project): gradesEnum {
         foreverLoopRE.test(project.allScripts) ||
         countLoopRE.test(project.allScripts)
     ) {
-        g = 2;
+        g = gradesEnum.two;
     }
 
     // даём 3 балла, если есть цикл с предусловием
     if (untilLoopRE.test(project.allScripts)) {
-        g = 3;
+        g = gradesEnum.three;
     }
 
     return g;
@@ -55,16 +62,45 @@ function dataRepresentationGrader(project: Project): gradesEnum {
     /**
      * Представление данных: использование переменных и списков
      */
-    let g: gradesEnum = 0;
+    let g: gradesEnum = gradesEnum.zero;
     // todo реализовать функцию
     return g;
 }
 
+function logicGrader(project: Project): gradesEnum {
+    /**
+     * Логика: условные операторы и составные условия
+     */
+    let g: gradesEnum = gradesEnum.zero;
+
+    // даём 1 балл, если есть оператор если ... то
+    if (ifThenRE.test(project.allScripts)) {
+        g = gradesEnum.one;
+    }
+
+    // даём 2 балла, если есть оператор если ... то ... иначе
+    if (ifThenElseRE.test(project.allScripts)) {
+        g = gradesEnum.two;
+    }
+
+    // даём 3 балла за составные условия
+    // todo нужно проверять не пустые ли блоки, в которых встречаются составные условия
+    if (compConditionsRE.test(project.allScripts)) {
+        g = gradesEnum.three;
+    }
+
+    return g;
+}
+
 function grader(project: Project): Map<categories, gradesEnum> {
+    /**
+     * Функция-агрегатор результатов оценивания по разным критериям
+     */
     let res: Map<categories, gradesEnum> = new Map();
 
     res.set("flow", flowGrader(project)); // оценка потока выполнения;
     res.set("data", dataRepresentationGrader(project)); // оценка представления данных
+    res.set("logic", logicGrader(project)); // оценка использования логических операторов
 
     return res;
 }
