@@ -33,7 +33,7 @@ function UploadProject({ onUpload }: uploadProjectProps) {
     };
     return (
         <>
-            <p>{t("ui.uploadcComment")}</p>
+            <p>{t("ui.uploadComment")}</p>
             <Dragger {...uploadProps}>
                 <p className="ant-upload-drag-icon">
                     <InboxOutlined />
