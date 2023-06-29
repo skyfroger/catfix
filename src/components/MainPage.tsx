@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Card, message } from "antd";
+import { FileOutlined } from "@ant-design/icons";
 import UploadProject from "./UploadProject";
 import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";
@@ -24,6 +25,7 @@ function MainPage() {
     const [projectJSON, setProjectJSON] = useState<ScratchProject | null>(null);
     const [project, setProject] = useState<Project | null>(null);
     const [uploadState, setUploadState] = useState<fileStatus>("loaded");
+    const [fileName, setFileName] = useState<string | null>(null);
 
     const [messageApi, contextHolder] = message.useMessage();
     const { t } = useTranslation();
@@ -39,6 +41,9 @@ function MainPage() {
             return null;
         });
 
+        // сбрасываем имя файла
+        setFileName(null);
+
         // началась загрузка файла
         setUploadState("loading");
 
@@ -49,7 +54,10 @@ function MainPage() {
             })
             .then(function (txt) {
                 const projectJSON: ScratchProject = JSON.parse(txt);
+                // сохраняем json с проектом в стейт
                 setProjectJSON(projectJSON);
+                // сохраняем имя файла в стейт
+                setFileName(project.name);
             })
             .catch(function (error) {
                 // вывод сообщения в случае, если загрузили НЕ scratch файл
@@ -82,6 +90,11 @@ function MainPage() {
                 <UploadProject onUpload={handleUpload} />
             </Card>
             <Card style={{ margin: 16 }}>
+                {fileName && (
+                    <h1>
+                        <FileOutlined /> {fileName}
+                    </h1>
+                )}
                 {uploadState === "loading" && <Loader />}
                 {uploadState === "loaded" && <GradesList project={project} />}
             </Card>

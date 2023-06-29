@@ -3,6 +3,7 @@
  */
 
 import React, { useEffect, useState } from "react";
+import { TrophyOutlined } from "@ant-design/icons";
 import { Project } from "../../@types/parsedProject";
 import grader, { categories, gradesEnum } from "../graders";
 import { useTranslation } from "react-i18next";
@@ -34,7 +35,12 @@ function GradesList({ project }: gradesListProps) {
 
     return (
         <div>
-            {project && <h1>{t("totalGrade", { totalGrade: totalGrade })}</h1>}
+            {project && (
+                <h2>
+                    <TrophyOutlined />{" "}
+                    {t("totalGrade", { totalGrade: totalGrade })}
+                </h2>
+            )}
             {project &&
                 gradeKeys.map((category, index) => (
                     <GradeItem

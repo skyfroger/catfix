@@ -3,7 +3,8 @@
  */
 
 import React from "react";
-import { Radio, Select } from "antd";
+import { Radio, Select, Space } from "antd";
+import { GlobalOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
 function LangSelector() {
@@ -12,17 +13,20 @@ function LangSelector() {
         i18n.changeLanguage(value);
     };
     return (
-        <>
-            <Select
-                defaultValue="ru"
-                style={{ width: 120 }}
-                onChange={handleLangChange}
-                options={[
-                    { value: 'ru', label: 'Русский' },
-                    { value: 'by', label: 'Беларуская' },
-                ]}
-            />
-        </>
+        <div>
+            <Space>
+                <GlobalOutlined style={{ color: "#fff", fontSize: 20 }} />
+                <Select
+                    defaultValue="ru"
+                    style={{ width: 120 }}
+                    onChange={handleLangChange}
+                    options={[
+                        { value: "ru", label: "Русский" },
+                        { value: "by", label: "Беларуская" },
+                    ]}
+                />
+            </Space>
+        </div>
     );
 }
 

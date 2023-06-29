@@ -54,7 +54,7 @@ function GradeItem({ category, grade }: GradeItemProps) {
             <Divider />
             <Row>
                 <Col span={24}>
-                    <h2>{t(`${category}.title`)}</h2>
+                    <h3>{t(`${category}.title`)}</h3>
                 </Col>
             </Row>
             <Row gutter={16}>

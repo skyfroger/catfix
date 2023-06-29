@@ -5,7 +5,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { InboxOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd";
 import { Upload } from "antd";
 
@@ -36,7 +36,7 @@ function UploadProject({ onUpload }: uploadProjectProps) {
             <p>{t("ui.uploadComment")}</p>
             <Dragger {...uploadProps}>
                 <p className="ant-upload-drag-icon">
-                    <InboxOutlined />
+                    <UploadOutlined />{" "}
                 </p>
                 <p className="ant-upload-text">{t("ui.upload")}</p>
             </Dragger>
