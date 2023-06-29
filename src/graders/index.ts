@@ -79,8 +79,25 @@ function dataRepresentationGrader(project: Project): gradesEnum {
         g = gradesEnum.two;
     }
 
-    // даём 3 балла, если в скриптах есть списки
-    if (new RegExp("\\((.)+::list\\)").test(project.allScripts)) {
+    // все переменные-списки в сцене
+    const allStageLists = project.stage.localLists.join(" v|");
+
+    // все переменные-списки в спрайтах
+    const allSpriteLists = project.sprites.reduce(
+        (previousValue, currentValue, currentIndex) => {
+            return previousValue + " v|" + currentValue.localLists.join(" v|");
+        },
+        ""
+    );
+
+    // регулярное выражения для поиска переменных-списков в скриптах
+    const listsRE = new RegExp(`${allStageLists}${allSpriteLists} v`);
+
+    // даём 3 балла, если в скриптах есть списки и они используются
+    if (
+        new RegExp("\\((.)+::list\\)").test(project.allScripts) ||
+        listsRE.test(project.allScripts)
+    ) {
         g = gradesEnum.three;
     }
     return g;
