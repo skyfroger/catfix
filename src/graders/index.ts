@@ -84,7 +84,7 @@ function dataRepresentationGrader(project: Project): gradesEnum {
 
     // все переменные-списки в спрайтах
     const allSpriteLists = project.sprites.reduce(
-        (previousValue, currentValue, currentIndex) => {
+        (previousValue, currentValue) => {
             return previousValue + " v|" + currentValue.localLists.join(" v|");
         },
         ""
@@ -93,10 +93,17 @@ function dataRepresentationGrader(project: Project): gradesEnum {
     // регулярное выражения для поиска переменных-списков в скриптах
     const listsRE = new RegExp(`${allStageLists}${allSpriteLists} v`);
 
+    // количество переменных-списков
+    const listsNum =
+        project.stage.localLists.length +
+        project.sprites.reduce((previousValue, currentValue) => {
+            return previousValue + currentValue.localLists.length;
+        }, 0);
+
     // даём 3 балла, если в скриптах есть списки и они используются
     if (
         new RegExp("\\((.)+::list\\)").test(project.allScripts) ||
-        (listsRE.source !== " v| v" && listsRE.test(project.allScripts))
+        (listsNum !== 0 && listsRE.test(project.allScripts))
     ) {
         g = gradesEnum.three;
     }
