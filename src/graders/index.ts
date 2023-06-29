@@ -96,7 +96,7 @@ function dataRepresentationGrader(project: Project): gradesEnum {
     // даём 3 балла, если в скриптах есть списки и они используются
     if (
         new RegExp("\\((.)+::list\\)").test(project.allScripts) ||
-        listsRE.test(project.allScripts)
+        (listsRE.source !== " v| v" && listsRE.test(project.allScripts))
     ) {
         g = gradesEnum.three;
     }
