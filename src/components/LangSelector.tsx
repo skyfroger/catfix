@@ -22,7 +22,7 @@ function LangSelector() {
                     onChange={handleLangChange}
                     options={[
                         { value: "ru", label: "Русский" },
-                        { value: "by", label: "Беларуская" },
+                        { value: "be", label: "Беларуская" },
                     ]}
                 />
             </Space>
