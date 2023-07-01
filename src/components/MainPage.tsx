@@ -88,16 +88,13 @@ function MainPage() {
             {contextHolder}
             <Card style={{ margin: 16 }}>
                 <UploadProject onUpload={handleUpload} />
-            </Card>
-            <Card style={{ margin: 16 }}>
-                {fileName && (
-                    <h1>
-                        <FileOutlined /> {fileName}
-                    </h1>
-                )}
                 {uploadState === "loading" && <Loader />}
-                {uploadState === "loaded" && <GradesList project={project} />}
             </Card>
+            <div style={{ margin: 16 }}>
+                {uploadState === "loaded" && (
+                    <GradesList fileName={fileName} project={project} />
+                )}
+            </div>
         </>
     );
 }

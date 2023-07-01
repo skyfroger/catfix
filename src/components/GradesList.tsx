@@ -3,17 +3,19 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { TrophyOutlined } from "@ant-design/icons";
+import { FileOutlined, TrophyOutlined } from "@ant-design/icons";
 import { Project } from "../../@types/parsedProject";
 import grader, { categories, gradesEnum } from "../graders";
 import { useTranslation } from "react-i18next";
 import GradeItem from "./GradeItem";
+import { Card } from "antd";
 
 interface gradesListProps {
+    fileName: string | null;
     project: Project | null;
 }
 
-function GradesList({ project }: gradesListProps) {
+function GradesList({ project, fileName }: gradesListProps) {
     const { t } = useTranslation();
 
     let grades: Map<categories, gradesEnum> = new Map();
@@ -34,11 +36,16 @@ function GradesList({ project }: gradesListProps) {
     );
 
     return (
-        <div>
+        <Card>
+            {fileName && (
+                <h1>
+                    <FileOutlined /> {t("ui.fileName", { fileName: fileName })}
+                </h1>
+            )}
             {project && (
                 <h2>
                     <TrophyOutlined />{" "}
-                    {t("totalGrade", { totalGrade: totalGrade })}
+                    {t("ui.totalGrade", { totalGrade: totalGrade })}
                 </h2>
             )}
             {project &&
@@ -49,7 +56,7 @@ function GradesList({ project }: gradesListProps) {
                         grade={grades.get(category) ?? gradesEnum.zero}
                     />
                 ))}
-        </div>
+        </Card>
     );
 }
 
