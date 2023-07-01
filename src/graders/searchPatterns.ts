@@ -26,3 +26,10 @@ export const setVarsRE = new RegExp("set \\[(.)+\\] to ");
 export const roundVarsRE = new RegExp(
     "[^to ]\\((.)+::variables\\)|change \\[(.)+\\]"
 );
+
+// поиск скриптов, которые запускаются по нажатию на клавишу
+// с помощью группы получаем клавиши
+export const scriptsWithKeyPressEvent = new RegExp(
+    "when \\[(.+ v)\\] key pressed::event",
+    "g"
+);

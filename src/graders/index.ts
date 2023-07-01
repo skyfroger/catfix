@@ -6,6 +6,7 @@ import {
     ifThenElseRE,
     ifThenRE,
     roundVarsRE,
+    scriptsWithKeyPressEvent,
     setVarsRE,
     untilLoopRE,
 } from "./searchPatterns";
@@ -15,7 +16,7 @@ import {
  */
 
 // список названий категорий оценивания
-export type categories = "flow" | "data" | "logic";
+export type categories = "flow" | "data" | "logic" | "parallel";
 
 // список возможных оценок
 export enum gradesEnum {
@@ -135,6 +136,71 @@ function logicGrader(project: Project): gradesEnum {
     return g;
 }
 
+function parallelismGrader(project: Project): gradesEnum {
+    /**
+     * Параллельное выполнение скриптов
+     */
+    let g: gradesEnum = gradesEnum.zero;
+
+    // считаем, сколько спрайтов содержат скрипт, начинающийся с зелёного флажка
+    // todo возможно потом нужно будет учитывать и скрипты на сцене
+    const spritesWithGreenFlag = project.sprites.filter((spr) => {
+        return spr.allScripts.includes("when @greenFlag clicked");
+    });
+    if (spritesWithGreenFlag.length > 1) {
+        g = gradesEnum.one;
+    }
+
+    // ищем спрайты, клик по которым запускает больше одного сприпта
+    const spritesWithClicks = project.sprites.filter((spr) => {
+        const clk = spr.allScripts.match(/when this sprite clicked/g);
+        return clk && clk.length > 1;
+    });
+
+    // ищем скрипты, которые запускаются по нажатию на клавишу
+    const keyEventMatches = project.allScripts.matchAll(
+        scriptsWithKeyPressEvent
+    );
+    // в множество сохраняем названия клавиш
+    const keys = new Set(
+        Array.from(keyEventMatches).map((match) => {
+            // по индексу 1 будет храниться название клавиши
+            return match[1];
+        })
+    );
+    // перебираем все клавиши и считает, сколько сприптов запускаеются по нажатию этой клавиши
+    let keyFlag: boolean[] = [];
+    keys.forEach((k) => {
+        // создаём RE которое содержит название очередной клавиши
+        const re = new RegExp(`when \\[${k}\\] key pressed::event`, "g");
+        // находим все скрипты стартующие по этой клавише
+        const matches = project.allScripts.matchAll(re);
+        // сохраняем в массиве keyFlag значение true, если найдено больше 1 скрипта
+        keyFlag.push(Array.from(matches).length > 1);
+    });
+
+    if (spritesWithClicks.length > 0 || keyFlag.includes(true)) {
+        g = gradesEnum.two;
+    }
+
+    // даём 3 балла, если одно сообщение запускает больше 1 скрипта
+    let broadcastsFlag: boolean[] = [];
+    project.broadcasts.forEach((b) => {
+        // создаём RE которое содержит название очередного сообщения
+        const re = new RegExp(`when I receive \\[${b} v\\]`, "g");
+        // находим все скрипты стартующие по этому сообщению
+        const matches = project.allScripts.matchAll(re);
+        // сохраняем в массиве broadcastsFlag значение true, если найдено больше 1 скрипта
+        broadcastsFlag.push(Array.from(matches).length > 1);
+    });
+
+    if (broadcastsFlag.includes(true)) {
+        g = gradesEnum.three;
+    }
+
+    return g;
+}
+
 function grader(project: Project): Map<categories, gradesEnum> {
     /**
      * Функция-агрегатор результатов оценивания по разным критериям
@@ -144,6 +210,7 @@ function grader(project: Project): Map<categories, gradesEnum> {
     res.set("flow", flowGrader(project)); // оценка потока выполнения;
     res.set("data", dataRepresentationGrader(project)); // оценка представления данных
     res.set("logic", logicGrader(project)); // оценка использования логических операторов
+    res.set("parallel", parallelismGrader(project)); // оценка параллелизма
 
     return res;
 }
