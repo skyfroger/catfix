@@ -5,6 +5,7 @@
 export type Sprite = {
     name: string;
     scripts: string[];
+    allScripts: string;
     customBlocks: string[];
     localVars: string[];
     localLists: string[];

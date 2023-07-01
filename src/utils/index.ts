@@ -48,6 +48,7 @@ function parseTarget(sprite: Target): Sprite {
     let parsedSprite: Sprite = {
         name: "",
         scripts: [],
+        allScripts: "",
         customBlocks: [],
         localVars: [],
         localLists: [],
@@ -106,6 +107,14 @@ function parseTarget(sprite: Target): Sprite {
         }
     });
 
+    // объединяем скрипти спрайта в одну строку
+    parsedSprite.allScripts = parsedSprite.scripts.reduce(
+        (previousValue, currentValue) => {
+            return previousValue + currentValue + "\n\n";
+        },
+        ""
+    );
+
     return parsedSprite;
 }
 
@@ -117,6 +126,7 @@ function parseProject(scratchProject: ScratchProject): Project {
     let s: Sprite = {
         name: "",
         scripts: [],
+        allScripts: "",
         customBlocks: [],
         localVars: [],
         localLists: [],
