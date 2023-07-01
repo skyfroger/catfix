@@ -58,6 +58,10 @@ function MainPage() {
                 setProjectJSON(projectJSON);
                 // сохраняем имя файла в стейт
                 setFileName(project.name);
+                messageApi.open({
+                    type: "success",
+                    content: t("ui.uploadFinished"),
+                });
             })
             .catch(function (error) {
                 // вывод сообщения в случае, если загрузили НЕ scratch файл
