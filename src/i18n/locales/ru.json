@@ -58,7 +58,7 @@
         "3": "Используются камера или микрофон"
     },
     "warning": {
-        "emptySprite": "В спрайте {{spriteName}} нет скриптов. Возможно этот спрайт можно удалить.",
+        "emptySprite": "В спрайте <strong>{{spriteName}}</strong> нет скриптов. Возможно этот спрайт можно удалить.",
         "unusedVariable": "Переменная <strong>{{variable}}</strong> в <strong>{{target}}</strong> объявлена, но не используется."
     }
 }
