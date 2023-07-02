@@ -16,6 +16,7 @@ import { ScratchProject } from "../../@types/scratch";
 import { Project } from "../../@types/parsedProject";
 import Loader from "./Loader";
 import { useTranslation } from "react-i18next";
+import ScanResultsList from "./ScanResultsList";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -97,6 +98,15 @@ function MainPage() {
             <div style={{ margin: 16 }}>
                 {uploadState === "loaded" && (
                     <GradesList fileName={fileName} project={project} />
+                )}
+            </div>
+            <div style={{ margin: 16 }}>
+                {uploadState === "loaded" && (
+                    <ScanResultsList
+                        fileName={fileName}
+                        project={project}
+                        projectJSON={projectJSON}
+                    />
                 )}
             </div>
         </>
