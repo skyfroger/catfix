@@ -4,7 +4,7 @@
 
 import React from "react";
 import { categories, gradesEnum } from "../graders";
-import { Col, Divider, Progress, Row, theme } from "antd";
+import { Col, Divider, Progress, Row, Space, theme } from "antd";
 import { useTranslation } from "react-i18next";
 
 interface GradeItemProps {
@@ -57,16 +57,17 @@ function GradeItem({ category, grade }: GradeItemProps) {
                     <h3>{t(`${category}.title`)}</h3>
                 </Col>
             </Row>
-            <Row gutter={16}>
-                <Col>
-                    <Progress
-                        type="circle"
-                        percent={Math.ceil(33.3 * grade)}
-                        format={(percent) => grade}
-                    />
-                </Col>
-                <Col>
-                    <GradeDesc category={category} grade={grade} />
+            <Row gutter={8}>
+                <Col span={24}>
+                    <Space>
+                        <Progress
+                            type="circle"
+                            percent={Math.ceil(33.3 * grade)}
+                            format={(percent) => grade}
+                        />
+
+                        <GradeDesc category={category} grade={grade} />
+                    </Space>
                 </Col>
             </Row>
         </>
