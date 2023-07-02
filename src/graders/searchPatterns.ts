@@ -33,3 +33,6 @@ export const scriptsWithKeyPressEvent = new RegExp(
     "when \\[(.+ v)\\] key pressed::event",
     "g"
 );
+
+// поиск создания клонов спрайта
+export const cloneSpriteRE = new RegExp("create clone of \\[(.)+ v\\]\\n");

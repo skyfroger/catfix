@@ -1,5 +1,6 @@
 import { Project, Sprite } from "../../@types/parsedProject";
 import {
+    cloneSpriteRE,
     compConditionsRE,
     countLoopRE,
     foreverLoopRE,
@@ -16,7 +17,7 @@ import {
  */
 
 // список названий категорий оценивания
-export type categories = "flow" | "data" | "logic" | "parallel";
+export type categories = "flow" | "data" | "logic" | "parallel" | "abstract";
 
 // список возможных оценок
 export enum gradesEnum {
@@ -201,6 +202,54 @@ function parallelismGrader(project: Project): gradesEnum {
     return g;
 }
 
+function abstractGrader(project: Project): gradesEnum {
+    /**
+     * Оценка уровня абстракции: количество скриптов, собственные блоки,
+     * использование клонов спрайтов
+     */
+    let g: gradesEnum = gradesEnum.zero;
+
+    // получаем список спрайтов у которых больше одного скрипта
+    const spritesWithManyScripts = project.sprites.filter((sp) => {
+        return sp.scripts.length > 1;
+    });
+    if (spritesWithManyScripts.length > 0) {
+        g = gradesEnum.one;
+    }
+
+    // есть ли собственные блоки, которые вызываются больше одного раза
+    let customBlocksUsageCount: boolean[] = [];
+    project.sprites.forEach((sp) => {
+        // проверяем собственные блоки на валидность (в них есть команды)
+        sp.customBlocks.forEach((customB) => {
+            const customBRE = new RegExp(`define ${customB}\\n(.+\\n)+`);
+            if (customBRE.test(sp.allScripts)) {
+                // свой блок содержит команды
+                // создаём RE которое содержит название собственного блока
+                const re = new RegExp(`${customB}::custom\\n`, "g");
+                // находим все вызовы этого блока
+                const matches = sp.allScripts.matchAll(re);
+                // сохраняем в массиве broadcastsFlag значение true, если найдено больше 1 скрипта
+                customBlocksUsageCount.push(Array.from(matches).length > 1);
+            }
+        });
+    });
+    if (customBlocksUsageCount.includes(true)) {
+        g = gradesEnum.two;
+    }
+
+    // 3 балла, если используется клонирование спрайтов
+    // todo сейчас нужно и создать клон И использовать блок "когда я начинаю как клон"
+    if (
+        cloneSpriteRE.test(project.allScripts) &&
+        project.allScripts.includes("when I start as a clone")
+    ) {
+        g = gradesEnum.three;
+    }
+
+    return g;
+}
+
 function grader(project: Project): Map<categories, gradesEnum> {
     /**
      * Функция-агрегатор результатов оценивания по разным критериям
@@ -211,6 +260,7 @@ function grader(project: Project): Map<categories, gradesEnum> {
     res.set("data", dataRepresentationGrader(project)); // оценка представления данных
     res.set("logic", logicGrader(project)); // оценка использования логических операторов
     res.set("parallel", parallelismGrader(project)); // оценка параллелизма
+    res.set("abstract", abstractGrader(project)); // оценка абстрактности
 
     return res;
 }
