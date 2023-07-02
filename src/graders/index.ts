@@ -6,10 +6,14 @@ import {
     foreverLoopRE,
     ifThenElseRE,
     ifThenRE,
+    mouseInteractionRE,
     roundVarsRE,
     scriptsWithKeyPressEvent,
     setVarsRE,
     untilLoopRE,
+    videoInteractionRE,
+    waitCondAndBackdropRE,
+    waitSecondsRE,
 } from "./searchPatterns";
 
 /*
@@ -17,7 +21,14 @@ import {
  */
 
 // список названий категорий оценивания
-export type categories = "flow" | "data" | "logic" | "parallel" | "abstract";
+export type categories =
+    | "flow"
+    | "data"
+    | "logic"
+    | "parallel"
+    | "abstract"
+    | "sync"
+    | "interactivity";
 
 // список возможных оценок
 export enum gradesEnum {
@@ -250,6 +261,71 @@ function abstractGrader(project: Project): gradesEnum {
     return g;
 }
 
+function syncGrader(project: Project): gradesEnum {
+    let g: gradesEnum = gradesEnum.zero;
+
+    // даём 1 балл, если есть блок ждать n секунд
+    if (waitSecondsRE.test(project.allScripts)) {
+        g = gradesEnum.one;
+    }
+
+    // проверяем список сообщений: каждое должно быть отправлено и получено хотя бы 1 раз
+    let broadcastsFlag: boolean[] = [];
+    project.broadcasts.forEach((b) => {
+        // RE для поиска отправки сообщения
+        const sent = new RegExp(`broadcast \\[${b} v\\]( and wait)?`);
+        // создаём RE которое содержит название очередного сообщения
+        const received = new RegExp(`when I receive \\[${b} v\\]`);
+        // находим все скрипты стартующие по этому сообщению
+        broadcastsFlag.push(
+            sent.test(project.allScripts) && received.test(project.allScripts)
+        );
+    });
+    if (broadcastsFlag.includes(true)) {
+        g = gradesEnum.two;
+    }
+
+    // даём 3 балла за блок Ждать до и обработку события смены фона
+    if (waitCondAndBackdropRE.test(project.allScripts)) {
+        g = gradesEnum.three;
+    }
+
+    return g;
+}
+
+function interactivityGrader(project: Project): gradesEnum {
+    let g: gradesEnum = gradesEnum.zero;
+
+    // 1 балл, если скрипт стартует по щелчку по спрайту
+    if (project.allScripts.includes("when this sprite clicked\n")) {
+        g = gradesEnum.one;
+    }
+
+    // 2 балла за использование мыши или ввод текста с клавиатуры
+    // при этом для ввода должен быть и сам блок ввода и блок с ответом
+    const askRE = new RegExp("ask \\[.+\\] and wait\\n");
+    const answer = new RegExp("\\(answer\\)");
+    if (
+        mouseInteractionRE.test(project.allScripts) ||
+        (askRE.test(project.allScripts) && answer.test(project.allScripts))
+    ) {
+        g = gradesEnum.two;
+    }
+
+    // 3 балла за использования микрофона или камеры
+    const whenLoudRE = new RegExp("when \\[loudness v\\] \\\\> \\(.+\\)\\n");
+    const loudness = new RegExp("\\(loudness\\)");
+    if (
+        videoInteractionRE.test(project.allScripts) ||
+        whenLoudRE.test(project.allScripts) ||
+        loudness.test(project.allScripts)
+    ) {
+        g = gradesEnum.three;
+    }
+
+    return g;
+}
+
 function grader(project: Project): Map<categories, gradesEnum> {
     /**
      * Функция-агрегатор результатов оценивания по разным критериям
@@ -261,6 +337,8 @@ function grader(project: Project): Map<categories, gradesEnum> {
     res.set("logic", logicGrader(project)); // оценка использования логических операторов
     res.set("parallel", parallelismGrader(project)); // оценка параллелизма
     res.set("abstract", abstractGrader(project)); // оценка абстрактности
+    res.set("sync", syncGrader(project)); // оценка синхронизации спрайтов
+    res.set("interactivity", interactivityGrader(project)); // оценка интерактивности проекта
 
     return res;
 }

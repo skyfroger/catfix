@@ -45,7 +45,10 @@ function GradesList({ project, fileName }: gradesListProps) {
             {project && (
                 <h2>
                     <TrophyOutlined />{" "}
-                    {t("ui.totalGrade", { totalGrade: totalGrade })}
+                    {t("ui.totalGrade", {
+                        totalGrade: totalGrade,
+                        maxGrade: 28,
+                    })}
                 </h2>
             )}
             {project &&

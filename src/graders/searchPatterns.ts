@@ -36,3 +36,21 @@ export const scriptsWithKeyPressEvent = new RegExp(
 
 // поиск создания клонов спрайта
 export const cloneSpriteRE = new RegExp("create clone of \\[(.)+ v\\]\\n");
+
+// поиск блока ждать n секунд
+export const waitSecondsRE = new RegExp("wait \\(.+\\) seconds\\n");
+
+// синхронизация через ожидание или смену фона
+export const waitCondAndBackdropRE = new RegExp(
+    "wait until <.+>\\n|when backdrop switches to \\[.+\\]\\n"
+);
+
+// все блоки связанные с мышью
+export const mouseInteractionRE = new RegExp(
+    "go to \\[mouse-pointer v\\]\\n|glide \\(.+\\) secs to \\[mouse-pointer v\\]\\n|point towards \\[mouse-pointer v\\]\\n|<touching \\[mouse-pointer v\\]\\?>|\\(distance to \\[mouse-pointer v\\]\\)|\\(mouse [xy]\\)|<mouse down\\?>"
+);
+
+// все блоки для работы с видео
+export const videoInteractionRE = new RegExp(
+    "when video motion \\\\> \\(.+\\)\\n|turn video \\[.+\\]\\n|set video transparency to \\(.+\\)\\n|\\(video \\[.+ v\\] on \\[.+ v\\]\\)"
+);

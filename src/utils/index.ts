@@ -34,6 +34,7 @@ const HAT_BLOCKS = [
     "microbit_whenPinConnected",
     "wedo2_whenDistance",
     "wedo2_whenTilted",
+    "videoSensing_whenMotionGreaterThan",
 ];
 
 // код блока с названием процедуры пользователя
