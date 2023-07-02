@@ -63,7 +63,7 @@ function GradeItem({ category, grade }: GradeItemProps) {
                         <Progress
                             type="circle"
                             percent={Math.ceil(33.3 * grade)}
-                            format={(percent) => grade}
+                            format={(percent) => `${grade}/3`}
                         />
 
                         <GradeDesc category={category} grade={grade} />

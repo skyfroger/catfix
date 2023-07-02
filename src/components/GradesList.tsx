@@ -47,7 +47,7 @@ function GradesList({ project, fileName }: gradesListProps) {
                     <TrophyOutlined />{" "}
                     {t("ui.totalGrade", {
                         totalGrade: totalGrade,
-                        maxGrade: 28,
+                        maxGrade: 21,
                     })}
                 </h2>
             )}
