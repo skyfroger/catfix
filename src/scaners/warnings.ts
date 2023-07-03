@@ -36,7 +36,7 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
     // Перебираем глобальные переменные, которые хранятся в сцене
     project.stage.localVars.forEach((v) => {
         const varRE = new RegExp(
-            `[^to ]\\(${v}::variables\\)|change \\[(.)+\\]`
+            `set \\[${v} v\\] to .+\n|change \\[${v} v\\].+\n|\\(${v}::variable\\)`
         );
 
         if (!varRE.test(project.allScripts)) {
@@ -53,17 +53,15 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
     project.sprites.forEach((sp) => {
         sp.localVars.forEach((v) => {
             const varRE = new RegExp(
-                `[^to ]\\(${v}::variables\\)|change \\[(.)+\\]`
+                `set \\[${v} v\\] to .+\n|change \\[${v} v\\].+\n|\\(${v}::variable\\)`
             );
             // Проверяем наличие блока ОТ в других спрайтах
             const varFromSpriteRE = new RegExp(
                 `\\(\\[${v} v\\] of \\[${sp.name} v\\]::sensing\\)`
             );
             if (
-                !(
-                    varRE.test(sp.allScripts) ||
-                    varFromSpriteRE.test(project.allScripts)
-                )
+                !varRE.test(sp.allScripts) &&
+                !varFromSpriteRE.test(project.allScripts)
             ) {
                 result.push({
                     code: `(${v}::variable)`,
