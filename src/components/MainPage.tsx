@@ -5,7 +5,6 @@
 
 import React, { useState, useEffect } from "react";
 import { Card, Col, message, Row } from "antd";
-import { FileOutlined } from "@ant-design/icons";
 import UploadProject from "./UploadProject";
 import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";

@@ -6,6 +6,7 @@ import React from "react";
 import { Project } from "../../@types/parsedProject";
 import { ScratchProject } from "../../@types/scratch";
 import { Card } from "antd";
+import { ToolOutlined } from "@ant-design/icons";
 import { scanForWarnings } from "../scaners";
 import { Tip } from "../scaners/types";
 import TipItem from "./TipItem";
@@ -31,7 +32,12 @@ function ScanResultsList({
 
     return (
         <Card>
-            {project && <h2>{t("ui.tips")}</h2>}
+            {!project && <p>{t("ui.noTips")}</p>}
+            {project && (
+                <h2>
+                    <ToolOutlined /> {t("ui.tips")}
+                </h2>
+            )}
             {warnings.map((item, index) => {
                 return (
                     <TipItem

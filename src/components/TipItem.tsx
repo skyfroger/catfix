@@ -8,6 +8,7 @@ import { WarningFilled, BugFilled } from "@ant-design/icons";
 import { Tip } from "../scaners/types";
 import { Col, Row, Space } from "antd";
 import parse from "html-react-parser";
+import ScratchCode from "./ScratchCode";
 
 function TipItem({ type, message, payload, code }: Tip) {
     const { t } = useTranslation();
@@ -27,7 +28,7 @@ function TipItem({ type, message, payload, code }: Tip) {
                             )}
                         </p>
                         <p>{parse(t(message, { ...payload }))}</p>
-                        <p>{code}</p>
+                        <p>{code && <ScratchCode code={code} />}</p>
                     </Space>
                 </Col>
             </Row>
