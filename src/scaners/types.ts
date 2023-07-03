@@ -4,6 +4,7 @@ import { Project } from "../../@types/parsedProject";
 
 export interface Tip {
     type: "warning" | "error"; // тип сообщения
+    title: any; // заголовок ошибки
     message: any; // строка с переводом
     payload: { [key: string]: string }; // дополнительная информация для строки-перевода
     code: string | null; // Scratch-код для наглядности

@@ -61,10 +61,13 @@
         "3": "Используются камера или микрофон"
     },
     "warning": {
+        "emptySpriteTitle": "Пустой спрайт",
         "emptySprite": "В спрайте <strong>{{spriteName}}</strong> нет скриптов. Возможно этот спрайт можно удалить.",
+        "unusedVariableTitle": "Неиспользуемая переменная",
         "unusedVariable": "Переменная <strong>{{variable}}</strong> в <strong>{{target}}</strong> объявлена, но не используется."
     },
     "error": {
+        "messageNeverReceivedTitle": "Сообщение никто не получает",
         "messageNeverReceived": "<strong>{{target}}</strong> отправляет сообщение с именем <strong>{{broadcast}}</strong>, которое никто не получает."
     }
 }

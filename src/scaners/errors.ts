@@ -27,6 +27,7 @@ export const messageNeverReceived: tipFunctionInterface = (
                 code: codeExample,
                 payload: { target: project.stage.name, broadcast: br },
                 type: "error",
+                title: "error.messageNeverReceivedTitle",
                 message: "error.messageNeverReceived",
             });
         }
@@ -46,6 +47,7 @@ export const messageNeverReceived: tipFunctionInterface = (
                     code: codeExample,
                     payload: { target: sp.name, broadcast: br },
                     type: "error",
+                    title: "error.messageNeverReceivedTitle",
                     message: "error.messageNeverReceived",
                 });
             }

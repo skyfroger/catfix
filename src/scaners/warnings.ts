@@ -17,6 +17,7 @@ export const emptySprite: tipFunctionInterface = (project, projectJSON) => {
                 code: null,
                 payload: { spriteName: sp.name },
                 type: "warning",
+                title: "warning.emptySpriteTitle",
                 message: "warning.emptySprite",
             });
         }
@@ -44,6 +45,7 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
                 code: `(${v}::variable)`,
                 payload: { variable: v, target: project.stage.name },
                 type: "warning",
+                title: "warning.unusedVariableTitle",
                 message: "warning.unusedVariable",
             });
         }
@@ -67,6 +69,7 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
                     code: `(${v}::variable)`,
                     payload: { variable: v, target: sp.name },
                     type: "warning",
+                    title: "warning.unusedVariableTitle",
                     message: "warning.unusedVariable",
                 });
             }

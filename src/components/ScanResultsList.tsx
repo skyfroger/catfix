@@ -46,6 +46,7 @@ function ScanResultsList({
                     <TipItem
                         key={index}
                         type={item.type}
+                        title={item.title}
                         message={item.message}
                         payload={item.payload}
                         code={item.code}
