@@ -39,7 +39,7 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
     project.stage.localVars.forEach((v) => {
         const escV = escapeRegExp(v); // "избегаем" специальные символы
         const varRE = new RegExp(
-            `set \\[${escV} v\\] to .+\n|change \\[${escV} v\\].+\n|\\(${escV}::variable\\)`
+            `set \\[${escV} v\\] to .+\n|change \\[${escV} v\\].+\n|\\(${escV}::variables\\)`
         );
 
         if (!varRE.test(project.allScripts)) {
@@ -58,7 +58,7 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
         sp.localVars.forEach((v) => {
             const escV = escapeRegExp(v); // "избегаем" специальные символы
             const varRE = new RegExp(
-                `set \\[${escV} v\\] to .+\n|change \\[${escV} v\\].+\n|\\(${escV}::variable\\)`
+                `set \\[${escV} v\\] to .+\n|change \\[${escV} v\\].+\n|\\(${escV}::variables\\)`
             );
             // Проверяем наличие блока ОТ в других спрайтах
             const varFromSpriteRE = new RegExp(
