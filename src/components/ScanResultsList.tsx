@@ -9,6 +9,7 @@ import { Card } from "antd";
 import { scanForWarnings } from "../scaners";
 import { Tip } from "../scaners/types";
 import TipItem from "./TipItem";
+import { useTranslation } from "react-i18next";
 
 interface scanResultsListProps {
     fileName: string | null;
@@ -21,6 +22,7 @@ function ScanResultsList({
     project,
     projectJSON,
 }: scanResultsListProps) {
+    const { t } = useTranslation();
     let warnings: Tip[] = [];
     if (projectJSON && project) {
         warnings = scanForWarnings(project, projectJSON);
@@ -29,7 +31,7 @@ function ScanResultsList({
 
     return (
         <Card>
-            {fileName && <h2>Примечания</h2>}
+            {project && <h2>{t("ui.tips")}</h2>}
             {warnings.map((item, index) => {
                 return (
                     <TipItem
