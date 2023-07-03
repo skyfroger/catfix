@@ -21,6 +21,8 @@
     "react-i18next": "^13.0.1",
     "react-router-dom": "^6.13.0",
     "react-scripts": "5.0.1",
+    "scratchblocks": "^3.6.2",
+    "scratchblocks-react": "^1.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
