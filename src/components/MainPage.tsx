@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Card, message } from "antd";
+import { Card, Col, message, Row } from "antd";
 import { FileOutlined } from "@ant-design/icons";
 import UploadProject from "./UploadProject";
 import { loadAsync } from "jszip";
@@ -90,25 +90,36 @@ function MainPage() {
 
     return (
         <>
-            {contextHolder}
-            <Card style={{ margin: 16 }}>
-                <UploadProject onUpload={handleUpload} />
-                {uploadState === "loading" && <Loader />}
-            </Card>
-            <div style={{ margin: 16 }}>
-                {uploadState === "loaded" && (
-                    <GradesList fileName={fileName} project={project} />
-                )}
-            </div>
-            <div style={{ margin: 16 }}>
-                {uploadState === "loaded" && (
-                    <ScanResultsList
-                        fileName={fileName}
-                        project={project}
-                        projectJSON={projectJSON}
-                    />
-                )}
-            </div>
+            {" "}
+            <Row>
+                <Col span={24}>
+                    {contextHolder}
+                    <Card style={{ margin: 16 }}>
+                        <UploadProject onUpload={handleUpload} />
+                        {uploadState === "loading" && <Loader />}
+                    </Card>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm={24} lg={12}>
+                    <div style={{ margin: 16 }}>
+                        {uploadState === "loaded" && (
+                            <GradesList fileName={fileName} project={project} />
+                        )}
+                    </div>
+                </Col>
+                <Col sm={24} lg={12}>
+                    <div style={{ margin: 16 }}>
+                        {uploadState === "loaded" && (
+                            <ScanResultsList
+                                fileName={fileName}
+                                project={project}
+                                projectJSON={projectJSON}
+                            />
+                        )}
+                    </div>
+                </Col>
+            </Row>
         </>
     );
 }
