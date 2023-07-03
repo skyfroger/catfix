@@ -25,9 +25,15 @@ export const emptySprite: tipFunctionInterface = (project, projectJSON) => {
     return result;
 };
 
+/**
+ * Поиск переменных, которые не используются
+ * @param project
+ * @param projectJSON
+ */
 export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
     let result: Tip[] = [];
 
+    // Перебираем глобальные переменные, которые хранятся в сцене
     project.stage.localVars.forEach((v) => {
         const varRE = new RegExp(
             `[^to ]\\(${v}::variables\\)|change \\[(.)+\\]`
@@ -43,12 +49,22 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
         }
     });
 
+    // перебираем локальные переменные
     project.sprites.forEach((sp) => {
         sp.localVars.forEach((v) => {
             const varRE = new RegExp(
                 `[^to ]\\(${v}::variables\\)|change \\[(.)+\\]`
             );
-            if (!varRE.test(sp.allScripts)) {
+            // Проверяем наличие блока ОТ в других спрайтах
+            const varFromSpriteRE = new RegExp(
+                `\\(\\[${v} v\\] of \\[${sp.name} v\\]::sensing\\)`
+            );
+            if (
+                !(
+                    varRE.test(sp.allScripts) ||
+                    varFromSpriteRE.test(project.allScripts)
+                )
+            ) {
                 result.push({
                     code: null,
                     payload: { variable: v, target: sp.name },
