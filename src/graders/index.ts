@@ -233,11 +233,12 @@ function abstractGrader(project: Project): gradesEnum {
     project.sprites.forEach((sp) => {
         // проверяем собственные блоки на валидность (в них есть команды)
         sp.customBlocks.forEach((customB) => {
-            const customBRE = new RegExp(`define ${customB}\\n(.+\\n)+`);
+            const blockName = customB.split(" ")[0]; // оставляет имя блока без параметров
+            const customBRE = new RegExp(`define ${blockName}.*\\n(.+\\n)+`);
             if (customBRE.test(sp.allScripts)) {
                 // свой блок содержит команды
                 // создаём RE которое содержит название собственного блока
-                const re = new RegExp(`${customB}::custom\\n`, "g");
+                const re = new RegExp(`${blockName}.*::custom\\n`, "g");
                 // находим все вызовы этого блока
                 const matches = sp.allScripts.matchAll(re);
                 // сохраняем в массиве broadcastsFlag значение true, если найдено больше 1 скрипта
