@@ -28,7 +28,7 @@ function TipItem({ type, message, payload, code }: Tip) {
                             )}
                         </p>
                         <p>{parse(t(message, { ...payload }))}</p>
-                        <p>{code && <ScratchCode code={code} />}</p>
+                        <div>{code && <ScratchCode code={code} />}</div>
                     </Space>
                 </Col>
             </Row>

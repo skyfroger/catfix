@@ -4,10 +4,14 @@ import { Tip, tipFunctionInterface } from "./types";
 
 // импорт функций сканирования
 import { emptySprite, unusedVariables } from "./warnings";
+import { messageNeverReceived } from "./errors";
 
 // в этой переменной хранится массив функций, которые отвечают
 // за получения списка предупреждений
-export const warningFunctions = [unusedVariables, emptySprite];
+const warningFunctions = [unusedVariables, emptySprite];
+
+// храним функции для поиска ошибок
+const errorFunctions = [messageNeverReceived];
 
 /**
  * Функция перебирает передаваемый в неё массив функций,
@@ -33,4 +37,11 @@ export const scanForWarnings = (
     projectJSON: ScratchProject
 ) => {
     return scanForTips(project, projectJSON, warningFunctions);
+};
+
+export const scanForErrors = (
+    project: Project,
+    projectJSON: ScratchProject
+) => {
+    return scanForTips(project, projectJSON, errorFunctions);
 };

@@ -61,5 +61,8 @@
     "warning": {
         "emptySprite": "У спрайце <strong>{{spriteName}}</strong> няма скрыптоў. Магчыма гэты спрайт можна выдаліць.",
         "unusedVariable": "Пераменная <strong>{{variable}}</strong> у <strong>{{target}}</strong> абвешчаная, але не выкарыстоўваецца."
+    },
+    "error": {
+        "messageNeverReceived": "<strong>{{target}}</strong> адпраўляе паведамленне з імем <strong>{{broadcast}}</strong>, якое ніхто не атрымлівае."
     }
 }

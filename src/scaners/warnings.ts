@@ -41,7 +41,7 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
 
         if (!varRE.test(project.allScripts)) {
             result.push({
-                code: null,
+                code: `(${v}::variable)`,
                 payload: { variable: v, target: project.stage.name },
                 type: "warning",
                 message: "warning.unusedVariable",
@@ -66,7 +66,7 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
                 )
             ) {
                 result.push({
-                    code: null,
+                    code: `(${v}::variable)`,
                     payload: { variable: v, target: sp.name },
                     type: "warning",
                     message: "warning.unusedVariable",

@@ -63,5 +63,8 @@
     "warning": {
         "emptySprite": "В спрайте <strong>{{spriteName}}</strong> нет скриптов. Возможно этот спрайт можно удалить.",
         "unusedVariable": "Переменная <strong>{{variable}}</strong> в <strong>{{target}}</strong> объявлена, но не используется."
+    },
+    "error": {
+        "messageNeverReceived": "<strong>{{target}}</strong> отправляет сообщение с именем <strong>{{broadcast}}</strong>, которое никто не получает."
     }
 }

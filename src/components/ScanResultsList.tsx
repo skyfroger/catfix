@@ -7,7 +7,7 @@ import { Project } from "../../@types/parsedProject";
 import { ScratchProject } from "../../@types/scratch";
 import { Card } from "antd";
 import { ToolOutlined } from "@ant-design/icons";
-import { scanForWarnings } from "../scaners";
+import { scanForErrors, scanForWarnings } from "../scaners";
 import { Tip } from "../scaners/types";
 import TipItem from "./TipItem";
 import { useTranslation } from "react-i18next";
@@ -25,10 +25,14 @@ function ScanResultsList({
 }: scanResultsListProps) {
     const { t } = useTranslation();
     let warnings: Tip[] = [];
+    let errors: Tip[] = [];
     if (projectJSON && project) {
         warnings = scanForWarnings(project, projectJSON);
+        errors = scanForErrors(project, projectJSON);
         console.log(warnings);
     }
+
+    const errorsWithWarnings = [...errors, ...warnings];
 
     return (
         <Card>
@@ -38,7 +42,7 @@ function ScanResultsList({
                     <ToolOutlined /> {t("ui.tips")}
                 </h2>
             )}
-            {warnings.map((item, index) => {
+            {errorsWithWarnings.map((item, index) => {
                 return (
                     <TipItem
                         key={index}
