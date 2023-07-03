@@ -2,6 +2,7 @@
  * Набор функций которые находят предупреждения (warnings)
  */
 import { Tip, tipFunctionInterface } from "./types";
+import { escapeRegExp } from "../utils";
 
 /**
  * Поиск пустых спрайтов
@@ -36,8 +37,9 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
 
     // Перебираем глобальные переменные, которые хранятся в сцене
     project.stage.localVars.forEach((v) => {
+        const escV = escapeRegExp(v); // "избегаем" специальные символы
         const varRE = new RegExp(
-            `set \\[${v} v\\] to .+\n|change \\[${v} v\\].+\n|\\(${v}::variable\\)`
+            `set \\[${escV} v\\] to .+\n|change \\[${escV} v\\].+\n|\\(${escV}::variable\\)`
         );
 
         if (!varRE.test(project.allScripts)) {
@@ -54,12 +56,13 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
     // перебираем локальные переменные
     project.sprites.forEach((sp) => {
         sp.localVars.forEach((v) => {
+            const escV = escapeRegExp(v); // "избегаем" специальные символы
             const varRE = new RegExp(
-                `set \\[${v} v\\] to .+\n|change \\[${v} v\\].+\n|\\(${v}::variable\\)`
+                `set \\[${escV} v\\] to .+\n|change \\[${escV} v\\].+\n|\\(${escV}::variable\\)`
             );
             // Проверяем наличие блока ОТ в других спрайтах
             const varFromSpriteRE = new RegExp(
-                `\\(\\[${v} v\\] of \\[${sp.name} v\\]::sensing\\)`
+                `\\(\\[${escV} v\\] of \\[${sp.name} v\\]::sensing\\)`
             );
             if (
                 !varRE.test(sp.allScripts) &&

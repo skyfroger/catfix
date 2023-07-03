@@ -40,6 +40,14 @@ const HAT_BLOCKS = [
 // код блока с названием процедуры пользователя
 const PROCEDURES_PROTOTYPE = "procedures_prototype";
 
+/**
+ * Эскейпим символы в строке, которые имеют специальное значение в регулярных выражениях
+ * @param text входной текст
+ */
+export function escapeRegExp(text: string) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
 function parseTarget(sprite: Target): Sprite {
     /**
      * Парсинг полей отдельного спрайта
