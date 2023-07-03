@@ -81,7 +81,8 @@ function MainPage() {
         if (projectJSON) {
             const project: Project = parseProject(projectJSON);
             setProject(project);
-            console.log(project);
+            console.log("project json ", projectJSON);
+            console.log("parsed project", project);
         } else {
             setProject(null);
         }

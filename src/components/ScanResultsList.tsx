@@ -29,7 +29,6 @@ function ScanResultsList({
     if (projectJSON && project) {
         warnings = scanForWarnings(project, projectJSON);
         errors = scanForErrors(project, projectJSON);
-        console.log(warnings);
     }
 
     const errorsWithWarnings = [...errors, ...warnings];

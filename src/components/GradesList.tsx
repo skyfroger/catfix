@@ -21,8 +21,6 @@ function GradesList({ project, fileName }: gradesListProps) {
     let grades: Map<categories, gradesEnum> = new Map();
     if (project) {
         grades = grader(project);
-        console.log(grades);
-        console.log(project.allScripts);
     }
 
     const gradeKeys = Array.from(grades.keys());
