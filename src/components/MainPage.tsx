@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Card, Col, message, Row } from "antd";
+import { Card, Col, message, Row, Space } from "antd";
 import UploadProject from "./UploadProject";
 import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";
@@ -16,6 +16,7 @@ import { Project } from "../../@types/parsedProject";
 import Loader from "./Loader";
 import { useTranslation } from "react-i18next";
 import ScanResultsList from "./ScanResultsList";
+import URLLoader from "./URLLoader";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -58,10 +59,6 @@ function MainPage() {
                 setProjectJSON(projectJSON);
                 // сохраняем имя файла в стейт
                 setFileName(project.name);
-                messageApi.open({
-                    type: "success",
-                    content: t("ui.uploadFinished"),
-                });
             })
             .catch(function (error) {
                 // вывод сообщения в случае, если загрузили НЕ scratch файл
@@ -76,13 +73,33 @@ function MainPage() {
             });
     };
 
+    const handleURLUpload = (
+        project: ScratchProject | null,
+        projectName: string | null
+    ) => {
+        setFileName(projectName);
+        setProjectJSON(project);
+    };
+
     useEffect(() => {
         // преобразование входного проекта в удобный для обработки формат
         if (projectJSON) {
-            const project: Project = parseProject(projectJSON);
-            setProject(project);
-            console.log("project json ", projectJSON);
-            console.log("parsed project", project);
+            try {
+                const project: Project = parseProject(projectJSON);
+                setProject(project);
+                messageApi.open({
+                    type: "success",
+                    content: t("ui.uploadFinished"),
+                });
+                console.log("project json ", projectJSON);
+                console.log("parsed project", project);
+            } catch (e) {
+                messageApi.open({
+                    type: "error",
+                    content: t("ui.parsingError"),
+                });
+                console.error("Парсинг проекта завершился ошибкой: ", e);
+            }
         } else {
             setProject(null);
         }
@@ -90,26 +107,30 @@ function MainPage() {
 
     return (
         <>
-            {" "}
-            <Row>
-                <Col span={24}>
-                    {contextHolder}
-                    <Card style={{ margin: 16 }}>
-                        <UploadProject onUpload={handleUpload} />
-                        {uploadState === "loading" && <Loader />}
-                    </Card>
+            {contextHolder}
+
+            <Row gutter={16}>
+                <Col sm={24} lg={12}>
+                    <UploadProject onUpload={handleUpload} />
+                </Col>
+                <Col sm={24} lg={12}>
+                    <URLLoader onUpload={handleURLUpload} />
                 </Col>
             </Row>
-            <Row>
+
+            <Row gutter={16}>
+                <Col span={24}>{uploadState === "loading" && <Loader />}</Col>
+            </Row>
+            <Row gutter={16}>
                 <Col sm={24} lg={12}>
-                    <div style={{ margin: 16 }}>
+                    <div>
                         {uploadState === "loaded" && (
                             <GradesList fileName={fileName} project={project} />
                         )}
                     </div>
                 </Col>
                 <Col sm={24} lg={12}>
-                    <div style={{ margin: 16 }}>
+                    <div>
                         {uploadState === "loaded" && (
                             <ScanResultsList
                                 fileName={fileName}

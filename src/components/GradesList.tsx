@@ -36,7 +36,7 @@ function GradesList({ project, fileName }: gradesListProps) {
     return (
         <Card>
             {!project && <p>{t("ui.noGrade")}</p>}
-            {fileName && (
+            {project && (
                 <h1>
                     <FileOutlined /> {t("ui.fileName", { fileName: fileName })}
                 </h1>

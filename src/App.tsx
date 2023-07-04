@@ -31,11 +31,11 @@ function App() {
                     </div>
                     <LangSelector />
                 </Header>
-                <Content>
+                <Content style={{ margin: 32 }}>
                     <MainPage />
                 </Content>
                 <Footer>
-                    <p>Дополнительная информация</p>
+                    <p>Разработчик: Хорошевич Павел</p>
                 </Footer>
             </Layout>
         </ConfigProvider>
