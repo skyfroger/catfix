@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Layout, ConfigProvider, Menu, theme } from "antd";
+import { Layout, ConfigProvider, Menu, theme, FloatButton } from "antd";
 
 import MainPage from "./components/MainPage";
 import LangSelector from "./components/LangSelector";
@@ -37,6 +37,7 @@ function App() {
                 <Footer>
                     <p>Разработчик: Хорошевич Павел</p>
                 </Footer>
+                <FloatButton.BackTop type="primary" />
             </Layout>
         </ConfigProvider>
     );
