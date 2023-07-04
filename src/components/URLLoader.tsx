@@ -73,7 +73,7 @@ function URLLoader({ onUpload }: urlLoaderProps) {
     };
 
     return (
-        <Card>
+        <Card title={t("ui.uploadFromURL")}>
             <Form
                 form={form}
                 layout="vertical"

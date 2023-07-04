@@ -108,19 +108,22 @@ function MainPage() {
     return (
         <>
             {contextHolder}
+            <Card style={{ marginBottom: 16 }}>
+                <Row gutter={16}>
+                    <Col sm={24} lg={12}>
+                        <UploadProject onUpload={handleUpload} />
+                    </Col>
+                    <Col sm={24} lg={12}>
+                        <URLLoader onUpload={handleURLUpload} />
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={24}>
+                        {uploadState === "loading" && <Loader />}
+                    </Col>
+                </Row>
+            </Card>
 
-            <Row gutter={16}>
-                <Col sm={24} lg={12}>
-                    <UploadProject onUpload={handleUpload} />
-                </Col>
-                <Col sm={24} lg={12}>
-                    <URLLoader onUpload={handleURLUpload} />
-                </Col>
-            </Row>
-
-            <Row gutter={16}>
-                <Col span={24}>{uploadState === "loading" && <Loader />}</Col>
-            </Row>
             <Row gutter={16}>
                 <Col sm={24} lg={12}>
                     <div>

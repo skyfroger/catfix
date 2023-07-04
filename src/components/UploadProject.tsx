@@ -32,7 +32,7 @@ function UploadProject({ onUpload }: uploadProjectProps) {
         },
     };
     return (
-        <Card>
+        <Card title={t("ui.uploadFromFile")}>
             <Dragger {...uploadProps}>
                 <p className="ant-upload-drag-icon">
                     <UploadOutlined />{" "}
