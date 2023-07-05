@@ -8,7 +8,7 @@ import { ScratchProject, Target } from "../../@types/scratch";
 import { toScratchblocks } from "parse-sb3-blocks/dist/parse-sb3-blocks.module";
 
 // список кодов для блоков-тригеров
-const HAT_BLOCKS = [
+export const HAT_BLOCKS = [
     "event_whenflagclicked",
     "event_whenkeypressed",
     "event_whengreaterthan",
@@ -38,7 +38,7 @@ const HAT_BLOCKS = [
 ];
 
 // код блока с названием процедуры пользователя
-const PROCEDURES_PROTOTYPE = "procedures_prototype";
+export const PROCEDURES_PROTOTYPE = "procedures_prototype";
 
 /**
  * Эскейпим символы в строке, которые помешают парсингу Scratchblocks

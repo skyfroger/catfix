@@ -3,6 +3,13 @@
  */
 import { Tip, tipFunctionInterface } from "./types";
 import { escapeSB } from "../utils";
+import { HAT_BLOCKS } from "../utils";
+import { toScratchblocks } from "parse-sb3-blocks/dist/parse-sb3-blocks.module";
+import { Block, Target } from "../../@types/scratch";
+
+// заголовочные блоки
+// opcode procedures_definition - блок определения функции
+const HATS = [...HAT_BLOCKS, "procedures_definition"];
 
 /**
  * Поиск пустых спрайтов
@@ -87,3 +94,94 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
 
     return result;
 };
+
+/**
+ * Поиск потерянного кода
+ * @param project
+ * @param projectJSON
+ */
+export const lostCode: tipFunctionInterface = (project, projectJSON) => {
+    let result: Tip[] = [];
+
+    // перебираем все спрайты проекта
+    projectJSON.targets.forEach((target) => {
+        const tip = findLostBlocks(target);
+        if (tip) result.push(tip);
+    });
+
+    return result;
+};
+
+/**
+ * Поиск потерянного кода
+ * @param sp спрайт для поиска
+ */
+function findLostBlocks(sp: Target): Tip | null {
+    const blocks = sp.blocks; // объект с блоками
+    try {
+        // перебираем все блоки по их ключам
+        for (const [key, block] of Object.entries(blocks)) {
+            // если блок - Шляпа под которой нет блоков - потерянный блок
+            if (HATS.includes(block.opcode) && block.next === null) {
+                const script = sbCode(key, blocks);
+                return {
+                    code: script,
+                    payload: { target: sp.name },
+                    type: "warning",
+                    title: "warning.lostCodeTitle",
+                    message: "warning.lostCode",
+                };
+            }
+
+            if (block.next === null && block.parent === null) {
+                const script = sbCode(key, blocks);
+                return {
+                    code: script,
+                    payload: { target: sp.name },
+                    type: "warning",
+                    title: "warning.lostCodeTitle",
+                    message: "warning.lostCode",
+                };
+            }
+
+            let blockId: string | undefined = key;
+            let lastBlockId: string | undefined = key;
+            let opCode = "";
+            do {
+                opCode = blocks[blockId ?? ""]?.opcode;
+                lastBlockId = blockId;
+                blockId = blocks[blockId ?? ""]?.parent;
+            } while (blockId);
+
+            if (!HATS.includes(opCode)) {
+                const script = sbCode(key, blocks);
+                return {
+                    code: script,
+                    payload: { target: sp.name },
+                    type: "warning",
+                    title: "warning.lostCodeTitle",
+                    message: "warning.lostCode",
+                };
+            }
+        }
+    } catch (e) {
+        console.error(e);
+    }
+    return null;
+}
+
+/**
+ * Функция для быстрого получения Scratchblock-кода, когда это возможно
+ * @param key ключ
+ * @param blocks объект с блоками
+ */
+function sbCode(key: string, blocks: { [p: string]: Block }): string | null {
+    try {
+        return toScratchblocks(key, blocks, "en", {
+            tab: "  ",
+            variableStyle: "always",
+        });
+    } catch (e) {
+        return null;
+    }
+}

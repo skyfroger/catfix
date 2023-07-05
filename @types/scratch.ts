@@ -27,15 +27,15 @@ type Monitor = {
     sliderMax: number;
 };
 
-type Block = {
+export type Block = {
     opcode: string;
     next?: string;
     parent?: string;
     inputs:
         | {
-        CONDITION: Array<number | null>;
-        SUBSTACK: Array<number | string>;
-    }
+              CONDITION: Array<number | null>;
+              SUBSTACK: Array<number | string>;
+          }
         | JSONValue;
     fields: JSONValue;
     shadow: boolean;

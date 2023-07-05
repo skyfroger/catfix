@@ -3,12 +3,12 @@ import { ScratchProject } from "../../@types/scratch";
 import { Tip, tipFunctionInterface } from "./types";
 
 // импорт функций сканирования
-import { emptySprite, unusedVariables } from "./warnings";
+import { lostCode, emptySprite, unusedVariables } from "./warnings";
 import { messageNeverReceived } from "./errors";
 
 // в этой переменной хранится массив функций, которые отвечают
 // за получения списка предупреждений
-const warningFunctions = [unusedVariables, emptySprite];
+const warningFunctions = [lostCode, unusedVariables, emptySprite];
 
 // храним функции для поиска ошибок
 const errorFunctions = [messageNeverReceived];
