@@ -41,11 +41,14 @@ const HAT_BLOCKS = [
 const PROCEDURES_PROTOTYPE = "procedures_prototype";
 
 /**
- * Эскейпим символы в строке, которые имеют специальное значение в регулярных выражениях
+ * Эскейпим символы в строке, которые помешают парсингу Scratchblocks
  * @param text входной текст
+ * @param onlyRight нужно ли эскейпить только закрывающие скобки или все
  */
-export function escapeRegExp(text: string) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+export function escapeSB(text: string, onlyRight: boolean = true) {
+    return onlyRight
+        ? text.replace(/([\]\)>])/g, `\\$&`)
+        : text.replace(/([\]\)><\(\[])/g, `\\$&`);
 }
 
 function parseTarget(sprite: Target): Sprite {

@@ -2,7 +2,7 @@
  * Набор функций которые находят предупреждения (warnings)
  */
 import { Tip, tipFunctionInterface } from "./types";
-import { escapeRegExp } from "../utils";
+import { escapeSB } from "../utils";
 
 /**
  * Поиск пустых спрайтов
@@ -37,14 +37,20 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
 
     // Перебираем глобальные переменные, которые хранятся в сцене
     project.stage.localVars.forEach((v) => {
-        const escV = escapeRegExp(v); // "избегаем" специальные символы
-        const varRE = new RegExp(
-            `set \\[${escV} v\\] to .+\n|change \\[${escV} v\\].+\n|\\(${escV}::variables\\)`
-        );
+        const escV = escapeSB(v); // "избегаем" специальные символы
 
-        if (!varRE.test(project.allScripts)) {
+        // если переменная не встречается ни в одном из подходящих блоков
+        // добавляем замечание
+        if (
+            !project.allScripts.includes(`set [${escV} v] to`) &&
+            !project.allScripts.includes(`change [${escV} v]`) &&
+            !project.allScripts.includes(`(${escV}::variables)`) &&
+            !project.allScripts.includes(
+                `([${escV} v] of [${project.stage.name} v]::sensing)`
+            )
+        ) {
             result.push({
-                code: `(${v}::variable)`,
+                code: `(${escapeSB(v, false)}::variable)`,
                 payload: { variable: v, target: project.stage.name },
                 type: "warning",
                 title: "warning.unusedVariableTitle",
@@ -56,20 +62,20 @@ export const unusedVariables: tipFunctionInterface = (project, projectJSON) => {
     // перебираем локальные переменные
     project.sprites.forEach((sp) => {
         sp.localVars.forEach((v) => {
-            const escV = escapeRegExp(v); // "избегаем" специальные символы
-            const varRE = new RegExp(
-                `set \\[${escV} v\\] to .+\n|change \\[${escV} v\\].+\n|\\(${escV}::variables\\)`
-            );
-            // Проверяем наличие блока ОТ в других спрайтах
-            const varFromSpriteRE = new RegExp(
-                `\\(\\[${escV} v\\] of \\[${sp.name} v\\]::sensing\\)`
-            );
+            const escV = escapeSB(v); // "избегаем" специальные символы
+
+            // если переменная не встречается ни в одном из подходящих блоков
+            // добавляем замечание
             if (
-                !varRE.test(sp.allScripts) &&
-                !varFromSpriteRE.test(project.allScripts)
+                !sp.allScripts.includes(`set [${escV} v] to`) &&
+                !sp.allScripts.includes(`change [${escV} v]`) &&
+                !sp.allScripts.includes(`(${escV}::variables)`) &&
+                !project.allScripts.includes(
+                    `([${escV} v] of [${sp.name} v]::sensing)`
+                )
             ) {
                 result.push({
-                    code: `(${v}::variable)`,
+                    code: `(${escapeSB(v, false)}::variable)`,
                     payload: { variable: v, target: sp.name },
                     type: "warning",
                     title: "warning.unusedVariableTitle",
