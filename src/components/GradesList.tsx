@@ -8,7 +8,7 @@ import { Project } from "../../@types/parsedProject";
 import grader, { categories, gradesEnum } from "../graders";
 import { useTranslation } from "react-i18next";
 import GradeItem from "./GradeItem";
-import { Card } from "antd";
+import { Card, Empty } from "antd";
 
 interface gradesListProps {
     fileName: string | null;
@@ -35,7 +35,7 @@ function GradesList({ project, fileName }: gradesListProps) {
 
     return (
         <Card>
-            {!project && <p>{t("ui.noGrade")}</p>}
+            {!project && <Empty description={<p>{t("ui.noGrade")}</p>}></Empty>}
             {project && (
                 <h1>
                     <FileOutlined /> {t("ui.fileName", { fileName: fileName })}

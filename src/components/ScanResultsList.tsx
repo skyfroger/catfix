@@ -5,7 +5,7 @@
 import React from "react";
 import { Project } from "../../@types/parsedProject";
 import { ScratchProject } from "../../@types/scratch";
-import { Card } from "antd";
+import { Card, Empty } from "antd";
 import { ToolOutlined } from "@ant-design/icons";
 import { scanForErrors, scanForWarnings } from "../scaners";
 import { Tip } from "../scaners/types";
@@ -35,11 +35,13 @@ function ScanResultsList({
 
     return (
         <Card>
-            {!project && <p>{t("ui.noTips")}</p>}
             {project && (
                 <h2>
                     <ToolOutlined /> {t("ui.tips")}
                 </h2>
+            )}
+            {errorsWithWarnings.length === 0 && (
+                <Empty description={<p>{t("ui.noTips")}</p>}></Empty>
             )}
             {errorsWithWarnings.map((item, index) => {
                 return (
