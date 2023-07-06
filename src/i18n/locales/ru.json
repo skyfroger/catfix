@@ -74,7 +74,7 @@
         "noCommentsTitle": "Нет комментариев",
         "noComments": "В <strong>{{target}}</strong> нет комментариев в скриптах. Добавь комментарии, чтобы сделать код понятнее.",
         "scriptsOverlapTitle": "Наложение скриптов",
-        "scriptsOverlap": "Скрипты в <strong>{{target}}</strong> накладываются друг на друга."
+        "scriptsOverlap": "Скрипты в <strong>{{target}}</strong> возможно накладываются друг на друга."
     },
     "error": {
         "messageNeverReceivedTitle": "Сообщение никто не получает",

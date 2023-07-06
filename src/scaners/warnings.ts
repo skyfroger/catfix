@@ -2,10 +2,10 @@
  * Набор функций которые находят предупреждения (warnings)
  */
 import { Tip, tipFunctionInterface } from "./types";
-import { escapeSB } from "../utils";
+import { escapeSB, sbCode } from "../utils";
 import { HAT_BLOCKS } from "../utils";
-import { toScratchblocks } from "parse-sb3-blocks/dist/parse-sb3-blocks.module";
-import { Block, Target } from "../../@types/scratch";
+import { Target } from "../../@types/scratch";
+import { Sprite } from "../../@types/parsedProject";
 
 // заголовочные блоки
 // opcode procedures_definition - блок определения функции
@@ -78,19 +78,30 @@ export const noComments: tipFunctionInterface = (project, projectJSON) => {
 export const scriptsOverlap: tipFunctionInterface = (project, projectJSON) => {
     let result: Tip[] = [];
 
-    project.sprites.forEach((sprite, index) => {
-        console.log(sprite.name);
-        for (let i = 0; i < sprite.coords.length; i++) {
-            for (let j = 0; j < sprite.coords.length; j++) {
-                const f = sprite.coords[i];
-                const s = sprite.coords[j];
+    /*
+    Алгоритм поиска пересечений взят тут
+    https://medium.com/@jessgillan/algorithm-practice-rectangle-intersection-7821411fd114
+    */
 
-                const s1 = area(f.x, f.y, f.x + f.w, f.y, s.x, s.y);
-                const s2 = area(f.x + f.w, f.y, s.x, s.y, f.x + f.w, f.y + f.h);
-                const s3 = area(f.x + f.w, f.y + f.h, s.x, s.y, f.x, f.y + f.h);
-                const s4 = area(f.x, f.y + f.h, s.x, s.y, f.x, f.y);
-                console.log(i !== j, s1 + s2 + s3 + s4, f.w * f.h);
-                if (i !== j && s1 + s2 + s3 + s4 - f.w * f.h === 0) {
+    /**
+     * Функция поиска пересечений в скриптах одного спрайта
+     * @param sprite
+     */
+    function findIntersections(sprite: Sprite): Tip[] {
+        let result: Tip[] = [];
+
+        for (let i = 0; i < sprite.coords.length - 1; i++) {
+            for (let j = i + 1; j < sprite.coords.length; j++) {
+                const r1 = sprite.coords[i];
+                const r2 = sprite.coords[j];
+
+                const intersect =
+                    r1.x <= r2.x + r2.w &&
+                    r1.x + r1.w >= r2.x &&
+                    r1.y <= r2.y + r2.h &&
+                    r1.y + r1.h >= r2.y;
+
+                if (i !== j && intersect) {
                     // todo возможны ошибки, когда получаем первые строчки скриптов
                     const firstHat = sprite.scripts[i].split("\n")[0];
                     const secondHat = sprite.scripts[j].split("\n")[0];
@@ -104,30 +115,19 @@ export const scriptsOverlap: tipFunctionInterface = (project, projectJSON) => {
                 }
             }
         }
+        return result;
+    }
+
+    // поиск пересечений в скриптах сцены
+    result.push(...findIntersections(project.stage));
+
+    // поиск пересечений в скриптах спрайтов
+    project.sprites.forEach((sprite, index) => {
+        result.push(...findIntersections(sprite));
     });
 
     return result;
 };
-
-/**
- * Расчёт площади треугольника по координатам трём точек
- * @param x1
- * @param y1
- * @param x2
- * @param y2
- * @param x3
- * @param y3
- */
-function area(
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number,
-    x3: number,
-    y3: number
-): number {
-    return Math.abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1)) / 2.0;
-}
 
 /**
  * Поиск переменных, которые не используются
@@ -271,20 +271,4 @@ function findLostBlocks(sp: Target): Tip | null {
         console.error(e);
     }
     return null;
-}
-
-/**
- * Функция для быстрого получения Scratchblock-кода, когда это возможно
- * @param key ключ
- * @param blocks объект с блоками
- */
-function sbCode(key: string, blocks: { [p: string]: Block }): string | null {
-    try {
-        return toScratchblocks(key, blocks, "en", {
-            tab: "  ",
-            variableStyle: "always",
-        });
-    } catch (e) {
-        return null;
-    }
 }

@@ -17,7 +17,7 @@ import { messageNeverReceived } from "./errors";
 const warningFunctions = [
     lostCode,
     unusedVariables,
-    // scriptsOverlap, todo раскомментировать, когда будет реализована функция
+    scriptsOverlap,
     noComments,
     emptySprite,
 ];

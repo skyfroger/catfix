@@ -3,7 +3,7 @@
  */
 
 import { Project, Sprite } from "../../@types/parsedProject";
-import { ScratchProject, Target } from "../../@types/scratch";
+import { Block, ScratchProject, Target } from "../../@types/scratch";
 
 import { toScratchblocks } from "parse-sb3-blocks/dist/parse-sb3-blocks.module";
 
@@ -108,17 +108,25 @@ function parseTarget(sprite: Target): Sprite {
             if (script.includes("\n")) {
                 parsedSprite.scripts.push(script);
 
+                // сохраняем координаты hat-блока
                 const x = sprite.blocks[hat].x;
                 const y = sprite.blocks[hat].y;
 
                 const linesCount = script.split("\n");
-                const h = linesCount.length * 50;
-                const w = Math.round(
-                    linesCount.reduce((p, c) => {
-                        return p + c.length * 9;
-                    }, 0) / linesCount.length
-                );
-                console.log(sprite.name, x, y, w, h);
+
+                // высота скрипта: количество строк умноженное на высоту одной строки
+                // число подобрано экспериментально
+                const h = linesCount.length * 48;
+
+                // за ширину берём медианную длину строки
+                // умножаем количество символов в строке на ширину одного символа
+                const w =
+                    median(
+                        linesCount.map((line) => {
+                            return line.length;
+                        })
+                    ) * 9;
+
                 parsedSprite.coords.push({ x: x ?? 0, y: y ?? 0, w: w, h: h });
             }
         } catch (e) {
@@ -214,6 +222,39 @@ function parseProject(scratchProject: ScratchProject): Project {
     project.broadcasts = Object.values(stage.broadcasts);
 
     return project;
+}
+
+/**
+ * Вычисление медианного значения в массиве чисел
+ * @param values массив
+ */
+function median(values: number[]) {
+    values.sort(function (a, b) {
+        return a - b;
+    });
+    var half = Math.floor(values.length / 2);
+
+    if (values.length % 2) return values[half];
+    else return (values[half - 1] + values[half]) / 2.0;
+}
+
+/**
+ * Функция для быстрого получения Scratchblock-кода, когда это возможно
+ * @param key ключ
+ * @param blocks объект с блоками
+ */
+export function sbCode(
+    key: string,
+    blocks: { [p: string]: Block }
+): string | null {
+    try {
+        return toScratchblocks(key, blocks, "en", {
+            tab: "  ",
+            variableStyle: "always",
+        });
+    } catch (e) {
+        return null;
+    }
 }
 
 export default parseProject;
