@@ -64,6 +64,7 @@ function parseTarget(sprite: Target): Sprite {
         customBlocks: [],
         localVars: [],
         localLists: [],
+        comments: false,
     };
 
     // сохраняем имя спрайта
@@ -127,6 +128,9 @@ function parseTarget(sprite: Target): Sprite {
         ""
     );
 
+    // есть ли комментарии в этом спрайте
+    parsedSprite.comments = JSON.stringify(sprite.comments) !== "{}";
+
     return parsedSprite;
 }
 
@@ -142,6 +146,7 @@ function parseProject(scratchProject: ScratchProject): Project {
         customBlocks: [],
         localVars: [],
         localLists: [],
+        comments: false,
     };
 
     // заготовка итогового проекта

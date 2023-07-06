@@ -70,7 +70,9 @@
         "unusedVariableTitle": "Неиспользуемая переменная",
         "unusedVariable": "Переменная <strong>{{variable}}</strong> в <strong>{{target}}</strong> объявлена, но не используется.",
         "lostCodeTitle": "Потерянный код",
-        "lostCode": "В <strong>{{target}}</strong> есть потерянные блоки."
+        "lostCode": "В <strong>{{target}}</strong> есть потерянные блоки.",
+        "noCommentsTitle": "Нет комментариев",
+        "noComments": "В <strong>{{target}}</strong> нет комментариев в скриптах. Добавь комментарии, чтобы сделать код понятнее."
     },
     "error": {
         "messageNeverReceivedTitle": "Сообщение никто не получает",

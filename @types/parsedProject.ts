@@ -9,6 +9,7 @@ export type Sprite = {
     customBlocks: string[];
     localVars: string[];
     localLists: string[];
+    comments: boolean;
 };
 
 export type Project = {

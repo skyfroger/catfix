@@ -35,6 +35,42 @@ export const emptySprite: tipFunctionInterface = (project, projectJSON) => {
 };
 
 /**
+ * Поиск спрайтов в которых нет комментариев
+ * @param project
+ * @param projectJSON
+ */
+export const noComments: tipFunctionInterface = (project, projectJSON) => {
+    let result: Tip[] = [];
+
+    // сначала проверяем сцену...
+    // если на сцене есть скрипты, но нет ни одного комментария
+    if (project.stage.scripts.length !== 0 && !project.stage.comments) {
+        result.push({
+            code: null,
+            payload: { target: project.stage.name },
+            type: "warning",
+            title: "warning.noCommentsTitle",
+            message: "warning.noComments",
+        });
+    }
+
+    // потом спрайты
+    project.sprites.forEach((sp) => {
+        if (sp.scripts.length !== 0 && !sp.comments) {
+            result.push({
+                code: null,
+                payload: { target: sp.name },
+                type: "warning",
+                title: "warning.noCommentsTitle",
+                message: "warning.noComments",
+            });
+        }
+    });
+
+    return result;
+};
+
+/**
  * Поиск переменных, которые не используются
  * @param project
  * @param projectJSON
