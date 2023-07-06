@@ -121,6 +121,11 @@ function findLostBlocks(sp: Target): Tip | null {
     try {
         // перебираем все блоки по их ключам
         for (const [key, block] of Object.entries(blocks)) {
+            // сразу пропускаем shadow-блоки
+            if (block.shadow) {
+                continue;
+            }
+
             // если блок - Шляпа под которой нет блоков - потерянный блок
             if (HATS.includes(block.opcode) && block.next === null) {
                 const script = sbCode(key, blocks);
@@ -133,6 +138,7 @@ function findLostBlocks(sp: Target): Tip | null {
                 };
             }
 
+            // если в блоке нет ссылки на предыдущий и на следующий блок
             if (block.next === null && block.parent === null) {
                 const script = sbCode(key, blocks);
                 return {
@@ -144,6 +150,8 @@ function findLostBlocks(sp: Target): Tip | null {
                 };
             }
 
+            // движемся от текущего блока вверх по ссылкам
+            // если не придём к hat-блоку, значит нашли потеряшек
             let blockId: string | undefined = key;
             let lastBlockId: string | undefined = key;
             let opCode = "";
@@ -154,7 +162,7 @@ function findLostBlocks(sp: Target): Tip | null {
             } while (blockId);
 
             if (!HATS.includes(opCode)) {
-                const script = sbCode(key, blocks);
+                const script = sbCode(lastBlockId, blocks);
                 return {
                     code: script,
                     payload: { target: sp.name },
