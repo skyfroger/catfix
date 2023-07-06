@@ -112,12 +112,13 @@ function parseTarget(sprite: Target): Sprite {
                 const y = sprite.blocks[hat].y;
 
                 const linesCount = script.split("\n");
-                const h = linesCount.length * 65;
+                const h = linesCount.length * 50;
                 const w = Math.round(
                     linesCount.reduce((p, c) => {
-                        return p + c.length * 6;
+                        return p + c.length * 9;
                     }, 0) / linesCount.length
                 );
+                console.log(sprite.name, x, y, w, h);
                 parsedSprite.coords.push({ x: x ?? 0, y: y ?? 0, w: w, h: h });
             }
         } catch (e) {
@@ -142,7 +143,23 @@ function parseTarget(sprite: Target): Sprite {
     );
 
     // есть ли комментарии в этом спрайте
-    parsedSprite.comments = JSON.stringify(sprite.comments) !== "{}";
+
+    // получаем массив ключей блоков, для которых есть комментарии в json
+    let commentedBlocksId: string[] = [];
+    for (const [key, comment] of Object.entries(sprite.comments)) {
+        commentedBlocksId.push(comment.blockId);
+    }
+
+    // получаем массив ключей блоков
+    const blockKeys = Array.from(Object.keys(sprite.blocks));
+
+    // фильтруем комментарии, оставляя только те, что прикреплены к существующим блокам
+    const usedComments = commentedBlocksId.filter((key) => {
+        return blockKeys.includes(key);
+    });
+
+    // если отфильтрованный массив не пустой, комментарии есть
+    parsedSprite.comments = usedComments.length > 0;
 
     return parsedSprite;
 }
