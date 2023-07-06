@@ -71,6 +71,65 @@ export const noComments: tipFunctionInterface = (project, projectJSON) => {
 };
 
 /**
+ * Поиск скриптов, которые перекрывают друг друга
+ * @param project
+ * @param projectJSON
+ */
+export const scriptsOverlap: tipFunctionInterface = (project, projectJSON) => {
+    let result: Tip[] = [];
+
+    project.sprites.forEach((sprite, index) => {
+        console.log(sprite.name);
+        for (let i = 0; i < sprite.coords.length; i++) {
+            for (let j = 0; j < sprite.coords.length; j++) {
+                const f = sprite.coords[i];
+                const s = sprite.coords[j];
+
+                const s1 = area(f.x, f.y, f.x + f.w, f.y, s.x, s.y);
+                const s2 = area(f.x + f.w, f.y, s.x, s.y, f.x + f.w, f.y + f.h);
+                const s3 = area(f.x + f.w, f.y + f.h, s.x, s.y, f.x, f.y + f.h);
+                const s4 = area(f.x, f.y + f.h, s.x, s.y, f.x, f.y);
+                console.log(i !== j, s1 + s2 + s3 + s4, f.w * f.h);
+                if (i !== j && s1 + s2 + s3 + s4 - f.w * f.h === 0) {
+                    // todo возможны ошибки, когда получаем первые строчки скриптов
+                    const firstHat = sprite.scripts[i].split("\n")[0];
+                    const secondHat = sprite.scripts[j].split("\n")[0];
+                    result.push({
+                        code: `${firstHat}\n${secondHat}`,
+                        payload: { target: sprite.name },
+                        type: "warning",
+                        title: "warning.scriptsOverlapTitle",
+                        message: "warning.scriptsOverlap",
+                    });
+                }
+            }
+        }
+    });
+
+    return result;
+};
+
+/**
+ * Расчёт площади треугольника по координатам трём точек
+ * @param x1
+ * @param y1
+ * @param x2
+ * @param y2
+ * @param x3
+ * @param y3
+ */
+function area(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    x3: number,
+    y3: number
+): number {
+    return Math.abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1)) / 2.0;
+}
+
+/**
  * Поиск переменных, которые не используются
  * @param project
  * @param projectJSON

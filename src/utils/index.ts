@@ -65,6 +65,7 @@ function parseTarget(sprite: Target): Sprite {
         localVars: [],
         localLists: [],
         comments: false,
+        coords: [],
     };
 
     // сохраняем имя спрайта
@@ -106,6 +107,18 @@ function parseTarget(sprite: Target): Sprite {
             // такой скрипт не считается валидным
             if (script.includes("\n")) {
                 parsedSprite.scripts.push(script);
+
+                const x = sprite.blocks[hat].x;
+                const y = sprite.blocks[hat].y;
+
+                const linesCount = script.split("\n");
+                const h = linesCount.length * 65;
+                const w = Math.round(
+                    linesCount.reduce((p, c) => {
+                        return p + c.length * 6;
+                    }, 0) / linesCount.length
+                );
+                parsedSprite.coords.push({ x: x ?? 0, y: y ?? 0, w: w, h: h });
             }
         } catch (e) {
             /*
@@ -147,6 +160,7 @@ function parseProject(scratchProject: ScratchProject): Project {
         localVars: [],
         localLists: [],
         comments: false,
+        coords: [],
     };
 
     // заготовка итогового проекта
@@ -169,7 +183,7 @@ function parseProject(scratchProject: ScratchProject): Project {
         project.sprites.push(parseTarget(t));
     });
 
-    // cохраняем все скрипты проекта в одну строку, чтобы использовать её для поиска по регулярным выражениям
+    // сохраняем все скрипты проекта в одну строку, чтобы использовать её для поиска по регулярным выражениям
     let scriptsString: string = project.sprites.reduce(
         (previousValue: string, currentSprite: Sprite) => {
             return previousValue + "\n\n" + currentSprite.scripts.join("\n\n");

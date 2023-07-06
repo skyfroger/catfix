@@ -72,7 +72,9 @@
         "lostCodeTitle": "Потерянный код",
         "lostCode": "В <strong>{{target}}</strong> есть потерянные блоки.",
         "noCommentsTitle": "Нет комментариев",
-        "noComments": "В <strong>{{target}}</strong> нет комментариев в скриптах. Добавь комментарии, чтобы сделать код понятнее."
+        "noComments": "В <strong>{{target}}</strong> нет комментариев в скриптах. Добавь комментарии, чтобы сделать код понятнее.",
+        "scriptsOverlapTitle": "Наложение скриптов",
+        "scriptsOverlap": "Скрипты в <strong>{{target}}</strong> накладываются друг на друга."
     },
     "error": {
         "messageNeverReceivedTitle": "Сообщение никто не получает",

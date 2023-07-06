@@ -10,6 +10,7 @@ export type Sprite = {
     localVars: string[];
     localLists: string[];
     comments: boolean;
+    coords: Array<{ x: number; y: number; w: number; h: number }>;
 };
 
 export type Project = {

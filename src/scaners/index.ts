@@ -3,12 +3,24 @@ import { ScratchProject } from "../../@types/scratch";
 import { Tip, tipFunctionInterface } from "./types";
 
 // импорт функций сканирования
-import { lostCode, emptySprite, unusedVariables, noComments } from "./warnings";
+import {
+    lostCode,
+    emptySprite,
+    unusedVariables,
+    noComments,
+    scriptsOverlap,
+} from "./warnings";
 import { messageNeverReceived } from "./errors";
 
 // в этой переменной хранится массив функций, которые отвечают
 // за получения списка предупреждений
-const warningFunctions = [lostCode, unusedVariables, noComments, emptySprite];
+const warningFunctions = [
+    lostCode,
+    unusedVariables,
+    // scriptsOverlap, todo раскомментировать, когда будет реализована функция
+    noComments,
+    emptySprite,
+];
 
 // храним функции для поиска ошибок
 const errorFunctions = [messageNeverReceived];
