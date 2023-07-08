@@ -88,7 +88,7 @@ function URLLoader({ onUpload }: urlLoaderProps) {
                         {
                             pattern:
                                 /https?:\/\/scratch.mit.edu\/projects\/(\d)+\/?/,
-                            message: "Введи адрес проекта",
+                            message: t("ui.projectURLRequired"),
                         },
                     ]}
                 >
@@ -101,7 +101,7 @@ function URLLoader({ onUpload }: urlLoaderProps) {
                         size={"middle"}
                         loading={isLoading}
                     >
-                        Загрузить
+                        {t("ui.loadFromURLButton")}
                     </Button>
                 </Form.Item>
             </Form>
