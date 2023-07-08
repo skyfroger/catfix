@@ -116,7 +116,7 @@ function parseTarget(sprite: Target): Sprite {
 
                 // высота скрипта: количество строк умноженное на высоту одной строки
                 // число подобрано экспериментально
-                const h = linesCount.length * 48;
+                const h = linesCount.length * 45;
 
                 // за ширину берём медианную длину строки
                 // умножаем количество символов в строке на ширину одного символа
@@ -125,7 +125,7 @@ function parseTarget(sprite: Target): Sprite {
                         linesCount.map((line) => {
                             return line.length;
                         })
-                    ) * 9;
+                    ) * 5;
 
                 parsedSprite.coords.push({ x: x ?? 0, y: y ?? 0, w: w, h: h });
             }
