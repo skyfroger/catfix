@@ -2,8 +2,8 @@
  * Вывод списка оценок проекта по ряду критериев.
  */
 
-import React, { useEffect, useState } from "react";
-import { FileOutlined, TrophyOutlined } from "@ant-design/icons";
+import React from "react";
+import { TrophyOutlined } from "@ant-design/icons";
 import { Project } from "../../@types/parsedProject";
 import grader, { categories, gradesEnum } from "../graders";
 import { useTranslation } from "react-i18next";
@@ -11,11 +11,10 @@ import GradeItem from "./GradeItem";
 import { Card, Empty } from "antd";
 
 interface gradesListProps {
-    fileName: string | null;
     project: Project | null;
 }
 
-function GradesList({ project, fileName }: gradesListProps) {
+function GradesList({ project }: gradesListProps) {
     const { t } = useTranslation();
 
     let grades: Map<categories, gradesEnum> = new Map();

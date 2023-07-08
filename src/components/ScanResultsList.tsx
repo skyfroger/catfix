@@ -2,10 +2,10 @@
  * Вывод результатов сканирования проекта: предупреждения и ошибки в коде
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Project } from "../../@types/parsedProject";
 import { ScratchProject } from "../../@types/scratch";
-import { Card, Empty } from "antd";
+import { Card, Empty, List } from "antd";
 import { ToolOutlined } from "@ant-design/icons";
 import { scanForErrors, scanForWarnings } from "../scaners";
 import { Tip } from "../scaners/types";
@@ -24,14 +24,19 @@ function ScanResultsList({
     projectJSON,
 }: scanResultsListProps) {
     const { t } = useTranslation();
-    let warnings: Tip[] = [];
-    let errors: Tip[] = [];
-    if (projectJSON && project) {
-        warnings = scanForWarnings(project, projectJSON);
-        errors = scanForErrors(project, projectJSON);
-    }
+    const [errorsWithWarnings, setErrorsWithWarnings] = useState<Tip[]>([]);
 
-    const errorsWithWarnings = [...errors, ...warnings];
+    useEffect(() => {
+        let warnings: Tip[] = [];
+        let errors: Tip[] = [];
+        if (projectJSON && project) {
+            warnings = scanForWarnings(project, projectJSON);
+            errors = scanForErrors(project, projectJSON);
+            setErrorsWithWarnings([...errors, ...warnings]);
+        }
+    }, [project]);
+
+    // const errorsWithWarnings = [...errors, ...warnings];
 
     return (
         <Card>
@@ -40,21 +45,25 @@ function ScanResultsList({
                     <ToolOutlined /> {t("ui.tips")}
                 </h2>
             )}
-            {errorsWithWarnings.length === 0 && (
-                <Empty description={<p>{t("ui.noTips")}</p>}></Empty>
-            )}
-            {errorsWithWarnings.map((item, index) => {
-                return (
+            <List
+                dataSource={errorsWithWarnings}
+                locale={{
+                    emptyText: (
+                        <Empty
+                            description={<span>{t("ui.noTips")}</span>}
+                        ></Empty>
+                    ),
+                }}
+                renderItem={(tip: Tip) => (
                     <TipItem
-                        key={index}
-                        type={item.type}
-                        title={item.title}
-                        message={item.message}
-                        payload={item.payload}
-                        code={item.code}
+                        type={tip.type}
+                        title={tip.title}
+                        message={tip.message}
+                        payload={tip.payload}
+                        code={tip.code}
                     />
-                );
-            })}
+                )}
+            />
         </Card>
     );
 }

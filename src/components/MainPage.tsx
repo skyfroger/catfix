@@ -135,7 +135,7 @@ function MainPage() {
                 <Col sm={24} lg={12}>
                     <div>
                         {uploadState === "loaded" && (
-                            <GradesList fileName={fileName} project={project} />
+                            <GradesList project={project} />
                         )}
                     </div>
                 </Col>
