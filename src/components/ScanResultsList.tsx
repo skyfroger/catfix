@@ -5,12 +5,13 @@
 import React, { useEffect, useState } from "react";
 import { Project } from "../../@types/parsedProject";
 import { ScratchProject } from "../../@types/scratch";
-import { Button, Card, Empty, List } from "antd";
+import { Button, Card, Empty, List, Popover, Space } from "antd";
 import { ToolOutlined } from "@ant-design/icons";
 import { scanForErrors, scanForWarnings } from "../scaners";
 import { Tip } from "../scaners/types";
 import TipItem from "./TipItem";
 import { useTranslation } from "react-i18next";
+import TipsSummary from "./TipsSummary";
 
 interface scanResultsListProps {
     fileName: string | null;
@@ -81,9 +82,27 @@ function ScanResultsList({
     return (
         <Card>
             {project && (
-                <h2>
-                    <ToolOutlined /> {t("ui.tips")}
-                </h2>
+                <Space
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                >
+                    <h2>
+                        <ToolOutlined /> {t("ui.tips")}
+                    </h2>
+
+                    {errorsWithWarnings.length > 0 && (
+                        <Popover
+                            placement="bottomRight"
+                            trigger="click"
+                            content={<TipsSummary tips={errorsWithWarnings} />}
+                        >
+                            <Button>Сводка</Button>
+                        </Popover>
+                    )}
+                </Space>
             )}
             <List
                 dataSource={listItems}
