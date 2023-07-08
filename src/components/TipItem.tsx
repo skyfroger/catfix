@@ -16,7 +16,7 @@ function TipItem({ type, message, payload, code, title }: Tip) {
     const color = type === "warning" ? "#F7D060" : "#FF6D60";
 
     return (
-        <>
+        <div style={{ overflow: "auto" }}>
             <Divider>{t(title)}</Divider>
             <Space direction={"horizontal"}>
                 <p style={{ fontSize: 32, color: color }}>
@@ -25,7 +25,7 @@ function TipItem({ type, message, payload, code, title }: Tip) {
                 <p>{parse(t(message, { ...payload }))}</p>
                 <div>{code && <ScratchCode code={code} />}</div>
             </Space>
-        </>
+        </div>
     );
 }
 

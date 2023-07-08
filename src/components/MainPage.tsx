@@ -17,6 +17,7 @@ import Loader from "./Loader";
 import { useTranslation } from "react-i18next";
 import ScanResultsList from "./ScanResultsList";
 import URLLoader from "./URLLoader";
+import { FileOutlined } from "@ant-design/icons";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -120,6 +121,12 @@ function MainPage() {
                 <Row gutter={16}>
                     <Col span={24}>
                         {uploadState === "loading" && <Loader />}
+                        {project && (
+                            <h1>
+                                <FileOutlined />{" "}
+                                {t("ui.fileName", { fileName: fileName })}
+                            </h1>
+                        )}
                     </Col>
                 </Row>
             </Card>
