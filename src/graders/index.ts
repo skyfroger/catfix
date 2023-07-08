@@ -198,12 +198,14 @@ function parallelismGrader(project: Project): gradesEnum {
     // даём 3 балла, если одно сообщение запускает больше 1 скрипта
     let broadcastsFlag: boolean[] = [];
     project.broadcasts.forEach((b) => {
-        // создаём RE которое содержит название очередного сообщения
-        const re = new RegExp(`when I receive \\[${b} v\\]`, "g");
-        // находим все скрипты стартующие по этому сообщению
-        const matches = project.allScripts.matchAll(re);
-        // сохраняем в массиве broadcastsFlag значение true, если найдено больше 1 скрипта
-        broadcastsFlag.push(Array.from(matches).length > 1);
+        try {
+            // создаём RE которое содержит название очередного сообщения
+            const re = new RegExp(`when I receive \\[${b} v\\]`, "g");
+            // находим все скрипты стартующие по этому сообщению
+            const matches = project.allScripts.matchAll(re);
+            // сохраняем в массиве broadcastsFlag значение true, если найдено больше 1 скрипта
+            broadcastsFlag.push(Array.from(matches).length > 1);
+        } catch (e) {}
     });
 
     if (broadcastsFlag.includes(true)) {
@@ -273,13 +275,10 @@ function syncGrader(project: Project): gradesEnum {
     // проверяем список сообщений: каждое должно быть отправлено и получено хотя бы 1 раз
     let broadcastsFlag: boolean[] = [];
     project.broadcasts.forEach((b) => {
-        // RE для поиска отправки сообщения
-        const sent = new RegExp(`broadcast \\[${b} v\\]( and wait)?`);
-        // создаём RE которое содержит название очередного сообщения
-        const received = new RegExp(`when I receive \\[${b} v\\]`);
-        // находим все скрипты стартующие по этому сообщению
         broadcastsFlag.push(
-            sent.test(project.allScripts) && received.test(project.allScripts)
+            (project.allScripts.includes(`broadcast [${b} v]`) ||
+                project.allScripts.includes(`broadcast [${b} v] and wait`)) &&
+                project.allScripts.includes(`when I receive [${b} v]`)
         );
     });
     if (broadcastsFlag.includes(true)) {
