@@ -96,7 +96,6 @@ function ScanResultsList({
                     {errorsWithWarnings.length > 0 && (
                         <Popover
                             placement="bottomRight"
-                            trigger="click"
                             content={<TipsSummary tips={errorsWithWarnings} />}
                         >
                             <Button>Сводка</Button>
