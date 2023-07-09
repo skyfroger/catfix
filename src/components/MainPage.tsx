@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import ScanResultsList from "./ScanResultsList";
 import URLLoader from "./URLLoader";
 import { FileOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -27,7 +28,7 @@ function MainPage() {
     const [projectJSON, setProjectJSON] = useState<ScratchProject | null>(null);
     const [project, setProject] = useState<Project | null>(null);
     const [uploadState, setUploadState] = useState<fileStatus>("loaded");
-    const [fileName, setFileName] = useState<string | null>(null);
+    const [fileName, setFileName] = useState<string | null>("-");
 
     const [messageApi, contextHolder] = message.useMessage();
     const { t } = useTranslation();
@@ -44,7 +45,7 @@ function MainPage() {
         });
 
         // сбрасываем имя файла
-        setFileName(null);
+        setFileName("-");
 
         // началась загрузка файла
         setUploadState("loading");
@@ -109,38 +110,51 @@ function MainPage() {
     return (
         <>
             {contextHolder}
-            <Card style={{ marginBottom: 16 }}>
-                <Row gutter={16}>
-                    <Col sm={24} lg={12}>
-                        <UploadProject onUpload={handleUpload} />
-                    </Col>
-                    <Col sm={24} lg={12}>
-                        <URLLoader onUpload={handleURLUpload} />
-                    </Col>
-                </Row>
-                <Row gutter={16}>
-                    <Col span={24}>
-                        {uploadState === "loading" && <Loader />}
-                        {project && (
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 1 }}
+            >
+                <Card style={{ marginBottom: 16 }}>
+                    <Row gutter={16}>
+                        <Col sm={24} lg={12}>
+                            <UploadProject onUpload={handleUpload} />
+                        </Col>
+                        <Col sm={24} lg={12}>
+                            <URLLoader onUpload={handleURLUpload} />
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
                             <h1>
                                 <FileOutlined />{" "}
                                 {t("ui.fileName", { fileName: fileName })}
                             </h1>
-                        )}
-                    </Col>
-                </Row>
-            </Card>
-
+                            {uploadState === "loading" && <Loader />}
+                        </Col>
+                    </Row>
+                </Card>
+            </motion.div>
             <Row gutter={16}>
                 <Col sm={24} lg={12}>
-                    <div>
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                    >
                         {uploadState === "loaded" && (
                             <GradesList project={project} />
                         )}
-                    </div>
+                    </motion.div>
                 </Col>
                 <Col sm={24} lg={12}>
-                    <div>
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                    >
                         {uploadState === "loaded" && (
                             <ScanResultsList
                                 fileName={fileName}
@@ -148,7 +162,7 @@ function MainPage() {
                                 projectJSON={projectJSON}
                             />
                         )}
-                    </div>
+                    </motion.div>
                 </Col>
             </Row>
         </>

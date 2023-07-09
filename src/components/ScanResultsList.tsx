@@ -12,6 +12,7 @@ import { Tip } from "../scaners/types";
 import TipItem from "./TipItem";
 import { useTranslation } from "react-i18next";
 import TipsSummary from "./TipsSummary";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface scanResultsListProps {
     fileName: string | null;
@@ -80,50 +81,70 @@ function ScanResultsList({
         ) : null;
 
     return (
-        <Card>
-            {project && (
-                <Space
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}
-                >
-                    <h2>
-                        <ToolOutlined /> {t("ui.tips")}
-                    </h2>
-
-                    {errorsWithWarnings.length > 0 && (
-                        <Popover
-                            placement="bottomRight"
-                            content={<TipsSummary tips={errorsWithWarnings} />}
+        <AnimatePresence mode="wait">
+            <Card>
+                {project && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        exit={{ opacity: 0, y: -10 }}
+                    >
+                        <Space
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                            }}
                         >
-                            <Button>Сводка</Button>
-                        </Popover>
-                    )}
-                </Space>
-            )}
-            <List
-                dataSource={listItems}
-                loadMore={loadMore}
-                locale={{
-                    emptyText: (
-                        <Empty
-                            description={<span>{t("ui.noTips")}</span>}
-                        ></Empty>
-                    ),
-                }}
-                renderItem={(tip: Tip) => (
-                    <TipItem
-                        type={tip.type}
-                        title={tip.title}
-                        message={tip.message}
-                        payload={tip.payload}
-                        code={tip.code}
-                    />
+                            <h2>
+                                <ToolOutlined /> {t("ui.tips")}
+                            </h2>
+
+                            {errorsWithWarnings.length > 0 && (
+                                <Popover
+                                    placement="bottomRight"
+                                    content={
+                                        <TipsSummary
+                                            tips={errorsWithWarnings}
+                                        />
+                                    }
+                                >
+                                    <Button>Сводка</Button>
+                                </Popover>
+                            )}
+                        </Space>
+                    </motion.div>
                 )}
-            />
-        </Card>
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                    exit={{ opacity: 0, y: -10 }}
+                >
+                    <List
+                        dataSource={listItems}
+                        loadMore={loadMore}
+                        locale={{
+                            emptyText: (
+                                <Empty
+                                    description={<span>{t("ui.noTips")}</span>}
+                                ></Empty>
+                            ),
+                        }}
+                        renderItem={(tip: Tip) => (
+                            <TipItem
+                                type={tip.type}
+                                title={tip.title}
+                                message={tip.message}
+                                payload={tip.payload}
+                                code={tip.code}
+                            />
+                        )}
+                    />
+                </motion.div>
+            </Card>
+        </AnimatePresence>
     );
 }
 

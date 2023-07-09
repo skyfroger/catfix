@@ -5,6 +5,7 @@
 import React from "react";
 import { categories, gradesEnum } from "../graders";
 import { Col, Divider, Progress, Row, Space, theme } from "antd";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 interface GradeItemProps {
@@ -50,7 +51,12 @@ function GradeItem({ category, grade }: GradeItemProps) {
     // Умножение на 33.3 помогает перевести отмету из баллов в проценты.
     // Округление происходит вверх
     return (
-        <>
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            exit={{ opacity: 0, y: -10 }}
+        >
             <Divider />
             <Row>
                 <Col span={24}>
@@ -70,7 +76,7 @@ function GradeItem({ category, grade }: GradeItemProps) {
                     </Space>
                 </Col>
             </Row>
-        </>
+        </motion.div>
     );
 }
 

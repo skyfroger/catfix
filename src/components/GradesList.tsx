@@ -9,6 +9,7 @@ import grader, { categories, gradesEnum } from "../graders";
 import { useTranslation } from "react-i18next";
 import GradeItem from "./GradeItem";
 import { Card, Empty } from "antd";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface gradesListProps {
     project: Project | null;
@@ -33,27 +34,44 @@ function GradesList({ project }: gradesListProps) {
     );
 
     return (
-        <Card>
-            {!project && <Empty description={<p>{t("ui.noGrade")}</p>}></Empty>}
+        <AnimatePresence mode="wait">
+            <Card>
+                {!project && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        exit={{ opacity: 0, y: -10 }}
+                    >
+                        <Empty description={<p>{t("ui.noGrade")}</p>}></Empty>
+                    </motion.div>
+                )}
 
-            {project && (
-                <h2>
-                    <TrophyOutlined />{" "}
-                    {t("ui.totalGrade", {
-                        totalGrade: totalGrade,
-                        maxGrade: 21,
-                    })}
-                </h2>
-            )}
-            {project &&
-                gradeKeys.map((category, index) => (
-                    <GradeItem
-                        key={category}
-                        category={category}
-                        grade={grades.get(category) ?? gradesEnum.zero}
-                    />
-                ))}
-        </Card>
+                {project && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        exit={{ opacity: 0, y: -10 }}
+                    >
+                        <h2>
+                            <TrophyOutlined />{" "}
+                            {t("ui.totalGrade", {
+                                totalGrade: totalGrade,
+                                maxGrade: 21,
+                            })}
+                        </h2>
+                        {gradeKeys.map((category, index) => (
+                            <GradeItem
+                                key={category}
+                                category={category}
+                                grade={grades.get(category) ?? gradesEnum.zero}
+                            />
+                        ))}
+                    </motion.div>
+                )}
+            </Card>
+        </AnimatePresence>
     );
 }
 
