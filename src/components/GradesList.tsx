@@ -5,7 +5,7 @@
 import React from "react";
 import { TrophyOutlined } from "@ant-design/icons";
 import { Project } from "../../@types/parsedProject";
-import grader, { categories, gradesEnum } from "../graders";
+import grader, { categories, graderResult, gradesEnum } from "../graders";
 import { useTranslation } from "react-i18next";
 import GradeItem from "./GradeItem";
 import { Card, Empty } from "antd";
@@ -18,7 +18,7 @@ interface gradesListProps {
 function GradesList({ project }: gradesListProps) {
     const { t } = useTranslation();
 
-    let grades: Map<categories, gradesEnum> = new Map();
+    let grades: Map<categories, graderResult> = new Map();
     if (project) {
         grades = grader(project);
     }
@@ -28,8 +28,14 @@ function GradesList({ project }: gradesListProps) {
     // суммарная оценка
     const totalGrade = Array.from(grades.values()).reduce(
         (previousValue, currentValue, currentIndex, array) => {
-            return previousValue + currentValue;
+            return previousValue + currentValue.grade;
         },
+        0
+    );
+
+    // максимальная возможная оценка по всем категориям оценивания
+    const maxGrade = Array.from(grades.values()).reduce(
+        (pr, cur) => pr + cur.maxGrade,
         0
     );
 
@@ -58,14 +64,21 @@ function GradesList({ project }: gradesListProps) {
                             <TrophyOutlined />{" "}
                             {t("ui.totalGrade", {
                                 totalGrade: totalGrade,
-                                maxGrade: 21,
+                                maxGrade: maxGrade,
                             })}
                         </h2>
                         {gradeKeys.map((category, index) => (
                             <GradeItem
                                 key={category}
                                 category={category}
-                                grade={grades.get(category) ?? gradesEnum.zero}
+                                grade={
+                                    grades.get(category)?.grade ??
+                                    gradesEnum.zero
+                                }
+                                maxGrade={
+                                    grades.get(category)?.maxGrade ??
+                                    gradesEnum.zero
+                                }
                             />
                         ))}
                     </motion.div>

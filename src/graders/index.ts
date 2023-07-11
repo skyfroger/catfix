@@ -1,4 +1,4 @@
-import { Project, Sprite } from "../../@types/parsedProject";
+import { Project } from "../../@types/parsedProject";
 import {
     cloneSpriteRE,
     compConditionsRE,
@@ -38,11 +38,21 @@ export enum gradesEnum {
     three = 3,
 }
 
-function flowGrader(project: Project): gradesEnum {
+// функция оценивания возвращает максимальную оценку, чтобы корректно считать
+// максимально возможное количество баллов
+export type graderResult = {
+    grade: gradesEnum; // оценка за категорию
+    maxGrade: gradesEnum; // максимальная оценка за категорию
+};
+
+function flowGrader(project: Project): graderResult {
     /**
      * Поток выполнения: только следование или использование различных циклов.
      */
-    let g: gradesEnum = gradesEnum.zero;
+    let g: graderResult = {
+        grade: gradesEnum.zero,
+        maxGrade: gradesEnum.three,
+    };
 
     // считаем количество скриптов в спрайтах проекта
     const scriptsCount = project.sprites.reduce(
@@ -54,7 +64,7 @@ function flowGrader(project: Project): gradesEnum {
 
     // даём 1 балл, если есть хотя бы 1 скрипт на сцене или в спрайте
     if (project.stage.scripts.length > 0 || scriptsCount > 0) {
-        g = gradesEnum.one;
+        g.grade = gradesEnum.one;
     }
 
     // даём 2 балла, если есть бесконечный цикл или счётный цикл
@@ -62,26 +72,29 @@ function flowGrader(project: Project): gradesEnum {
         foreverLoopRE.test(project.allScripts) ||
         countLoopRE.test(project.allScripts)
     ) {
-        g = gradesEnum.two;
+        g.grade = gradesEnum.two;
     }
 
     // даём 3 балла, если есть цикл с предусловием
     if (untilLoopRE.test(project.allScripts)) {
-        g = gradesEnum.three;
+        g.grade = gradesEnum.three;
     }
 
     return g;
 }
 
-function dataRepresentationGrader(project: Project): gradesEnum {
+function dataRepresentationGrader(project: Project): graderResult {
     /**
      * Представление данных: использование переменных и списков
      */
-    let g: gradesEnum = gradesEnum.zero;
+    let g: graderResult = {
+        grade: gradesEnum.zero,
+        maxGrade: gradesEnum.three,
+    };
 
     // даём 1 балл, если в блоках используются только числа-литералы
     if (new RegExp("\\(\\d+\\)").test(project.allScripts)) {
-        g = gradesEnum.one;
+        g.grade = gradesEnum.one;
     }
 
     // даём 2 балл, если переменной задаётся начальное значение и переменные есть в блоках скрипта
@@ -89,7 +102,7 @@ function dataRepresentationGrader(project: Project): gradesEnum {
         setVarsRE.test(project.allScripts) &&
         roundVarsRE.test(project.allScripts)
     ) {
-        g = gradesEnum.two;
+        g.grade = gradesEnum.two;
     }
 
     // все переменные-списки в сцене
@@ -118,41 +131,47 @@ function dataRepresentationGrader(project: Project): gradesEnum {
         new RegExp("\\((.)+::list\\)").test(project.allScripts) ||
         (listsNum !== 0 && listsRE.test(project.allScripts))
     ) {
-        g = gradesEnum.three;
+        g.grade = gradesEnum.three;
     }
     return g;
 }
 
-function logicGrader(project: Project): gradesEnum {
+function logicGrader(project: Project): graderResult {
     /**
      * Логика: условные операторы и составные условия
      */
-    let g: gradesEnum = gradesEnum.zero;
+    let g: graderResult = {
+        grade: gradesEnum.zero,
+        maxGrade: gradesEnum.three,
+    };
 
     // даём 1 балл, если есть оператор если ... то
     if (ifThenRE.test(project.allScripts)) {
-        g = gradesEnum.one;
+        g.grade = gradesEnum.one;
     }
 
     // даём 2 балла, если есть оператор если ... то ... иначе
     if (ifThenElseRE.test(project.allScripts)) {
-        g = gradesEnum.two;
+        g.grade = gradesEnum.two;
     }
 
     // даём 3 балла за составные условия
     // todo нужно проверять не пустые ли блоки, в которых встречаются составные условия
     if (compConditionsRE.test(project.allScripts)) {
-        g = gradesEnum.three;
+        g.grade = gradesEnum.three;
     }
 
     return g;
 }
 
-function parallelismGrader(project: Project): gradesEnum {
+function parallelismGrader(project: Project): graderResult {
     /**
      * Параллельное выполнение скриптов
      */
-    let g: gradesEnum = gradesEnum.zero;
+    let g: graderResult = {
+        grade: gradesEnum.zero,
+        maxGrade: gradesEnum.three,
+    };
 
     // считаем, сколько спрайтов содержат скрипт, начинающийся с зелёного флажка
     // todo возможно потом нужно будет учитывать и скрипты на сцене
@@ -160,7 +179,7 @@ function parallelismGrader(project: Project): gradesEnum {
         return spr.allScripts.includes("when @greenFlag clicked");
     });
     if (spritesWithGreenFlag.length > 1) {
-        g = gradesEnum.one;
+        g.grade = gradesEnum.one;
     }
 
     // ищем спрайты, клик по которым запускает больше одного сприпта
@@ -192,7 +211,7 @@ function parallelismGrader(project: Project): gradesEnum {
     });
 
     if (spritesWithClicks.length > 0 || keyFlag.includes(true)) {
-        g = gradesEnum.two;
+        g.grade = gradesEnum.two;
     }
 
     // даём 3 балла, если одно сообщение запускает больше 1 скрипта
@@ -209,25 +228,28 @@ function parallelismGrader(project: Project): gradesEnum {
     });
 
     if (broadcastsFlag.includes(true)) {
-        g = gradesEnum.three;
+        g.grade = gradesEnum.three;
     }
 
     return g;
 }
 
-function abstractGrader(project: Project): gradesEnum {
+function abstractGrader(project: Project): graderResult {
     /**
      * Оценка уровня абстракции: количество скриптов, собственные блоки,
      * использование клонов спрайтов
      */
-    let g: gradesEnum = gradesEnum.zero;
+    let g: graderResult = {
+        grade: gradesEnum.zero,
+        maxGrade: gradesEnum.three,
+    };
 
     // получаем список спрайтов у которых больше одного скрипта
     const spritesWithManyScripts = project.sprites.filter((sp) => {
         return sp.scripts.length > 1;
     });
     if (spritesWithManyScripts.length > 0) {
-        g = gradesEnum.one;
+        g.grade = gradesEnum.one;
     }
 
     // есть ли собственные блоки, которые вызываются больше одного раза
@@ -249,7 +271,7 @@ function abstractGrader(project: Project): gradesEnum {
         });
     });
     if (customBlocksUsageCount.includes(true)) {
-        g = gradesEnum.two;
+        g.grade = gradesEnum.two;
     }
 
     // 3 балла, если используется клонирование спрайтов
@@ -258,18 +280,21 @@ function abstractGrader(project: Project): gradesEnum {
         cloneSpriteRE.test(project.allScripts) &&
         project.allScripts.includes("when I start as a clone")
     ) {
-        g = gradesEnum.three;
+        g.grade = gradesEnum.three;
     }
 
     return g;
 }
 
-function syncGrader(project: Project): gradesEnum {
-    let g: gradesEnum = gradesEnum.zero;
+function syncGrader(project: Project): graderResult {
+    let g: graderResult = {
+        grade: gradesEnum.zero,
+        maxGrade: gradesEnum.three,
+    };
 
     // даём 1 балл, если есть блок ждать n секунд
     if (waitSecondsRE.test(project.allScripts)) {
-        g = gradesEnum.one;
+        g.grade = gradesEnum.one;
     }
 
     // проверяем список сообщений: каждое должно быть отправлено и получено хотя бы 1 раз
@@ -282,23 +307,26 @@ function syncGrader(project: Project): gradesEnum {
         );
     });
     if (broadcastsFlag.includes(true)) {
-        g = gradesEnum.two;
+        g.grade = gradesEnum.two;
     }
 
     // даём 3 балла за блок Ждать до и обработку события смены фона
     if (waitCondAndBackdropRE.test(project.allScripts)) {
-        g = gradesEnum.three;
+        g.grade = gradesEnum.three;
     }
 
     return g;
 }
 
-function interactivityGrader(project: Project): gradesEnum {
-    let g: gradesEnum = gradesEnum.zero;
+function interactivityGrader(project: Project): graderResult {
+    let g: graderResult = {
+        grade: gradesEnum.zero,
+        maxGrade: gradesEnum.three,
+    };
 
     // 1 балл, если скрипт стартует по щелчку по спрайту
     if (project.allScripts.includes("when this sprite clicked\n")) {
-        g = gradesEnum.one;
+        g.grade = gradesEnum.one;
     }
 
     // 2 балла за использование мыши или ввод текста с клавиатуры
@@ -309,7 +337,7 @@ function interactivityGrader(project: Project): gradesEnum {
         mouseInteractionRE.test(project.allScripts) ||
         (askRE.test(project.allScripts) && answer.test(project.allScripts))
     ) {
-        g = gradesEnum.two;
+        g.grade = gradesEnum.two;
     }
 
     // 3 балла за использования микрофона или камеры
@@ -320,17 +348,17 @@ function interactivityGrader(project: Project): gradesEnum {
         whenLoudRE.test(project.allScripts) ||
         loudness.test(project.allScripts)
     ) {
-        g = gradesEnum.three;
+        g.grade = gradesEnum.three;
     }
 
     return g;
 }
 
-function grader(project: Project): Map<categories, gradesEnum> {
+function grader(project: Project): Map<categories, graderResult> {
     /**
      * Функция-агрегатор результатов оценивания по разным критериям
      */
-    let res: Map<categories, gradesEnum> = new Map();
+    let res: Map<categories, graderResult> = new Map();
 
     res.set("flow", flowGrader(project)); // оценка потока выполнения;
     res.set("data", dataRepresentationGrader(project)); // оценка представления данных
