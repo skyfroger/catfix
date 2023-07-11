@@ -13,6 +13,7 @@ import TipItem from "./TipItem";
 import { useTranslation } from "react-i18next";
 import TipsSummary from "./TipsSummary";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePostHog } from "posthog-js/react";
 
 interface scanResultsListProps {
     fileName: string | null;
@@ -33,6 +34,8 @@ function ScanResultsList({
     const [listItems, setListItems] = useState<Tip[]>([]); // массив для элемента List
     const [itemsCount, setItemsCount] = useState(0); // текущее количество советов
 
+    const posthog = usePostHog();
+
     useEffect(() => {
         let warnings: Tip[] = [];
         let errors: Tip[] = [];
@@ -46,6 +49,18 @@ function ScanResultsList({
             setErrorsWithWarnings(l); // сохраняем его в state
             setListItems(l.slice(0, ITEMS_INC)); // берём ITEMS_INC первых советов
             setItemsCount(ITEMS_INC);
+
+            // todo повторение кода из компонента, который подводит итоги
+            // отправка статистики по ошибкам
+            let total: { [error: string]: number } = {};
+            l.forEach((tip) => {
+                if (total[tip.title]) {
+                    total[tip.title] += 1;
+                } else {
+                    total[tip.title] = 1;
+                }
+            });
+            posthog.capture("tips", total);
         }
     }, [project]);
 
