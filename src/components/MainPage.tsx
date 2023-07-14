@@ -19,6 +19,7 @@ import ScanResultsList from "./ScanResultsList";
 import URLLoader from "./URLLoader";
 import { FileOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
+import { basicAnimations } from "../utils/animations";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -111,10 +112,11 @@ function MainPage() {
         <>
             {contextHolder}
             <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
                 transition={{ duration: 1 }}
+                variants={basicAnimations}
             >
                 <Card style={{ marginBottom: 16 }}>
                     <Row gutter={16}>
@@ -139,9 +141,10 @@ function MainPage() {
             <Row gutter={16}>
                 <Col sm={24} lg={12}>
                     <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        variants={basicAnimations}
                         transition={{ duration: 1, delay: 0.5 }}
                     >
                         {uploadState === "loaded" && (
@@ -151,8 +154,10 @@ function MainPage() {
                 </Col>
                 <Col sm={24} lg={12}>
                     <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        variants={basicAnimations}
                         transition={{ duration: 1, delay: 0.5 }}
                     >
                         {uploadState === "loaded" && (

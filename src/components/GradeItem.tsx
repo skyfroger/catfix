@@ -7,6 +7,7 @@ import { categories, gradesEnum } from "../graders";
 import { Col, Divider, Progress, Row, Space, theme } from "antd";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { basicAnimations } from "../utils/animations";
 
 interface GradeItemProps {
     category: categories;
@@ -58,10 +59,11 @@ function GradeItem({ category, grade, maxGrade }: GradeItemProps) {
     // Округление происходит вверх
     return (
         <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={basicAnimations}
             transition={{ duration: 0.5 }}
-            exit={{ opacity: 0, y: -10 }}
         >
             <Divider />
             <Row>

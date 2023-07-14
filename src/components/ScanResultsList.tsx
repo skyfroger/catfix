@@ -15,6 +15,7 @@ import TipsSummary from "./TipsSummary";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { usePostHog } from "posthog-js/react";
+import { basicAnimations } from "../utils/animations";
 
 interface scanResultsListProps {
     fileName: string | null;
@@ -101,10 +102,11 @@ function ScanResultsList({
             <Card>
                 {project && (
                     <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={basicAnimations}
                         transition={{ duration: 1, delay: 0.5 }}
-                        exit={{ opacity: 0, y: -10 }}
                     >
                         <Space
                             style={{
@@ -133,10 +135,11 @@ function ScanResultsList({
                     </motion.div>
                 )}
                 <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={basicAnimations}
                     transition={{ duration: 1, delay: 0.5 }}
-                    exit={{ opacity: 0, y: -10 }}
                 >
                     <List
                         dataSource={listItems}

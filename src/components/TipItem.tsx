@@ -10,6 +10,7 @@ import { Col, Divider, Row, Space } from "antd";
 import parse from "html-react-parser";
 import ScratchCode from "./ScratchCode";
 import { motion } from "framer-motion";
+import { basicAnimations } from "../utils/animations";
 
 function TipItem({ type, message, payload, code, title }: Tip) {
     const { t } = useTranslation();
@@ -19,10 +20,11 @@ function TipItem({ type, message, payload, code, title }: Tip) {
     return (
         <motion.div
             style={{ overflow: "auto" }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={basicAnimations}
             transition={{ duration: 0.5 }}
-            exit={{ opacity: 0, y: -10 }}
         >
             <Divider>{t(title)}</Divider>
             <Space direction={"horizontal"}>
