@@ -2,7 +2,7 @@
  * Вывод списка оценок проекта по ряду критериев.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { TrophyOutlined } from "@ant-design/icons";
 import { Project } from "../../@types/parsedProject";
 import grader, { categories, graderResult, gradesEnum } from "../graders";
@@ -11,12 +11,15 @@ import GradeItem from "./GradeItem";
 import { Card, Empty } from "antd";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { usePostHog } from "posthog-js/react";
+
 interface gradesListProps {
     project: Project | null;
 }
 
 function GradesList({ project }: gradesListProps) {
     const { t } = useTranslation();
+    const posthog = usePostHog(); // для отправки статистики
 
     let grades: Map<categories, graderResult> = new Map();
     if (project) {
@@ -38,6 +41,13 @@ function GradesList({ project }: gradesListProps) {
         (pr, cur) => pr + cur.maxGrade,
         0
     );
+
+    useEffect(() => {
+        // отправка оценок на сервер
+        if (grades.size > 0) {
+            posthog.capture("Grades", Object.fromEntries(grades));
+        }
+    }, [grades]);
 
     return (
         <AnimatePresence mode="wait">
