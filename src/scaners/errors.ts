@@ -1,3 +1,5 @@
+import { escapeSB, sbCode } from "../utils";
+
 /**
  * Набор функций которые находят ошибки (error)
  */
@@ -54,5 +56,70 @@ export const messageNeverReceived: tipFunctionInterface = (
         });
     });
 
+    return result;
+};
+
+/**
+ * Поиск переменных, которые используются без инициализации
+ * @param project
+ * @param projectJSON
+ */
+export const varWithoutInit: tipFunctionInterface = (project, projectJSON) => {
+    let result: Tip[] = [];
+    // Перебираем глобальные переменные, которые хранятся в сцене
+    project.stage.localVars.forEach((v) => {
+        const escV = escapeSB(v); // "избегаем" специальные символы
+
+        // если нет блока set to, а другие блоки использующие переменную есть,
+        // генерируем ошибку
+        if (
+            !project.allScripts.includes(`set [${escV} v] to`) &&
+            (project.allScripts.includes(`change [${escV} v]`) ||
+                project.allScripts.includes(`(${escV}::variables)`) ||
+                project.allScripts.includes(
+                    `([${escV} v] of [${project.stage.name} v]::sensing)`
+                ))
+        ) {
+            result.push({
+                code: `(${escapeSB(v, false)}::variable)\nset [${escapeSB(
+                    v,
+                    false
+                )} v] to [0]`,
+                payload: { variable: v, target: project.stage.name },
+                type: "error",
+                title: "error.varWithoutInitTitle",
+                message: "error.varWithoutInit",
+            });
+        }
+    });
+
+    // перебираем локальные переменные
+    project.sprites.forEach((sp) => {
+        sp.localVars.forEach((v) => {
+            const escV = escapeSB(v); // "избегаем" специальные символы
+
+            // если нет блока set to, а другие блоки использующие переменную есть,
+            // генерируем ошибку
+            if (
+                !sp.allScripts.includes(`set [${escV} v] to`) &&
+                (sp.allScripts.includes(`change [${escV} v]`) ||
+                    sp.allScripts.includes(`(${escV}::variables)`) ||
+                    project.allScripts.includes(
+                        `([${escV} v] of [${sp.name} v]::sensing)`
+                    ))
+            ) {
+                result.push({
+                    code: `(${escapeSB(v, false)}::variable)\nset [${escapeSB(
+                        v,
+                        false
+                    )} v] to [0]`,
+                    payload: { variable: v, target: sp.name },
+                    type: "error",
+                    title: "error.varWithoutInitTitle",
+                    message: "error.varWithoutInit",
+                });
+            }
+        });
+    });
     return result;
 };
