@@ -1,13 +1,29 @@
 import React from "react";
 import "./App.css";
 import { Layout, ConfigProvider, Menu, theme, FloatButton } from "antd";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    NavLink,
+    useLocation,
+} from "react-router-dom";
+import posthog from "posthog-js";
 
 import MainPage from "./components/MainPage";
 import LangSelector from "./components/LangSelector";
+import TeacherPage from "./components/TeacherPage";
 
 const { Header, Content, Footer } = Layout;
 
 function App() {
+    let location = useLocation(); // new
+
+    React.useEffect(() => {
+        // new
+        posthog.capture("$pageview");
+    }, [location]);
+
     return (
         <ConfigProvider
             theme={{
@@ -26,13 +42,20 @@ function App() {
                         backgroundColor: "#4C4C6D",
                     }}
                 >
-                    <div className="logo" style={{ color: "white" }}>
-                        <h1>КотФикс</h1>
-                    </div>
+                    <NavLink to="/">
+                        <div className="logo" style={{ color: "white" }}>
+                            <h1>КотФикс</h1>
+                        </div>
+                    </NavLink>
+                    <NavLink to="/">Главная</NavLink>
+                    <NavLink to="/teacher">Для учителя</NavLink>
                     <LangSelector />
                 </Header>
                 <Content style={{ margin: 32 }}>
-                    <MainPage />
+                    <Routes>
+                        <Route path="/" element={<MainPage />} />
+                        <Route path="/teacher" element={<TeacherPage />} />
+                    </Routes>
                 </Content>
                 <Footer>
                     <p>Разработчик: Хорошевич Павел</p>
