@@ -371,4 +371,26 @@ function grader(project: Project): Map<categories, graderResult> {
     return res;
 }
 
+/**
+ * Вычисляем суммарную оценку
+ * @param grades оценки проекта
+ */
+function getTotalGrade(grades: Map<categories, graderResult>) {
+    return Array.from(grades.values()).reduce((previousGrade, currentGrade) => {
+        return previousGrade + currentGrade.grade;
+    }, 0);
+}
+
+/**
+ * Вычисляем максимально возможную оценку
+ * @param grades оценки проекта
+ */
+function getMaxGrade(grades: Map<categories, graderResult>) {
+    return Array.from(grades.values()).reduce(
+        (prGrade, curGrade) => prGrade + curGrade.maxGrade,
+        0
+    );
+}
+
+export { getTotalGrade, getMaxGrade };
 export default grader;

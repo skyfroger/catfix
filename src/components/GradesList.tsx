@@ -5,7 +5,13 @@
 import React, { useEffect } from "react";
 import { TrophyOutlined } from "@ant-design/icons";
 import { Project } from "../../@types/parsedProject";
-import grader, { categories, graderResult, gradesEnum } from "../graders";
+import grader, {
+    categories,
+    getMaxGrade,
+    getTotalGrade,
+    graderResult,
+    gradesEnum,
+} from "../graders";
 import { useTranslation } from "react-i18next";
 import GradeItem from "./GradeItem";
 import { Card, Empty } from "antd";
@@ -29,19 +35,11 @@ function GradesList({ project }: gradesListProps) {
 
     const gradeKeys = Array.from(grades.keys());
 
-    // суммарная оценка
-    const totalGrade = Array.from(grades.values()).reduce(
-        (previousValue, currentValue, currentIndex, array) => {
-            return previousValue + currentValue.grade;
-        },
-        0
-    );
+    // суммарная оценка за проект
+    const totalGrade = getTotalGrade(grades);
 
     // максимальная возможная оценка по всем категориям оценивания
-    const maxGrade = Array.from(grades.values()).reduce(
-        (pr, cur) => pr + cur.maxGrade,
-        0
-    );
+    const maxGrade = getMaxGrade(grades);
 
     useEffect(() => {
         // отправка оценок на сервер
