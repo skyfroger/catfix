@@ -18,7 +18,7 @@ function LangSelector() {
                 <GlobalOutlined style={{ color: "#fff", fontSize: 20 }} />
                 <Select
                     defaultValue="ru"
-                    style={{ width: 120 }}
+                    style={{ width: 130 }}
                     onChange={handleLangChange}
                     options={[
                         { value: "ru", label: "Русский" },

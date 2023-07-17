@@ -1,22 +1,18 @@
 import React from "react";
 import "./App.css";
-import { Layout, ConfigProvider, Menu, theme, FloatButton } from "antd";
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    NavLink,
-    useLocation,
-} from "react-router-dom";
+import { Layout, ConfigProvider, Menu, FloatButton } from "antd";
+import { Routes, Route, NavLink, useLocation } from "react-router-dom";
 import posthog from "posthog-js";
 
 import MainPage from "./components/MainPage";
 import LangSelector from "./components/LangSelector";
 import TeacherPage from "./components/TeacherPage";
+import { useTranslation } from "react-i18next";
 
 const { Header, Content, Footer } = Layout;
 
 function App() {
+    const { t } = useTranslation();
     let location = useLocation(); // new
 
     React.useEffect(() => {
@@ -36,7 +32,12 @@ function App() {
             <Layout style={{ minHeight: "100vh" }}>
                 <Header
                     style={{
-                        display: "flex",
+                        display: "inline-flex",
+                        gap: "12px",
+                        position: "sticky",
+                        top: 0,
+                        zIndex: 1,
+                        width: "100%",
                         justifyContent: "space-between",
                         alignItems: "center",
                         backgroundColor: "#4C4C6D",
@@ -47,8 +48,22 @@ function App() {
                             <h1>КотФикс</h1>
                         </div>
                     </NavLink>
-                    <NavLink to="/">Главная</NavLink>
-                    <NavLink to="/teacher">Для учителя</NavLink>
+                    <Menu
+                        mode={"horizontal"}
+                        defaultSelectedKeys={["1"]}
+                        theme={"dark"}
+                        style={{ flex: "auto", backgroundColor: "#4C4C6D" }}
+                    >
+                        <Menu.Item key={1}>
+                            <NavLink to="/">{t("ui.menuMainPage")}</NavLink>
+                        </Menu.Item>
+                        <Menu.Item key={2}>
+                            <NavLink to="/teacher">
+                                {t("ui.menuMassUpload")}
+                            </NavLink>
+                        </Menu.Item>
+                    </Menu>
+
                     <LangSelector />
                 </Header>
                 <Content style={{ margin: 32 }}>
