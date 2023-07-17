@@ -6,6 +6,7 @@ import react, { useState } from "react";
 import { Button, Card, Form, Input } from "antd";
 import { ScratchProject } from "../../@types/scratch";
 import { useTranslation } from "react-i18next";
+import projectAPI from "../utils/httpAPI";
 
 interface formData {
     url: string;
@@ -24,52 +25,28 @@ function URLLoader({ onUpload }: urlLoaderProps) {
 
     const { t } = useTranslation();
 
-    /**
-     * Получение json-проекта
-     * @param projectId идентификатор проекта
-     */
-    const loadProject = async (projectId: number) => {
-        /**
-         * Код загрузки json-проекта взят с этой страницы:
-         * https://apple502j.github.io/parse-sb3-blocks/demo.html
-         */
-
-        setIsLoading(true); // загрузка запущена
-
-        try {
-            // запрашиваем токен доступа и название проекта
-            const tokenResp = await fetch(
-                `https://trampoline.turbowarp.org/proxy/projects/${projectId}`
-            );
-
-            let token;
-            let projectName = null;
-            if (tokenResp.ok) {
-                const tokenData = await tokenResp.json();
-                token = `&token=${tokenData.project_token}`;
-                projectName = tokenData.title;
-            }
-
-            const resp = await fetch(
-                `https://projects.scratch.mit.edu/${projectId}/?${Date.now()}${token}`
-            );
-            const projectData = await resp.json();
-
-            onUpload(projectData, projectName);
-        } catch (e) {
-            onUpload(null, null);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     const handleSend = (values: formData) => {
         // можно было и понятнее записать, но тут берём из URL цифры в конце
+        // todo брать из ссылки цифры с помощью RegEx
         const projectId = Number(
             values.url.replace(/\//g, " ").trimEnd().split(" ").slice(-1)
         );
 
-        loadProject(projectId);
+        async function load(projectId: number) {
+            setIsLoading(true); // загрузка запущена
+            try {
+                const { projectJSON, projectName, projectAuthor } =
+                    await projectAPI.get(projectId);
+                console.log(projectJSON, projectName, projectAuthor);
+                onUpload(projectJSON, projectName);
+            } catch (e) {
+                onUpload(null, null);
+            } finally {
+                setIsLoading(false); // загрузка остановлена
+            }
+        }
+
+        load(projectId);
     };
 
     return (
