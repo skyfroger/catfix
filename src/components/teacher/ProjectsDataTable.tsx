@@ -1,10 +1,11 @@
 import react, { useEffect, useState } from "react";
-import { Empty, Table } from "antd";
+import { Col, Empty, Row, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { categories, getMaxGrade, graderResult } from "../../graders";
 import { Tip } from "../../scaners/types";
 import { useTranslation } from "react-i18next";
+import FullProjectInfo from "./FullProjectInfo";
 
 // интерфейс для описания одной строки таблицы
 export interface TableData {
@@ -20,9 +21,15 @@ export interface TableData {
 interface propsDataTable {
     data: TableData[];
 }
+
 function ProjectsDataTable({ data }: propsDataTable) {
     const [columns, setColumns] = useState<ColumnsType<TableData>>([]);
     const [tableData, setTableData] = useState<TableData[]>([]);
+
+    // текущие оценки, которые нужно показать в модальном окне
+    const [currentGrades, setCurrentGrades] = useState<
+        Map<categories, graderResult>
+    >(new Map());
 
     const { t } = useTranslation();
 
@@ -37,16 +44,18 @@ function ProjectsDataTable({ data }: propsDataTable) {
         for (const key in firstProject) {
             if (key === "grades" || key === "tips" || key === "key") continue;
 
-            let title = t(`table.${key}` as any);
             // в заголовке к общей оценке показываем максимально возможный балл
             if (key === "totalGrade") {
-                title = t(`table.${key}`, { maxGrade: maxGrade });
+                cols.push({
+                    title: t(`table.${key}`, { maxGrade: maxGrade }),
+                    dataIndex: key,
+                });
+            } else {
+                cols.push({
+                    title: t(`table.${key}` as any),
+                    dataIndex: key,
+                });
             }
-
-            cols.push({
-                title: title,
-                dataIndex: key,
-            });
         }
 
         // сохраняем данные в state
@@ -57,8 +66,15 @@ function ProjectsDataTable({ data }: propsDataTable) {
     return (
         <>
             <Table
+                size={"large"}
+                bordered={true}
                 columns={columns}
                 dataSource={tableData}
+                expandable={{
+                    expandedRowRender: (record) => (
+                        <FullProjectInfo data={record} />
+                    ),
+                }}
                 locale={{
                     emptyText: <Empty description={t("ui.noGrade")}></Empty>,
                 }}
