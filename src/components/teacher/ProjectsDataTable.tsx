@@ -7,6 +7,7 @@ import { Tip } from "../../scaners/types";
 import { useTranslation } from "react-i18next";
 import FullProjectInfo from "./FullProjectInfo";
 import GradeButton from "./GradeButton";
+import TipsCount from "./TipsCount";
 
 // интерфейс для описания одной строки таблицы
 export interface TableData {
@@ -46,6 +47,7 @@ function ProjectsDataTable({ data }: propsDataTable) {
         const cols: ColumnsType<TableData> = [];
         // пока пропускаем детализацию оценок, советы и ключ
         for (const key in firstProject) {
+            // оценки и ключ не добавляем в таблицу (пропускаем итерацию)
             if (key === "grades" || key === "key") continue;
 
             // в заголовке к общей оценке показываем максимально возможный балл
@@ -53,6 +55,8 @@ function ProjectsDataTable({ data }: propsDataTable) {
                 cols.push({
                     title: t(`table.${key}`, { maxGrade: maxGrade }),
                     dataIndex: key,
+                    sorter: (a, b) => a.totalGrade - b.totalGrade,
+                    sortDirections: ["ascend", "descend"],
                     render: (grade: number, record: TableData) => {
                         return (
                             <GradeButton
@@ -71,12 +75,10 @@ function ProjectsDataTable({ data }: propsDataTable) {
                     cols.push({
                         title: t(`table.tips`),
                         dataIndex: "tips",
-                        render: (
-                            tips: Tip[],
-                            record: TableData,
-                            index: number
-                        ) => {
-                            return <span>{tips.length}</span>;
+                        sorter: tipsSorter,
+                        sortDirections: ["ascend", "descend"],
+                        render: (tips: Tip[], record: TableData) => {
+                            return <TipsCount tips={tips} />;
                         },
                     });
                 } else {
@@ -124,6 +126,32 @@ function ProjectsDataTable({ data }: propsDataTable) {
                 <FullProjectInfo data={currentProject} />
             </Modal>
         </>
+    );
+}
+
+/**
+ * Функция сортировки проектов по количеству ошибок и предупреждений.
+ * Приоритет отдаётся проектам с ошибками. Они будут выше в списке.
+ * Вес одной ошибки указан в константе ERROR_WEIGHT (сейчас 100)
+ * @param a первый проект
+ * @param b второй проект
+ */
+function tipsSorter(a: TableData, b: TableData) {
+    const ERROR_WEIGHT = 100;
+
+    // вычисляем количество ошибок и предупреждений в первом проекте
+    const bugsNumberA = a.tips.filter((tip) => tip.type === "error").length;
+    const warningsNumberA = a.tips.length - bugsNumberA;
+
+    // вычисляем количество ошибок и предупреждений во втором проекте
+    const bugsNumberB = b.tips.filter((tip) => tip.type === "error").length;
+    const warningsNumberB = b.tips.length - bugsNumberB;
+
+    // количество ошибок умножаем на вес, чтобы дать им приоритет перед предупреждениями
+    return (
+        ERROR_WEIGHT * bugsNumberA +
+        warningsNumberA -
+        (ERROR_WEIGHT * bugsNumberB + warningsNumberB)
     );
 }
 
