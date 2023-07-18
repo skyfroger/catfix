@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { Layout, ConfigProvider, Menu, FloatButton } from "antd";
+import { GithubOutlined } from "@ant-design/icons";
 import { Routes, Route, NavLink, useLocation } from "react-router-dom";
 import posthog from "posthog-js";
 
@@ -73,7 +74,13 @@ function App() {
                     </Routes>
                 </Content>
                 <Footer>
-                    <p>Разработчик: Хорошевич Павел</p>
+                    <span>Разработчик: Хорошевич Павел</span>{" "}
+                    <a
+                        href={"https://github.com/skyfroger/catfix"}
+                        target={"_blank"}
+                    >
+                        <GithubOutlined />
+                    </a>
                 </Footer>
                 <FloatButton.BackTop type="primary" />
             </Layout>
