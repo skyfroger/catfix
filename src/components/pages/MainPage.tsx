@@ -20,6 +20,7 @@ import URLLoader from "../ui/URLLoader";
 import { FileOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { basicAnimations } from "../../utils/animations";
+import GradesContainer from "../grades/GradesContainer";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -147,7 +148,7 @@ function MainPage() {
                         transition={{ delay: 0.8 }}
                     >
                         {uploadState === "loaded" && (
-                            <GradesList project={project} />
+                            <GradesContainer project={project} />
                         )}
                     </motion.div>
                 </Col>

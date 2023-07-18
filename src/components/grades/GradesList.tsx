@@ -2,10 +2,9 @@
  * Вывод списка оценок проекта по ряду критериев.
  */
 
-import React, { useEffect } from "react";
+import React from "react";
 import { TrophyOutlined } from "@ant-design/icons";
-import { Project } from "../../../@types/parsedProject";
-import grader, {
+import {
     categories,
     getMaxGrade,
     getTotalGrade,
@@ -21,17 +20,12 @@ import { usePostHog } from "posthog-js/react";
 import { basicAnimations } from "../../utils/animations";
 
 interface gradesListProps {
-    project: Project | null;
+    grades: Map<categories, graderResult>;
 }
 
-function GradesList({ project }: gradesListProps) {
+function GradesList({ grades }: gradesListProps) {
     const { t } = useTranslation();
     const posthog = usePostHog(); // для отправки статистики
-
-    let grades: Map<categories, graderResult> = new Map();
-    if (project) {
-        grades = grader(project);
-    }
 
     const gradeKeys = Array.from(grades.keys());
 
@@ -41,17 +35,10 @@ function GradesList({ project }: gradesListProps) {
     // максимальная возможная оценка по всем категориям оценивания
     const maxGrade = getMaxGrade(grades);
 
-    useEffect(() => {
-        // отправка оценок на сервер
-        if (grades.size > 0) {
-            posthog.capture("Grades", Object.fromEntries(grades));
-        }
-    }, [grades]);
-
     return (
         <AnimatePresence mode="wait">
             <Card>
-                {!project && (
+                {grades.size === 0 && (
                     <motion.div
                         initial="hidden"
                         animate="visible"
@@ -63,7 +50,7 @@ function GradesList({ project }: gradesListProps) {
                     </motion.div>
                 )}
 
-                {project && (
+                {grades.size > 0 && (
                     <motion.div
                         initial="hidden"
                         animate="visible"
