@@ -5,14 +5,22 @@
 import react, { useState } from "react";
 import { Button, Card, Col, Form, Input, message, Row, Space } from "antd";
 import { useTranslation } from "react-i18next";
-
+import { ScratchProject } from "../../@types/scratch";
+import projectAPI, { APIResponce } from "../utils/httpAPI";
 const { TextArea } = Input;
+
+// максимальное количество проектов, которое можно проверить за 1 запрос
+const IDS_LIMIT = 20;
 
 interface formData {
     urls: string;
 }
 
-function MassURLLoader() {
+interface massUrlLoaderProps {
+    onUpload: (projects: APIResponce[]) => void;
+}
+
+function MassURLLoader({ onUpload }: massUrlLoaderProps) {
     const { t } = useTranslation();
     const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(false);
@@ -20,10 +28,38 @@ function MassURLLoader() {
     const handleSend = (values: formData) => {
         const urls = values.urls;
         const uniqIds = new Set(
-            Array.from(urls.matchAll(/\d{4,}/g)).map((m) => m[0])
+            Array.from(urls.matchAll(/\d{4,}/g)).map((m) => Number(m[0]))
         );
 
-        console.log(uniqIds);
+        // массив загруженных проектов
+        const projects: APIResponce[] = [];
+
+        /**
+         * Функция загрузки информации о нескольких проектах
+         * @param projectIds список уникальных id
+         */
+        async function load(projectIds: Set<number>) {
+            setIsLoading(true); // загрузка началась
+
+            // перебираем массив id
+            for (const id of Array.from(projectIds).slice(0, IDS_LIMIT)) {
+                try {
+                    // запрашиваем информацию о проекте
+                    const projectData: APIResponce = await projectAPI.get(id);
+                    // добавляем к массиву проектов, если нет ошибок
+                    projects.push(projectData);
+                } catch (e) {}
+            }
+
+            // передаём массив проектов в главный компонент
+            onUpload(projects);
+
+            // загрузка завершена
+            setIsLoading(false);
+        }
+
+        // загружаем каждый проект
+        load(uniqIds);
     };
 
     return (
