@@ -5,7 +5,6 @@
 import react, { useState } from "react";
 import { Button, Card, Col, Form, Input, message, Row, Space } from "antd";
 import { useTranslation } from "react-i18next";
-import { ScratchProject } from "../../@types/scratch";
 import projectAPI, { APIResponce } from "../utils/httpAPI";
 const { TextArea } = Input;
 
@@ -16,6 +15,7 @@ interface formData {
     urls: string;
 }
 
+// пропсы компонента
 interface massUrlLoaderProps {
     onUpload: (projects: APIResponce[]) => void;
 }
@@ -63,7 +63,7 @@ function MassURLLoader({ onUpload }: massUrlLoaderProps) {
     };
 
     return (
-        <Card title={"Загрузка нескольких онлайн-проектов"}>
+        <Card title={t("ui.massUploadFromURL")}>
             <Form
                 form={form}
                 layout="vertical"
@@ -84,6 +84,9 @@ function MassURLLoader({ onUpload }: massUrlLoaderProps) {
                 >
                     <TextArea
                         allowClear
+                        placeholder={t("ui.massURLUploadHint", {
+                            maxNumberOfLinks: IDS_LIMIT,
+                        })}
                         autoSize={{ minRows: 5, maxRows: 5 }}
                     />
                 </Form.Item>

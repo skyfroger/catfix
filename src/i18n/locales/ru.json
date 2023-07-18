@@ -18,7 +18,14 @@
         "projectURLRequired": "Укажи правильный адрес проекта",
         "fileName": "Название проекта: {{fileName}}",
         "noGrade": "Загрузи проект, чтобы увидеть его оценку",
-        "totalGrade": "Общая оценка: {{totalGrade}} из {{maxGrade}}"
+        "totalGrade": "Общая оценка: {{totalGrade}} из {{maxGrade}}",
+        "massUploadFromURL": "Загрузка нескольких онлайн-проектов",
+        "massURLUploadHint": "Укажите тут набор ссылок на проекты, которые хотите проверить (максимум {{maxNumberOfLinks}})"
+    },
+    "table": {
+        "projectName": "Название проекта",
+        "projectAuthor": "Автор",
+        "totalGrade": "Оценка ({{maxGrade}})"
     },
     "flow": {
         "title": "Поток данных",

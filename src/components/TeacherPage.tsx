@@ -17,7 +17,6 @@ function TeacherPage() {
      * @param projects
      */
     const handleURLUpload = (projects: APIResponce[]) => {
-        console.log(projects);
         setProjectsData(projects);
     };
 

@@ -1,25 +1,70 @@
-import react from "react";
-import { Card, Col, message, Row, Space } from "antd";
+import react, { useEffect, useState } from "react";
+import { Card, Col, Empty, message, Row, Space, Table } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { categories, graderResult } from "../graders";
+import { categories, getMaxGrade, graderResult } from "../graders";
 import { Tip } from "../scaners/types";
+import { useTranslation } from "react-i18next";
+
+// интерфейс для описания одной строки таблицы
 export interface TableData {
     key: React.Key;
-    projectName: string;
     projectAuthor: string;
+    projectName: string;
     totalGrade: number;
     grades: Map<categories, graderResult>;
     tips: Tip[];
 }
 
+// пропсы для компонента
 interface propsDataTable {
     data: TableData[];
 }
 function ProjectsDataTable({ data }: propsDataTable) {
-    console.log(data);
+    const [columns, setColumns] = useState<ColumnsType<TableData>>([]);
+    const [tableData, setTableData] = useState<TableData[]>([]);
+
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        //console.log(data);
+
+        // берём первый элемент, чтобы заполнить список столбцов таблицы
+        const d = data || [];
+        const firstProject = d[0] || {};
+        const maxGrade = getMaxGrade(firstProject.grades || new Map());
+
+        const cols: ColumnsType<TableData> = [];
+        // пока пропускаем детализацию оценок, советы и ключ
+        for (const key in firstProject) {
+            if (key === "grades" || key === "tips" || key === "key") continue;
+
+            let title = t(`table.${key}` as any);
+            // в заголовке к общей оценке показываем максимально возможный балл
+            if (key === "totalGrade") {
+                title = t(`table.${key}`, { maxGrade: maxGrade });
+            }
+
+            cols.push({
+                title: title,
+                dataIndex: key,
+            });
+        }
+
+        // сохраняем данные в state
+        setColumns(cols);
+        setTableData(data);
+    }, [data]);
+
     return (
         <>
-            <div>Таблица с результатами</div>
+            <Table
+                columns={columns}
+                dataSource={tableData}
+                locale={{
+                    emptyText: <Empty description={t("ui.noGrade")}></Empty>,
+                }}
+            />
         </>
     );
 }
