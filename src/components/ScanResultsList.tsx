@@ -106,7 +106,7 @@ function ScanResultsList({
                         animate="visible"
                         exit="exit"
                         variants={basicAnimations}
-                        transition={{ duration: 1, delay: 0.5 }}
+                        transition={{ delay: 0.8 }}
                     >
                         <Space
                             style={{
@@ -139,7 +139,7 @@ function ScanResultsList({
                     animate="visible"
                     exit="exit"
                     variants={basicAnimations}
-                    transition={{ duration: 1, delay: 0.5 }}
+                    transition={{ delay: 0.8 }}
                 >
                     <List
                         dataSource={listItems}

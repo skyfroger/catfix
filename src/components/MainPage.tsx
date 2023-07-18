@@ -115,7 +115,6 @@ function MainPage() {
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
-                transition={{ duration: 1 }}
                 variants={basicAnimations}
             >
                 <Card style={{ marginBottom: 16 }}>
@@ -145,7 +144,7 @@ function MainPage() {
                         animate="visible"
                         exit="hidden"
                         variants={basicAnimations}
-                        transition={{ duration: 1, delay: 0.5 }}
+                        transition={{ delay: 0.8 }}
                     >
                         {uploadState === "loaded" && (
                             <GradesList project={project} />
@@ -158,7 +157,7 @@ function MainPage() {
                         animate="visible"
                         exit="hidden"
                         variants={basicAnimations}
-                        transition={{ duration: 1, delay: 0.5 }}
+                        transition={{ delay: 0.8 }}
                     >
                         {uploadState === "loaded" && (
                             <ScanResultsList

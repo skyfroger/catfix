@@ -57,7 +57,7 @@ function GradesList({ project }: gradesListProps) {
                         animate="visible"
                         exit="exit"
                         variants={basicAnimations}
-                        transition={{ duration: 1, delay: 0.5 }}
+                        transition={{ delay: 0.8 }}
                     >
                         <Empty description={<p>{t("ui.noGrade")}</p>}></Empty>
                     </motion.div>
@@ -69,7 +69,7 @@ function GradesList({ project }: gradesListProps) {
                         animate="visible"
                         exit="exit"
                         variants={basicAnimations}
-                        transition={{ duration: 1, delay: 0.5 }}
+                        transition={{ delay: 0.8 }}
                     >
                         <h2>
                             <TrophyOutlined />{" "}

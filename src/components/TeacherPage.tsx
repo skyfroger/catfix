@@ -65,7 +65,6 @@ function TeacherPage() {
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
-                transition={{ duration: 1 }}
                 variants={basicAnimations}
             >
                 <Card style={{ marginBottom: 16 }}>
@@ -77,7 +76,7 @@ function TeacherPage() {
                 animate="visible"
                 exit="hidden"
                 variants={basicAnimations}
-                transition={{ duration: 1, delay: 0.5 }}
+                transition={{ delay: 0.8 }}
             >
                 <Card style={{ marginBottom: 16 }}>
                     <ProjectsDataTable data={tableData} />

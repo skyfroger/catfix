@@ -63,7 +63,6 @@ function GradeItem({ category, grade, maxGrade }: GradeItemProps) {
             animate="visible"
             exit="hidden"
             variants={basicAnimations}
-            transition={{ duration: 0.5 }}
         >
             <Divider />
             <Row>
