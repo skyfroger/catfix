@@ -1,11 +1,12 @@
 import react, { useEffect, useState } from "react";
-import { Col, Empty, Row, Table } from "antd";
+import { Empty, Modal, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { categories, getMaxGrade, graderResult } from "../../graders";
 import { Tip } from "../../scaners/types";
 import { useTranslation } from "react-i18next";
 import FullProjectInfo from "./FullProjectInfo";
+import GradeButton from "./GradeButton";
 
 // интерфейс для описания одной строки таблицы
 export interface TableData {
@@ -26,10 +27,13 @@ function ProjectsDataTable({ data }: propsDataTable) {
     const [columns, setColumns] = useState<ColumnsType<TableData>>([]);
     const [tableData, setTableData] = useState<TableData[]>([]);
 
-    // текущие оценки, которые нужно показать в модальном окне
-    const [currentGrades, setCurrentGrades] = useState<
-        Map<categories, graderResult>
-    >(new Map());
+    // текущий проект, которые нужно показать в модальном окне
+    const [currentProject, setCurrentProject] = useState<TableData>(
+        {} as TableData
+    );
+
+    // модальное окно открыто?
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { t } = useTranslation();
 
@@ -42,19 +46,46 @@ function ProjectsDataTable({ data }: propsDataTable) {
         const cols: ColumnsType<TableData> = [];
         // пока пропускаем детализацию оценок, советы и ключ
         for (const key in firstProject) {
-            if (key === "grades" || key === "tips" || key === "key") continue;
+            if (key === "grades" || key === "key") continue;
 
             // в заголовке к общей оценке показываем максимально возможный балл
             if (key === "totalGrade") {
                 cols.push({
                     title: t(`table.${key}`, { maxGrade: maxGrade }),
                     dataIndex: key,
+                    render: (grade: number, record: TableData) => {
+                        return (
+                            <GradeButton
+                                record={record}
+                                onMoreInfo={handleMoreInfo}
+                            />
+                        );
+                    },
                 });
             } else {
-                cols.push({
-                    title: t(`table.${key}` as any),
-                    dataIndex: key,
-                });
+                /*
+                Попался ключ с советами.
+                Рисуем компонент с количеством ошибок и предупреждений
+                 */
+                if (key === "tips") {
+                    cols.push({
+                        title: t(`table.tips`),
+                        dataIndex: "tips",
+                        render: (
+                            tips: Tip[],
+                            record: TableData,
+                            index: number
+                        ) => {
+                            return <span>{tips.length}</span>;
+                        },
+                    });
+                } else {
+                    // В остальных случаях просто сохраняем заголовок и ключ
+                    cols.push({
+                        title: t(`table.${key}` as any),
+                        dataIndex: key,
+                    });
+                }
             }
         }
 
@@ -63,6 +94,15 @@ function ProjectsDataTable({ data }: propsDataTable) {
         setTableData(data);
     }, [data]);
 
+    const handleMoreInfo = (record: TableData) => {
+        setCurrentProject(record);
+        setIsModalOpen(true);
+    };
+
+    const handleModalClosing = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <>
             <Table
@@ -70,15 +110,19 @@ function ProjectsDataTable({ data }: propsDataTable) {
                 bordered={true}
                 columns={columns}
                 dataSource={tableData}
-                expandable={{
-                    expandedRowRender: (record) => (
-                        <FullProjectInfo data={record} />
-                    ),
-                }}
                 locale={{
                     emptyText: <Empty description={t("ui.noGrade")}></Empty>,
                 }}
             />
+            <Modal
+                open={isModalOpen}
+                onOk={handleModalClosing}
+                onCancel={handleModalClosing}
+                width={"80%"}
+                footer={null}
+            >
+                <FullProjectInfo data={currentProject} />
+            </Modal>
         </>
     );
 }
