@@ -13,7 +13,7 @@
         "parsingError": "Не удалось прочитать проект.",
         "uploadFinished": "Проект загружен",
         "urlLabel": "Ссылка на проект",
-        "loadFromURLButton": "Проверить проект",
+        "loadFromURLButton": "Проверить",
         "urlRequired": "Поле нужно заполнить перед загрузкой",
         "projectURLRequired": "Укажи правильный адрес проекта",
         "fileName": "Название проекта: {{fileName}}",
