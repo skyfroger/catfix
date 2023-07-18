@@ -3,68 +3,30 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { Project } from "../../../@types/parsedProject";
-import { ScratchProject } from "../../../@types/scratch";
 import { Button, Card, Empty, List, Popover, Space } from "antd";
 import { ToolOutlined } from "@ant-design/icons";
-import { scanForErrors, scanForWarnings } from "../../scaners";
 import { Tip } from "../../scaners/types";
 import TipItem from "./TipItem";
 import { useTranslation } from "react-i18next";
 import TipsSummary from "./TipsSummary";
 import { motion, AnimatePresence } from "framer-motion";
-
-import { usePostHog } from "posthog-js/react";
 import { basicAnimations } from "../../utils/animations";
 
 interface scanResultsListProps {
-    fileName: string | null;
-    project: Project | null;
-    projectJSON: ScratchProject | null;
+    errorsWithWarnings: Tip[];
 }
 
 // сколько советов загружать за одно нажатие кнопки Далее
 const ITEMS_INC = 7;
 
-function ScanResultsList({
-    fileName,
-    project,
-    projectJSON,
-}: scanResultsListProps) {
+function ScanResultsList({ errorsWithWarnings }: scanResultsListProps) {
     const { t } = useTranslation();
-    const [errorsWithWarnings, setErrorsWithWarnings] = useState<Tip[]>([]);
     const [listItems, setListItems] = useState<Tip[]>([]); // массив для элемента List
-    const [itemsCount, setItemsCount] = useState(0); // текущее количество советов
-
-    // для отправки статистики
-    const posthog = usePostHog();
+    const [itemsCount, setItemsCount] = useState(ITEMS_INC); // текущее количество советов
 
     useEffect(() => {
-        let warnings: Tip[] = [];
-        let errors: Tip[] = [];
-        if (projectJSON && project) {
-            // получаем массив предупреждений
-            warnings = scanForWarnings(project, projectJSON);
-            // получаем массив ошибок
-            errors = scanForErrors(project, projectJSON);
-            // объединяем всё в один массив
-            const l = [...errors, ...warnings];
-            setErrorsWithWarnings(l); // сохраняем его в state
-            setListItems(l.slice(0, ITEMS_INC)); // берём ITEMS_INC первых советов
-            setItemsCount(ITEMS_INC);
-
-            // статистика по ошибкам для отправки на сервер
-            let s: { [key: string]: number } = {};
-            l.forEach((tip) => {
-                if (s[tip.title]) {
-                    s[tip.title] += 1;
-                } else {
-                    s[tip.title] = 1;
-                }
-            });
-            posthog.capture("Tips", s);
-        }
-    }, [project]);
+        setListItems(errorsWithWarnings.slice(0, ITEMS_INC));
+    }, [errorsWithWarnings]);
 
     useEffect(() => {
         // как только нажимают кнопку Далее, добавляем к списку следующие ITEMS_INC советов
@@ -100,7 +62,7 @@ function ScanResultsList({
     return (
         <AnimatePresence mode="wait">
             <Card>
-                {project && (
+                {errorsWithWarnings.length !== 0 && (
                     <motion.div
                         initial="hidden"
                         animate="visible"

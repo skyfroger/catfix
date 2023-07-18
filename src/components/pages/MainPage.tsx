@@ -21,6 +21,7 @@ import { FileOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { basicAnimations } from "../../utils/animations";
 import GradesContainer from "../grades/GradesContainer";
+import ScanContainer from "../tips/ScanContainer";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -161,8 +162,7 @@ function MainPage() {
                         transition={{ delay: 0.8 }}
                     >
                         {uploadState === "loaded" && (
-                            <ScanResultsList
-                                fileName={fileName}
+                            <ScanContainer
                                 project={project}
                                 projectJSON={projectJSON}
                             />
