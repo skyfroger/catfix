@@ -3,11 +3,11 @@
  */
 
 import React from "react";
-import { categories, gradesEnum } from "../graders";
+import { categories, gradesEnum } from "../../graders";
 import { Col, Divider, Progress, Row, Space, theme } from "antd";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { basicAnimations } from "../utils/animations";
+import { basicAnimations } from "../../utils/animations";
 
 interface GradeItemProps {
     category: categories;

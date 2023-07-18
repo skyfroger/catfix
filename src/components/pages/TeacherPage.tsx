@@ -1,14 +1,14 @@
 import react, { useEffect, useState } from "react";
 import { Card } from "antd";
-import MassURLLoader from "./MassURLLoader";
-import ProjectsDataTable, { TableData } from "./ProjectsDataTable";
-import { APIResponce } from "../utils/httpAPI";
-import parseProject from "../utils";
-import grader, { getTotalGrade } from "../graders";
-import { Tip } from "../scaners/types";
-import { scanForErrors, scanForWarnings } from "../scaners";
+import MassURLLoader from "../ui/MassURLLoader";
+import ProjectsDataTable, { TableData } from "../teacher/ProjectsDataTable";
+import { APIResponce } from "../../utils/httpAPI";
+import parseProject from "../../utils";
+import grader, { getTotalGrade } from "../../graders";
+import { Tip } from "../../scaners/types";
+import { scanForErrors, scanForWarnings } from "../../scaners";
 import { motion } from "framer-motion";
-import { basicAnimations } from "../utils/animations";
+import { basicAnimations } from "../../utils/animations";
 
 function TeacherPage() {
     const [projectsData, setProjectsData] = useState<APIResponce[]>([]);

@@ -5,12 +5,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { WarningFilled, BugFilled } from "@ant-design/icons";
-import { Tip } from "../scaners/types";
-import { Col, Divider, Row, Space } from "antd";
+import { Tip } from "../../scaners/types";
+import { Divider, Space } from "antd";
 import parse from "html-react-parser";
-import ScratchCode from "./ScratchCode";
+import ScratchCode from "../ui/ScratchCode";
 import { motion } from "framer-motion";
-import { basicAnimations } from "../utils/animations";
+import { basicAnimations } from "../../utils/animations";
 
 function TipItem({ type, message, payload, code, title }: Tip) {
     const { t } = useTranslation();

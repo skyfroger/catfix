@@ -4,9 +4,9 @@
 
 import react, { useState } from "react";
 import { Button, Card, Form, Input } from "antd";
-import { ScratchProject } from "../../@types/scratch";
+import { ScratchProject } from "../../../@types/scratch";
 import { useTranslation } from "react-i18next";
-import projectAPI from "../utils/httpAPI";
+import projectAPI from "../../utils/httpAPI";
 
 interface formData {
     url: string;

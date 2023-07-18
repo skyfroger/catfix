@@ -5,21 +5,21 @@
 
 import React, { useState, useEffect } from "react";
 import { Card, Col, message, Row, Space } from "antd";
-import UploadProject from "./UploadProject";
+import UploadProject from "../ui/UploadProject";
 import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";
-import GradesList from "./GradesList";
-import parseProject from "../utils";
+import GradesList from "../grades/GradesList";
+import parseProject from "../../utils";
 
-import { ScratchProject } from "../../@types/scratch";
-import { Project } from "../../@types/parsedProject";
-import Loader from "./Loader";
+import { ScratchProject } from "../../../@types/scratch";
+import { Project } from "../../../@types/parsedProject";
+import Loader from "../ui/Loader";
 import { useTranslation } from "react-i18next";
-import ScanResultsList from "./ScanResultsList";
-import URLLoader from "./URLLoader";
+import ScanResultsList from "../tips/ScanResultsList";
+import URLLoader from "../ui/URLLoader";
 import { FileOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
-import { basicAnimations } from "../utils/animations";
+import { basicAnimations } from "../../utils/animations";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";

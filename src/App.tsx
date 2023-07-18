@@ -5,9 +5,9 @@ import { GithubOutlined } from "@ant-design/icons";
 import { Routes, Route, NavLink, useLocation } from "react-router-dom";
 import posthog from "posthog-js";
 
-import MainPage from "./components/MainPage";
-import LangSelector from "./components/LangSelector";
-import TeacherPage from "./components/TeacherPage";
+import MainPage from "./components/pages/MainPage";
+import LangSelector from "./components/ui/LangSelector";
+import TeacherPage from "./components/pages/TeacherPage";
 import { useTranslation } from "react-i18next";
 
 const { Header, Content, Footer } = Layout;

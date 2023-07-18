@@ -2,8 +2,8 @@ import react, { useEffect, useState } from "react";
 import { Empty, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { categories, getMaxGrade, graderResult } from "../graders";
-import { Tip } from "../scaners/types";
+import { categories, getMaxGrade, graderResult } from "../../graders";
+import { Tip } from "../../scaners/types";
 import { useTranslation } from "react-i18next";
 
 // интерфейс для описания одной строки таблицы

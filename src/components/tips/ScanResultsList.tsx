@@ -3,19 +3,19 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { Project } from "../../@types/parsedProject";
-import { ScratchProject } from "../../@types/scratch";
+import { Project } from "../../../@types/parsedProject";
+import { ScratchProject } from "../../../@types/scratch";
 import { Button, Card, Empty, List, Popover, Space } from "antd";
 import { ToolOutlined } from "@ant-design/icons";
-import { scanForErrors, scanForWarnings } from "../scaners";
-import { Tip } from "../scaners/types";
+import { scanForErrors, scanForWarnings } from "../../scaners";
+import { Tip } from "../../scaners/types";
 import TipItem from "./TipItem";
 import { useTranslation } from "react-i18next";
 import TipsSummary from "./TipsSummary";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { usePostHog } from "posthog-js/react";
-import { basicAnimations } from "../utils/animations";
+import { basicAnimations } from "../../utils/animations";
 
 interface scanResultsListProps {
     fileName: string | null;

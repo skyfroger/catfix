@@ -3,9 +3,9 @@
  */
 
 import react, { useState } from "react";
-import { Button, Card, Col, Form, Input, message, Row, Space } from "antd";
+import { Button, Card, Form, Input } from "antd";
 import { useTranslation } from "react-i18next";
-import projectAPI, { APIResponce } from "../utils/httpAPI";
+import projectAPI, { APIResponce } from "../../utils/httpAPI";
 const { TextArea } = Input;
 
 // максимальное количество проектов, которое можно проверить за 1 запрос

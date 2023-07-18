@@ -4,21 +4,21 @@
 
 import React, { useEffect } from "react";
 import { TrophyOutlined } from "@ant-design/icons";
-import { Project } from "../../@types/parsedProject";
+import { Project } from "../../../@types/parsedProject";
 import grader, {
     categories,
     getMaxGrade,
     getTotalGrade,
     graderResult,
     gradesEnum,
-} from "../graders";
+} from "../../graders";
 import { useTranslation } from "react-i18next";
 import GradeItem from "./GradeItem";
 import { Card, Empty } from "antd";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { usePostHog } from "posthog-js/react";
-import { basicAnimations } from "../utils/animations";
+import { basicAnimations } from "../../utils/animations";
 
 interface gradesListProps {
     project: Project | null;
