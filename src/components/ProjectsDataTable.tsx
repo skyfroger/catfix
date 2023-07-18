@@ -1,5 +1,5 @@
 import react, { useEffect, useState } from "react";
-import { Card, Col, Empty, message, Row, Space, Table } from "antd";
+import { Empty, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { categories, getMaxGrade, graderResult } from "../graders";
@@ -27,8 +27,6 @@ function ProjectsDataTable({ data }: propsDataTable) {
     const { t } = useTranslation();
 
     useEffect(() => {
-        //console.log(data);
-
         // берём первый элемент, чтобы заполнить список столбцов таблицы
         const d = data || [];
         const firstProject = d[0] || {};

@@ -35,10 +35,6 @@ function App() {
                     style={{
                         display: "inline-flex",
                         gap: "12px",
-                        position: "sticky",
-                        top: 0,
-                        zIndex: 1,
-                        width: "100%",
                         justifyContent: "space-between",
                         alignItems: "center",
                         backgroundColor: "#4C4C6D",
