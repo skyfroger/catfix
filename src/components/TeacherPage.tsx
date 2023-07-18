@@ -7,6 +7,8 @@ import parseProject from "../utils";
 import grader, { getTotalGrade } from "../graders";
 import { Tip } from "../scaners/types";
 import { scanForErrors, scanForWarnings } from "../scaners";
+import { motion } from "framer-motion";
+import { basicAnimations } from "../utils/animations";
 
 function TeacherPage() {
     const [projectsData, setProjectsData] = useState<APIResponce[]>([]);
@@ -42,11 +44,11 @@ function TeacherPage() {
                 ...scanForWarnings(parsedProject, project.projectJSON),
             ];
 
-            // сохраняем данные для строки в таблице
+            // сохраняем данные для строки в таблице (порядок колонок определяется тут)
             tableData.push({
                 key: index,
-                projectName: project.projectName,
                 projectAuthor: project.projectAuthor,
+                projectName: project.projectName,
                 grades: grades,
                 tips: tips,
                 totalGrade: totalGrade,
@@ -59,12 +61,28 @@ function TeacherPage() {
 
     return (
         <>
-            <Card style={{ marginBottom: 16 }}>
-                <MassURLLoader onUpload={handleURLUpload} />
-            </Card>
-            <Card style={{ marginBottom: 16 }}>
-                <ProjectsDataTable data={tableData} />
-            </Card>
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                transition={{ duration: 1 }}
+                variants={basicAnimations}
+            >
+                <Card style={{ marginBottom: 16 }}>
+                    <MassURLLoader onUpload={handleURLUpload} />
+                </Card>
+            </motion.div>
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={basicAnimations}
+                transition={{ duration: 1, delay: 0.5 }}
+            >
+                <Card style={{ marginBottom: 16 }}>
+                    <ProjectsDataTable data={tableData} />
+                </Card>
+            </motion.div>
         </>
     );
 }
