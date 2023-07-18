@@ -69,7 +69,7 @@ function URLLoader({ onUpload }: urlLoaderProps) {
                         },
                     ]}
                 >
-                    <Input />
+                    <Input allowClear />
                 </Form.Item>
                 <Form.Item>
                     <Button
