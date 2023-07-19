@@ -1,5 +1,5 @@
 import react, { useEffect, useState } from "react";
-import { Empty, Modal, Table } from "antd";
+import { Button, Empty, Modal, Popconfirm, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { categories, getMaxGrade, graderResult } from "../../graders";
@@ -22,9 +22,10 @@ export interface TableData {
 // пропсы для компонента
 interface propsDataTable {
     data: TableData[];
+    onClear: () => void;
 }
 
-function ProjectsDataTable({ data }: propsDataTable) {
+function ProjectsDataTable({ data, onClear }: propsDataTable) {
     const [columns, setColumns] = useState<ColumnsType<TableData>>([]);
     const [tableData, setTableData] = useState<TableData[]>([]);
 
@@ -107,6 +108,19 @@ function ProjectsDataTable({ data }: propsDataTable) {
 
     return (
         <>
+            <div style={{ marginBottom: 16 }}>
+                <Popconfirm
+                    title={t("ui.clearTableButton")}
+                    description={t("ui.deleteTableDataConfirm")}
+                    okText={t("ui.ok")}
+                    cancelText={t("ui.cancel")}
+                    onConfirm={onClear}
+                >
+                    <Button type="dashed" danger>
+                        {t("ui.clearTableButton")}
+                    </Button>
+                </Popconfirm>
+            </div>
             <Table
                 size={"large"}
                 bordered={true}

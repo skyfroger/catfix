@@ -1,5 +1,5 @@
 import react, { useEffect, useState } from "react";
-import { Card, Col, Row } from "antd";
+import { Alert, Card, Col, Row } from "antd";
 import MassURLLoader from "../ui/MassURLLoader";
 import ProjectsDataTable, { TableData } from "../teacher/ProjectsDataTable";
 import { APIResponce } from "../../utils/httpAPI";
@@ -14,17 +14,25 @@ import React from "react";
 import { RcFile } from "antd/es/upload";
 import { loadAsync } from "jszip";
 import { ScratchProject } from "../../../@types/scratch";
+import { useTranslation } from "react-i18next";
 
 function TeacherPage() {
     const [projectsData, setProjectsData] = useState<APIResponce[]>([]);
     const [tableData, setTableData] = useState<TableData[]>([]);
+
+    const { t } = useTranslation();
 
     /**
      * Сохранение в state массива проектов
      * @param projects
      */
     const handleURLUpload = (projects: APIResponce[]) => {
-        setProjectsData(projects);
+        // добавляем новые проекты к уже существующим
+        setProjectsData(() => [...projectsData, ...projects]);
+    };
+
+    const handleTableClearing = () => {
+        setProjectsData([]);
     };
 
     const handleUpload = (project: RcFile, projects: RcFile[]) => {
@@ -56,8 +64,8 @@ function TeacherPage() {
         // Ждём, пока завершатся все промисы
         Promise.all(promiseList).then(
             () => {
-                // обновляем список проектов
-                setProjectsData(() => loadedProjects);
+                // добавляем новые проекты к уже существующим
+                setProjectsData(() => [...projectsData, ...loadedProjects]);
             },
             (e) => {
                 console.error(e);
@@ -110,6 +118,13 @@ function TeacherPage() {
                 exit="hidden"
                 variants={basicAnimations}
             >
+                <p>
+                    <Alert
+                        message={t("ui.multipleFilesUploadNote")}
+                        type="info"
+                        showIcon
+                    />
+                </p>
                 <Card style={{ marginBottom: 16 }}>
                     <Row gutter={16}>
                         <Col sm={24} lg={12}>
@@ -132,7 +147,10 @@ function TeacherPage() {
                 transition={{ delay: 0.8 }}
             >
                 <Card style={{ marginBottom: 16 }}>
-                    <ProjectsDataTable data={tableData} />
+                    <ProjectsDataTable
+                        data={tableData}
+                        onClear={handleTableClearing}
+                    />
                 </Card>
             </motion.div>
         </>
