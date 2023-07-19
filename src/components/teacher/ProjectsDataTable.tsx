@@ -7,7 +7,6 @@ import { categories, getMaxGrade, graderResult } from "../../graders";
 import { Tip } from "../../scaners/types";
 import { useTranslation } from "react-i18next";
 import FullProjectInfo from "./FullProjectInfo";
-import GradeButton from "./GradeButton";
 import TipsCount from "./TipsCount";
 import DeleteConfirmButton from "../ui/DeleteConfirmButton";
 
