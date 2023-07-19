@@ -1,6 +1,7 @@
 /**
  * Форма для загрузки файла с проектом.
- * В этом компоненте архив с проектом передаётся в компонент MainPage.
+ * В этом компоненте архив или массив архивов передаётся для дальнейшей обработки.
+ * Проп multiple определяет 1 или несколько проектов можно будет загрузить.
  */
 
 import React from "react";
@@ -14,25 +15,30 @@ import { RcFile } from "antd/es/upload";
 const { Dragger } = Upload;
 
 interface uploadProjectProps {
-    onUpload: (projectJson: RcFile) => void;
+    multiple: boolean;
+    onUpload: (projectJson: RcFile, projects: RcFile[]) => void;
 }
 
-function UploadProject({ onUpload }: uploadProjectProps) {
+function UploadProject({ multiple, onUpload }: uploadProjectProps) {
     const { t } = useTranslation();
 
     const uploadProps: UploadProps = {
         name: "file",
-        multiple: false,
+        multiple: multiple,
         showUploadList: false,
         maxCount: 1,
         action: "",
-        beforeUpload(file: RcFile, FileList: RcFile[]) {
-            onUpload(file);
+        beforeUpload(file: RcFile, fileList: RcFile[]) {
+            onUpload(file, fileList);
             return false; // отменяем загрузку файла
         },
     };
     return (
-        <Card title={t("ui.uploadFromFile")}>
+        <Card
+            title={
+                multiple ? t("ui.massUploadFromFile") : t("ui.uploadFromFile")
+            }
+        >
             <Dragger {...uploadProps}>
                 <p className="ant-upload-drag-icon">
                     <UploadOutlined />{" "}

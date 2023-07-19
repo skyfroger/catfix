@@ -36,12 +36,12 @@ function MainPage() {
     const [messageApi, contextHolder] = message.useMessage();
     const { t } = useTranslation();
 
-    const handleUpload = (project: RcFile) => {
+    const handleUpload = (project: RcFile, projects: RcFile[]) => {
         /**
          * Обработка загруженного файла. Архив распаковывается, из него извлекается
          * project.json и сохраняется в state-переменную projectJSON
          */
-
+        console.log(project, projects);
         // сбрасываем json
         setProjectJSON(() => {
             return null;
@@ -122,7 +122,10 @@ function MainPage() {
                 <Card style={{ marginBottom: 16 }}>
                     <Row gutter={16}>
                         <Col sm={24} lg={12}>
-                            <UploadProject onUpload={handleUpload} />
+                            <UploadProject
+                                multiple={false}
+                                onUpload={handleUpload}
+                            />
                         </Col>
                         <Col sm={24} lg={12}>
                             <URLLoader onUpload={handleURLUpload} />

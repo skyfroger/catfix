@@ -19,6 +19,7 @@
         "fileName": "Название проекта: {{fileName}}",
         "noGrade": "Загрузи проект, чтобы увидеть его оценку",
         "totalGrade": "Общая оценка: {{totalGrade}} из {{maxGrade}}",
+        "massUploadFromFile": "Загрузка нескольких локальных файлов",
         "massUploadFromURL": "Загрузка нескольких онлайн-проектов",
         "massURLUploadHint": "Укажите тут набор ссылок на проекты, которые хотите проверить (максимум {{maxNumberOfLinks}})",
         "openProjectModalTooltip": "Щелкните, чтобы увидеть подробности о проекте"
