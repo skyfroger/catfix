@@ -17,6 +17,7 @@ import { ScratchProject } from "../../../@types/scratch";
 import { useTranslation } from "react-i18next";
 import hash from "object-hash";
 import Loader from "../ui/Loader";
+import StatsContainer from "../teacher/StatsContainer";
 
 function TeacherPage() {
     const [projectsData, setProjectsData] = useState<APIResponce[]>([]);
@@ -183,6 +184,21 @@ function TeacherPage() {
                         data={tableData}
                         onClear={handleTableClearing}
                         onFilter={handleFilter}
+                    />
+                </Card>
+            </motion.div>
+
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={basicAnimations}
+                transition={{ delay: 1.8 }}
+            >
+                <Card style={{ marginBottom: 16 }}>
+                    <StatsContainer
+                        projects={projectsData}
+                        tableData={tableData}
                     />
                 </Card>
             </motion.div>
