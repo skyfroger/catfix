@@ -2,7 +2,7 @@ import react, { useEffect } from "react";
 import { APIResponce } from "../../utils/httpAPI";
 import { TableData } from "./ProjectsDataTable";
 import { useTranslation } from "react-i18next";
-import { Space } from "antd";
+import { Card, Space } from "antd";
 
 interface statsContainerProps {
     projects: APIResponce[];
@@ -42,25 +42,24 @@ function StatsContainer({ projects, tableData }: statsContainerProps) {
                     width: "100%",
                     justifyContent: "start",
                     alignItems: "start",
+                    flexWrap: "wrap",
                 }}
             >
-                <p>
-                    Предупреждения: от более частых к более редким
+                <Card title={"Предупреждения: от более частых к более редким"}>
                     <ol>
                         {sortedWarnings.map((tip, index) => {
                             return <li key={index}>{t(tip[0] as any)}</li>;
                         })}
                     </ol>
-                </p>
+                </Card>
 
-                <p>
-                    Ошибки: от более частых к более редким
+                <Card title={"Ошибки: от более частых к более редким"}>
                     <ol>
                         {sortedErrors.map((tip, index) => {
                             return <li key={index}>{t(tip[0] as any)}</li>;
                         })}
                     </ol>
-                </p>
+                </Card>
             </Space>
         </>
     );
