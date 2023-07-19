@@ -1,5 +1,5 @@
 import react, { useEffect, useState } from "react";
-import { Card } from "antd";
+import { Card, Col, Row } from "antd";
 import MassURLLoader from "../ui/MassURLLoader";
 import ProjectsDataTable, { TableData } from "../teacher/ProjectsDataTable";
 import { APIResponce } from "../../utils/httpAPI";
@@ -9,6 +9,11 @@ import { Tip } from "../../scaners/types";
 import { scanForErrors, scanForWarnings } from "../../scaners";
 import { motion } from "framer-motion";
 import { basicAnimations } from "../../utils/animations";
+import UploadProject from "../ui/UploadProject";
+import React from "react";
+import { RcFile } from "antd/es/upload";
+import { loadAsync } from "jszip";
+import { ScratchProject } from "../../../@types/scratch";
 
 function TeacherPage() {
     const [projectsData, setProjectsData] = useState<APIResponce[]>([]);
@@ -20,6 +25,46 @@ function TeacherPage() {
      */
     const handleURLUpload = (projects: APIResponce[]) => {
         setProjectsData(projects);
+    };
+
+    const handleUpload = (project: RcFile, projects: RcFile[]) => {
+        const loadedProjects: APIResponce[] = []; // пустой список файлов
+
+        setProjectsData([]); // очищаем список проектов
+
+        const promiseList = []; // массив промисов
+
+        // перебираем массив архивов, чтобы каждый распаковать
+        for (const file of projects) {
+            // распаковываем архив
+            promiseList.push(
+                loadAsync(file)
+                    .then(function (content) {
+                        return content.files["project.json"].async("text");
+                    })
+                    .then(function (txt) {
+                        const projectJSON: ScratchProject = JSON.parse(txt);
+                        // сохраняем обработанный проект
+                        loadedProjects.push({
+                            projectJSON: projectJSON,
+                            projectName: file.name,
+                            projectAuthor: "-",
+                        });
+                    })
+                    .catch(function (error) {})
+            );
+        }
+
+        // Ждём, пока завершаться все промисы
+        Promise.all(promiseList).then(
+            () => {
+                // обновляем список проектов
+                setProjectsData(() => loadedProjects);
+            },
+            (e) => {
+                console.error(e);
+            }
+        );
     };
 
     useEffect(() => {
@@ -68,7 +113,17 @@ function TeacherPage() {
                 variants={basicAnimations}
             >
                 <Card style={{ marginBottom: 16 }}>
-                    <MassURLLoader onUpload={handleURLUpload} />
+                    <Row gutter={16}>
+                        <Col sm={24} lg={12}>
+                            <UploadProject
+                                multiple={true}
+                                onUpload={handleUpload}
+                            />
+                        </Col>
+                        <Col sm={24} lg={12}>
+                            <MassURLLoader onUpload={handleURLUpload} />
+                        </Col>
+                    </Row>
                 </Card>
             </motion.div>
             <motion.div
