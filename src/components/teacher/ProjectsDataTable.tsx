@@ -1,5 +1,6 @@
 import react, { useEffect, useState } from "react";
 import { Button, Empty, Modal, Popconfirm, Table } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import { categories, getMaxGrade, graderResult } from "../../graders";
@@ -8,10 +9,11 @@ import { useTranslation } from "react-i18next";
 import FullProjectInfo from "./FullProjectInfo";
 import GradeButton from "./GradeButton";
 import TipsCount from "./TipsCount";
+import DeleteConfirmButton from "../ui/DeleteConfirmButton";
 
 // интерфейс для описания одной строки таблицы
 export interface TableData {
-    key: React.Key;
+    key: string;
     projectAuthor: string;
     projectName: string;
     totalGrade: number;
@@ -23,9 +25,10 @@ export interface TableData {
 interface propsDataTable {
     data: TableData[];
     onClear: () => void;
+    onFilter: (key: string) => void;
 }
 
-function ProjectsDataTable({ data, onClear }: propsDataTable) {
+function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
     const [columns, setColumns] = useState<ColumnsType<TableData>>([]);
     const [tableData, setTableData] = useState<TableData[]>([]);
 
@@ -92,6 +95,23 @@ function ProjectsDataTable({ data, onClear }: propsDataTable) {
             }
         }
 
+        // колонка с кнопкой удаления строки
+        cols.push({
+            title: t("table.delete"),
+            dataIndex: "delete",
+            render: (_, record: TableData) => {
+                return (
+                    <DeleteConfirmButton
+                        onConfirm={() => {
+                            onFilter(record.key);
+                        }}
+                    >
+                        <DeleteOutlined />
+                    </DeleteConfirmButton>
+                );
+            },
+        });
+
         // сохраняем данные в state
         setColumns(cols);
         setTableData(data);
@@ -109,17 +129,9 @@ function ProjectsDataTable({ data, onClear }: propsDataTable) {
     return (
         <>
             <div style={{ marginBottom: 16 }}>
-                <Popconfirm
-                    title={t("ui.clearTableButton")}
-                    description={t("ui.deleteTableDataConfirm")}
-                    okText={t("ui.ok")}
-                    cancelText={t("ui.cancel")}
-                    onConfirm={onClear}
-                >
-                    <Button type="dashed" danger>
-                        {t("ui.clearTableButton")}
-                    </Button>
-                </Popconfirm>
+                <DeleteConfirmButton onConfirm={onClear}>
+                    <span>{t("ui.clearTable")}</span>
+                </DeleteConfirmButton>
             </div>
             <Table
                 size={"large"}

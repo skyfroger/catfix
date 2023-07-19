@@ -15,6 +15,7 @@ import { RcFile } from "antd/es/upload";
 import { loadAsync } from "jszip";
 import { ScratchProject } from "../../../@types/scratch";
 import { useTranslation } from "react-i18next";
+import { v4 as uuid4 } from "uuid";
 
 function TeacherPage() {
     const [projectsData, setProjectsData] = useState<APIResponce[]>([]);
@@ -31,8 +32,22 @@ function TeacherPage() {
         setProjectsData(() => [...projectsData, ...projects]);
     };
 
+    /**
+     * Очистка таблицы
+     */
     const handleTableClearing = () => {
         setProjectsData([]);
+    };
+
+    /**
+     * Удаление одной записи из таблицы
+     * @param key ключ записи
+     */
+    const handleFilter = (key: React.Key) => {
+        const newProjectData = projectsData.filter(
+            (record) => record.key !== key
+        );
+        setProjectsData(newProjectData);
     };
 
     const handleUpload = (project: RcFile, projects: RcFile[]) => {
@@ -52,6 +67,7 @@ function TeacherPage() {
                         const projectJSON: ScratchProject = JSON.parse(txt);
                         // сохраняем обработанный проект
                         loadedProjects.push({
+                            key: uuid4(),
                             projectJSON: projectJSON,
                             projectName: file.name,
                             projectAuthor: "-",
@@ -97,7 +113,7 @@ function TeacherPage() {
 
             // сохраняем данные для строки в таблице (порядок колонок определяется тут)
             tableData.push({
-                key: index,
+                key: project.key,
                 projectAuthor: project.projectAuthor,
                 projectName: project.projectName,
                 grades: grades,
@@ -118,14 +134,17 @@ function TeacherPage() {
                 exit="hidden"
                 variants={basicAnimations}
             >
-                <p>
-                    <Alert
-                        message={t("ui.multipleFilesUploadNote")}
-                        type="info"
-                        showIcon
-                    />
-                </p>
                 <Card style={{ marginBottom: 16 }}>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Alert
+                                style={{ marginBottom: 16 }}
+                                message={t("ui.multipleFilesUploadNote")}
+                                type="info"
+                                showIcon
+                            />
+                        </Col>
+                    </Row>
                     <Row gutter={16}>
                         <Col sm={24} lg={12}>
                             <UploadProject
@@ -150,6 +169,7 @@ function TeacherPage() {
                     <ProjectsDataTable
                         data={tableData}
                         onClear={handleTableClearing}
+                        onFilter={handleFilter}
                     />
                 </Card>
             </motion.div>

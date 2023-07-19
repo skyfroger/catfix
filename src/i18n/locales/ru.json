@@ -24,16 +24,18 @@
         "massURLUploadHint": "Укажите тут набор ссылок на проекты, которые хотите проверить (максимум {{maxNumberOfLinks}})",
         "openProjectModalTooltip": "Щелкните, чтобы увидеть подробности о проекте",
         "multipleFilesUploadNote": "Проекты из файлов или из сети добавляются к уже существующим записям в таблице. Нажмите кнопку Очистить таблицу, чтобы убрать из неё все проекты",
-        "clearTableButton": "Очистить таблицу",
+        "deleteTitle": "Удалить",
         "ok": "Да",
         "cancel": "Нет",
-        "deleteTableDataConfirm": "Вы уверенны?"
+        "deleteConfirm": "Вы уверенны?",
+        "clearTable": "Очистить таблицу"
     },
     "table": {
         "projectName": "Название проекта",
         "projectAuthor": "Автор",
         "totalGrade": "Оценка ({{maxGrade}})",
-        "tips": "Рекомендации"
+        "tips": "Рекомендации",
+        "delete": "Удалить"
     },
     "flow": {
         "title": "Поток данных",

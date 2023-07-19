@@ -3,8 +3,10 @@
  */
 
 import { ScratchProject } from "../../@types/scratch";
+import { v4 as uuid4 } from "uuid";
 
 export type APIResponce = {
+    key: string;
     projectJSON: ScratchProject;
     projectName: string;
     projectAuthor: string;
@@ -37,6 +39,7 @@ export const projectAPI = {
         const projectJSON = await resp.json();
 
         return {
+            key: uuid4(),
             projectJSON: projectJSON,
             projectName: projectName,
             projectAuthor: projectAuthor,
