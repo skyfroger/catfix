@@ -123,6 +123,7 @@ function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
                 </DeleteConfirmButton>
             </div>
             <Table
+                style={{ overflow: "auto" }}
                 size={"large"}
                 bordered={true}
                 columns={tableColumns}
