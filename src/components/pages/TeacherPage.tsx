@@ -1,5 +1,5 @@
 import react, { useEffect, useState } from "react";
-import { Alert, Card, Col, Row } from "antd";
+import { Card, Col, Row } from "antd";
 import MassURLLoader from "../ui/MassURLLoader";
 import ProjectsDataTable, { TableData } from "../teacher/ProjectsDataTable";
 import { APIResponce } from "../../utils/httpAPI";
@@ -15,11 +15,13 @@ import { RcFile } from "antd/es/upload";
 import { loadAsync } from "jszip";
 import { ScratchProject } from "../../../@types/scratch";
 import { useTranslation } from "react-i18next";
-import { v4 as uuid4 } from "uuid";
+import hash from "object-hash";
+import Loader from "../ui/Loader";
 
 function TeacherPage() {
     const [projectsData, setProjectsData] = useState<APIResponce[]>([]);
     const [tableData, setTableData] = useState<TableData[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { t } = useTranslation();
 
@@ -28,8 +30,16 @@ function TeacherPage() {
      * @param projects
      */
     const handleURLUpload = (projects: APIResponce[]) => {
+        // хеши уже загруженных проектов
+        const hashes = projectsData.map((pd) => pd.key);
+
+        // фильтруем новые загруженные по сети проекты
+        // хэш нового проекта должен быть уникальным
+        const uniqUploadedProjects = projects.filter(
+            (p) => !hashes.includes(p.key)
+        );
         // добавляем новые проекты к уже существующим
-        setProjectsData(() => [...projectsData, ...projects]);
+        setProjectsData(() => [...projectsData, ...uniqUploadedProjects]);
     };
 
     /**
@@ -55,6 +65,10 @@ function TeacherPage() {
 
         const promiseList = []; // массив промисов
 
+        // хеши уже загруженных проектов
+        const hashes = projectsData.map((pd) => pd.key);
+
+        setIsLoading(true);
         // перебираем массив архивов, чтобы каждый распаковать
         for (const file of projects) {
             // распаковываем архив
@@ -65,28 +79,36 @@ function TeacherPage() {
                     })
                     .then(function (txt) {
                         const projectJSON: ScratchProject = JSON.parse(txt);
-                        // сохраняем обработанный проект
-                        loadedProjects.push({
-                            key: uuid4(),
-                            projectJSON: projectJSON,
-                            projectName: file.name,
-                            projectAuthor: "-",
-                        });
+                        // получаем хэш нового проекта
+                        const projectHash = hash.sha1(projectJSON);
+                        // если такого проекта пока нет в таблице - добавляем
+                        if (!hashes.includes(projectHash)) {
+                            loadedProjects.push({
+                                key: hash.sha1(projectJSON),
+                                projectJSON: projectJSON,
+                                projectName: file.name,
+                                projectAuthor: "-",
+                            });
+                        }
                     })
                     .catch(function (error) {})
             );
         }
 
         // Ждём, пока завершатся все промисы
-        Promise.all(promiseList).then(
-            () => {
-                // добавляем новые проекты к уже существующим
-                setProjectsData(() => [...projectsData, ...loadedProjects]);
-            },
-            (e) => {
-                console.error(e);
-            }
-        );
+        Promise.all(promiseList)
+            .then(
+                () => {
+                    // добавляем новые проекты к уже существующим
+                    setProjectsData(() => [...projectsData, ...loadedProjects]);
+                },
+                (e) => {
+                    console.error(e);
+                }
+            )
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     useEffect(() => {
@@ -146,6 +168,7 @@ function TeacherPage() {
                             <MassURLLoader onUpload={handleURLUpload} />
                         </Col>
                     </Row>
+                    {isLoading && <Loader />}
                 </Card>
             </motion.div>
             <motion.div

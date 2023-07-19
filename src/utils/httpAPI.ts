@@ -3,7 +3,7 @@
  */
 
 import { ScratchProject } from "../../@types/scratch";
-import { v4 as uuid4 } from "uuid";
+import hash from "object-hash";
 
 export type APIResponce = {
     key: string;
@@ -38,8 +38,10 @@ export const projectAPI = {
 
         const projectJSON = await resp.json();
 
+        // ключ - это хэш json-объекта с проектом
+        // таким образом удостоверимся, что все проекты в таблице будут уникальными
         return {
-            key: uuid4(),
+            key: hash.sha1(projectJSON),
             projectJSON: projectJSON,
             projectName: projectName,
             projectAuthor: projectAuthor,
