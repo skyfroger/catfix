@@ -28,17 +28,11 @@ interface propsDataTable {
 }
 
 function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
-    const [columns, setColumns] = useState<ColumnsType<TableData>>([]);
-    const [tableData, setTableData] = useState<TableData[]>([]);
-
     // текущий проект, которые нужно показать в модальном окне
     const [currentProject, setCurrentProject] = useState<TableData>(
         {} as TableData
     );
-
-    // модальное окно открыто?
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [isModalOpen, setIsModalOpen] = useState(false); // модальное окно открыто?
     const { t } = useTranslation();
 
     const onCellHandle = (record: TableData, index: number | undefined) => {
@@ -47,86 +41,76 @@ function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
         };
     };
 
-    useEffect(() => {
-        // берём первый элемент, чтобы заполнить список столбцов таблицы
-        const d = data || [];
-        const firstProject = d[0] || {};
-        const maxGrade = getMaxGrade(firstProject.grades || new Map());
+    // берём первый проект и вычисляем максимально возможную оценку
+    const d = data || [];
+    const firstProject = d[0] || {};
+    const maxGrade = getMaxGrade(firstProject.grades || new Map());
 
-        const cols: ColumnsType<TableData> = [];
-        // пока пропускаем детализацию оценок, советы и ключ
-        for (const key in firstProject) {
-            // оценки и ключ не добавляем в таблицу (пропускаем итерацию)
-            if (key === "grades" || key === "key") continue;
+    // описание колонок таблицы
+    const tableColumns: ColumnsType<TableData> = [
+        {
+            title: t("table.projectAuthor"),
+            dataIndex: "projectAuthor",
+            onCell: onCellHandle,
+            sorter: (a, b) => a.projectAuthor.localeCompare(b.projectAuthor),
+            sortDirections: ["ascend", "descend"],
+        },
+        {
+            title: t("table.projectName"),
+            dataIndex: "projectName",
+            onCell: onCellHandle,
+            sorter: (a, b) => a.projectName.localeCompare(b.projectName),
+            sortDirections: ["ascend", "descend"],
+        },
+        {
+            title: t("table.tips"),
+            dataIndex: "tips",
+            align: "center",
+            sorter: tipsSorter,
+            sortDirections: ["descend", "ascend"],
+            render: (tips: Tip[], record: TableData) => {
+                return <TipsCount tips={tips} />;
+            },
+            onCell: onCellHandle,
+        },
+        {
+            title: t(`table.totalGrade`, { maxGrade: maxGrade }),
+            dataIndex: "totalGrade",
+            sorter: (a, b) => a.totalGrade - b.totalGrade,
+            sortDirections: ["descend", "ascend"],
+            align: "center",
+            onCell: onCellHandle,
+        },
+        {
+            title: t("ui.deleteTitle"),
+            dataIndex: "delete",
+            align: "center",
+            render: (_, record: TableData) => {
+                return (
+                    <DeleteConfirmButton
+                        onConfirm={() => {
+                            onFilter(record.key);
+                        }}
+                    >
+                        <DeleteOutlined />
+                    </DeleteConfirmButton>
+                );
+            },
+        },
+    ];
 
-            // в заголовке к общей оценке показываем максимально возможный балл
-            if (key === "totalGrade") {
-                cols.push({
-                    title: t(`table.${key}`, { maxGrade: maxGrade }),
-                    dataIndex: key,
-                    sorter: (a, b) => a.totalGrade - b.totalGrade,
-                    sortDirections: ["descend", "ascend"],
-                    align: "center",
-                    onCell: onCellHandle,
-                });
-            } else {
-                /*
-                Попался ключ с советами.
-                Рисуем компонент с количеством ошибок и предупреждений
-                 */
-                if (key === "tips") {
-                    cols.push({
-                        title: t(`table.tips`),
-                        dataIndex: "tips",
-                        align: "center",
-                        sorter: tipsSorter,
-                        sortDirections: ["descend", "ascend"],
-                        render: (tips: Tip[], record: TableData) => {
-                            return <TipsCount tips={tips} />;
-                        },
-                        onCell: onCellHandle,
-                    });
-                } else {
-                    // В остальных случаях просто сохраняем заголовок и ключ
-                    cols.push({
-                        title: t(`table.${key}` as any),
-                        dataIndex: key,
-                        onCell: onCellHandle,
-                    });
-                }
-            }
-        }
-
-        if (data.length !== 0) {
-            // колонка с кнопкой удаления строки
-            cols.push({
-                title: t("ui.deleteTitle"),
-                dataIndex: "delete",
-                align: "center",
-                render: (_, record: TableData) => {
-                    return (
-                        <DeleteConfirmButton
-                            onConfirm={() => {
-                                onFilter(record.key);
-                            }}
-                        >
-                            <DeleteOutlined />
-                        </DeleteConfirmButton>
-                    );
-                },
-            });
-        }
-
-        // сохраняем данные в state
-        setColumns(cols);
-        setTableData(data);
-    }, [data]);
-
+    /**
+     * Открываем модальное окно с подробной информацией о проекте
+     * @param record
+     */
     const handleMoreInfo = (record: TableData) => {
         setCurrentProject(record);
         setIsModalOpen(true);
     };
 
+    /**
+     * Закрываем модальное окно
+     */
     const handleModalClosing = () => {
         setIsModalOpen(false);
     };
@@ -141,11 +125,12 @@ function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
             <Table
                 size={"large"}
                 bordered={true}
-                columns={columns}
-                dataSource={tableData}
+                columns={tableColumns}
+                dataSource={data}
                 locale={{
                     emptyText: <Empty description={t("ui.noGrade")}></Empty>,
                 }}
+                pagination={{ pageSize: 20 }}
             />
             <Modal
                 open={isModalOpen}
