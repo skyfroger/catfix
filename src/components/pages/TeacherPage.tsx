@@ -30,8 +30,6 @@ function TeacherPage() {
     const handleUpload = (project: RcFile, projects: RcFile[]) => {
         const loadedProjects: APIResponce[] = []; // пустой список файлов
 
-        setProjectsData([]); // очищаем список проектов
-
         const promiseList = []; // массив промисов
 
         // перебираем массив архивов, чтобы каждый распаковать
@@ -55,7 +53,7 @@ function TeacherPage() {
             );
         }
 
-        // Ждём, пока завершаться все промисы
+        // Ждём, пока завершатся все промисы
         Promise.all(promiseList).then(
             () => {
                 // обновляем список проектов
