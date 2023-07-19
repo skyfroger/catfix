@@ -8,14 +8,12 @@ import { Card, Col, message, Row, Space } from "antd";
 import UploadProject from "../ui/UploadProject";
 import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";
-import GradesList from "../grades/GradesList";
 import parseProject from "../../utils";
 
 import { ScratchProject } from "../../../@types/scratch";
 import { Project } from "../../../@types/parsedProject";
 import Loader from "../ui/Loader";
 import { useTranslation } from "react-i18next";
-import ScanResultsList from "../tips/ScanResultsList";
 import URLLoader from "../ui/URLLoader";
 import { FileOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
@@ -41,7 +39,6 @@ function MainPage() {
          * Обработка загруженного файла. Архив распаковывается, из него извлекается
          * project.json и сохраняется в state-переменную projectJSON
          */
-        console.log(project, projects);
         // сбрасываем json
         setProjectJSON(() => {
             return null;
