@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import logo from "./logo.png";
 import { Layout, ConfigProvider, Menu, FloatButton } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
 import { Routes, Route, NavLink, useLocation } from "react-router-dom";
@@ -36,14 +37,16 @@ function App() {
                         display: "inline-flex",
                         gap: "12px",
                         justifyContent: "space-between",
-                        alignItems: "center",
+                        alignItems: "stretch",
                         backgroundColor: "#4C4C6D",
                     }}
                 >
                     <NavLink to="/">
-                        <div className="logo" style={{ color: "white" }}>
-                            <h1>КотФикс</h1>
-                        </div>
+                        <img
+                            src={logo}
+                            alt={"КотФикс - проверка Scratch проектов"}
+                            style={{ height: 35, lineHeight: 35 }}
+                        />
                     </NavLink>
                     <Menu
                         mode={"horizontal"}
