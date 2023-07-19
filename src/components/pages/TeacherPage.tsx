@@ -136,16 +136,6 @@ function TeacherPage() {
             >
                 <Card style={{ marginBottom: 16 }}>
                     <Row gutter={16}>
-                        <Col span={24}>
-                            <Alert
-                                style={{ marginBottom: 16 }}
-                                message={t("ui.multipleFilesUploadNote")}
-                                type="info"
-                                showIcon
-                            />
-                        </Col>
-                    </Row>
-                    <Row gutter={16}>
                         <Col sm={24} lg={12}>
                             <UploadProject
                                 multiple={true}

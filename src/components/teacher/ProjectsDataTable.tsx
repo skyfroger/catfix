@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import react, { SyntheticEvent, useEffect, useState } from "react";
 import { Button, Empty, Modal, Popconfirm, Table } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
@@ -42,6 +42,12 @@ function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
 
     const { t } = useTranslation();
 
+    const onCellHandle = (record: TableData, index: number | undefined) => {
+        return {
+            onClick: (event: SyntheticEvent) => handleMoreInfo(record),
+        };
+    };
+
     useEffect(() => {
         // берём первый элемент, чтобы заполнить список столбцов таблицы
         const d = data || [];
@@ -60,15 +66,9 @@ function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
                     title: t(`table.${key}`, { maxGrade: maxGrade }),
                     dataIndex: key,
                     sorter: (a, b) => a.totalGrade - b.totalGrade,
-                    sortDirections: ["ascend", "descend"],
-                    render: (grade: number, record: TableData) => {
-                        return (
-                            <GradeButton
-                                record={record}
-                                onMoreInfo={handleMoreInfo}
-                            />
-                        );
-                    },
+                    sortDirections: ["descend", "ascend"],
+                    align: "center",
+                    onCell: onCellHandle,
                 });
             } else {
                 /*
@@ -79,38 +79,44 @@ function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
                     cols.push({
                         title: t(`table.tips`),
                         dataIndex: "tips",
+                        align: "center",
                         sorter: tipsSorter,
-                        sortDirections: ["ascend", "descend"],
+                        sortDirections: ["descend", "ascend"],
                         render: (tips: Tip[], record: TableData) => {
                             return <TipsCount tips={tips} />;
                         },
+                        onCell: onCellHandle,
                     });
                 } else {
                     // В остальных случаях просто сохраняем заголовок и ключ
                     cols.push({
                         title: t(`table.${key}` as any),
                         dataIndex: key,
+                        onCell: onCellHandle,
                     });
                 }
             }
         }
 
-        // колонка с кнопкой удаления строки
-        cols.push({
-            title: t("table.delete"),
-            dataIndex: "delete",
-            render: (_, record: TableData) => {
-                return (
-                    <DeleteConfirmButton
-                        onConfirm={() => {
-                            onFilter(record.key);
-                        }}
-                    >
-                        <DeleteOutlined />
-                    </DeleteConfirmButton>
-                );
-            },
-        });
+        if (data.length !== 0) {
+            // колонка с кнопкой удаления строки
+            cols.push({
+                title: t("ui.deleteTitle"),
+                dataIndex: "delete",
+                align: "center",
+                render: (_, record: TableData) => {
+                    return (
+                        <DeleteConfirmButton
+                            onConfirm={() => {
+                                onFilter(record.key);
+                            }}
+                        >
+                            <DeleteOutlined />
+                        </DeleteConfirmButton>
+                    );
+                },
+            });
+        }
 
         // сохраняем данные в state
         setColumns(cols);
