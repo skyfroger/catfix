@@ -42,11 +42,22 @@ function App() {
                     }}
                 >
                     <NavLink to="/">
-                        <img
-                            src={logo}
-                            alt={"КотФикс - проверка Scratch проектов"}
-                            style={{ height: 35, lineHeight: 35 }}
-                        />
+                        <span
+                            style={{
+                                display: "inline-block",
+                                height: "100%",
+                                verticalAlign: "middle",
+                            }}
+                        >
+                            <img
+                                src={logo}
+                                alt={"КотФикс - проверка Scratch проектов"}
+                                style={{
+                                    verticalAlign: "text-bottom",
+                                    maxHeight: "50%",
+                                }}
+                            />
+                        </span>
                     </NavLink>
                     <Menu
                         mode={"horizontal"}
