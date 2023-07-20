@@ -118,6 +118,12 @@ function MainPage() {
             >
                 <Card style={{ marginBottom: 16 }}>
                     <Row gutter={16}>
+                        <Col span={24}>
+                            <h1>{t("ui.maiPageTitle")}</h1>
+                            <p>{t("ui.mainPageDesc")}</p>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
                         <Col sm={24} lg={12}>
                             <UploadProject
                                 multiple={false}
