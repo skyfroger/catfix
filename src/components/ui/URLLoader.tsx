@@ -26,11 +26,9 @@ function URLLoader({ onUpload }: urlLoaderProps) {
     const { t } = useTranslation();
 
     const handleSend = (values: formData) => {
-        // можно было и понятнее записать, но тут берём из URL цифры в конце
-        // todo брать из ссылки цифры с помощью RegEx
-        const projectId = Number(
-            values.url.replace(/\//g, " ").trimEnd().split(" ").slice(-1)
-        );
+        // ищем id проекта в url
+        const match = values.url.match(/\d{4,}/);
+        const projectId = match ? Number(match[0]) : 0;
 
         async function load(projectId: number) {
             setIsLoading(true); // загрузка запущена
@@ -64,7 +62,7 @@ function URLLoader({ onUpload }: urlLoaderProps) {
                         { required: true, message: t("ui.urlRequired") },
                         {
                             pattern:
-                                /https?:\/\/scratch.mit.edu\/projects\/(\d)+\/?/,
+                                /https?:\/\/scratch.mit.edu\/projects\/(\d){4,}\/?/,
                             message: t("ui.projectURLRequired"),
                         },
                     ]}
