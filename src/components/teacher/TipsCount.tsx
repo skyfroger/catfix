@@ -24,17 +24,20 @@ function TipsCount({ tips }: tipsCountProps) {
                 placement="bottomRight"
                 content={<TipsSummary tips={tips} />}
             >
-                {bugsNumber !== 0 && (
-                    <span>
-                        <BugFilled style={{ color: "#FF6D60" }} /> {bugsNumber}
-                    </span>
-                )}{" "}
-                {warningsNumber !== 0 && (
-                    <span>
-                        <WarningFilled style={{ color: "#F7D060" }} />{" "}
-                        {warningsNumber}
-                    </span>
-                )}
+                <span style={{ cursor: "help" }}>
+                    {bugsNumber !== 0 && (
+                        <span>
+                            <BugFilled style={{ color: "#FF6D60" }} />{" "}
+                            {bugsNumber}
+                        </span>
+                    )}{" "}
+                    {warningsNumber !== 0 && (
+                        <span>
+                            <WarningFilled style={{ color: "#F7D060" }} />{" "}
+                            {warningsNumber}
+                        </span>
+                    )}
+                </span>
             </Popover>
         </>
     );
