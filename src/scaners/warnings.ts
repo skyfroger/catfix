@@ -273,6 +273,11 @@ function findLostBlocks(sp: Target): Tip | null {
     return null;
 }
 
+/**
+ * Поиск длинных скриптов. Предельная длина задаётся константой MAX_LENGTH внутри функции
+ * @param project
+ * @param projectJSON
+ */
 export const scriptIsTooLong: tipFunctionInterface = (project, projectJSON) => {
     // считаем скрипт длинным после этого количества строк
     const MAX_LENGTH = 80;

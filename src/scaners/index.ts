@@ -11,7 +11,11 @@ import {
     scriptsOverlap,
     scriptIsTooLong,
 } from "./warnings";
-import { messageNeverReceived, varWithoutInit } from "./errors";
+import {
+    messageNeverReceived,
+    messageNeverSent,
+    varWithoutInit,
+} from "./errors";
 
 // в этой переменной хранится массив функций, которые отвечают
 // за получения списка предупреждений
@@ -25,7 +29,7 @@ const warningFunctions = [
 ];
 
 // храним функции для поиска ошибок
-const errorFunctions = [varWithoutInit, messageNeverReceived];
+const errorFunctions = [varWithoutInit, messageNeverReceived, messageNeverSent];
 
 /**
  * Функция перебирает передаваемый в неё массив функций,

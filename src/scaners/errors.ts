@@ -20,11 +20,15 @@ export const messageNeverReceived: tipFunctionInterface = (
     project.broadcasts.forEach((br) => {
         const stageScripts = project.stage.allScripts;
         if (
-            (stageScripts.includes(`broadcast [${br} v]`) ||
-                stageScripts.includes(`broadcast [${br} v] and wait`)) &&
-            !project.allScripts.includes(`when I receive [${br} v]`)
+            (stageScripts.includes(`broadcast [${escapeSB(br)} v]`) ||
+                stageScripts.includes(
+                    `broadcast [${escapeSB(br)} v] and wait`
+                )) &&
+            !project.allScripts.includes(`when I receive [${escapeSB(br)} v]`)
         ) {
-            const codeExample = `broadcast [${br} v]\nbroadcast [${br}  v] and wait`;
+            const codeExample = `broadcast [${escapeSB(
+                br
+            )} v]\nbroadcast [${escapeSB(br)}  v] and wait`;
             result.push({
                 code: codeExample,
                 payload: { target: project.stage.name, broadcast: br },
@@ -40,11 +44,17 @@ export const messageNeverReceived: tipFunctionInterface = (
         project.broadcasts.forEach((br) => {
             const spriteScripts = sp.allScripts;
             if (
-                (spriteScripts.includes(`broadcast [${br} v]`) ||
-                    spriteScripts.includes(`broadcast [${br} v] and wait`)) &&
-                !project.allScripts.includes(`when I receive [${br} v]`)
+                (spriteScripts.includes(`broadcast [${escapeSB(br)} v]`) ||
+                    spriteScripts.includes(
+                        `broadcast [${escapeSB(br)} v] and wait`
+                    )) &&
+                !project.allScripts.includes(
+                    `when I receive [${escapeSB(br)} v]`
+                )
             ) {
-                const codeExample = `broadcast [${br} v]\nbroadcast [${br}  v] and wait`;
+                const codeExample = `broadcast [${escapeSB(
+                    br
+                )} v]\nbroadcast [${escapeSB(br)}  v] and wait`;
                 result.push({
                     code: codeExample,
                     payload: { target: sp.name, broadcast: br },
@@ -121,5 +131,70 @@ export const varWithoutInit: tipFunctionInterface = (project, projectJSON) => {
             }
         });
     });
+    return result;
+};
+
+/**
+ * Поиск сообщений которые принимаются, но не отправляются
+ * @param project
+ * @param projectJSON
+ */
+export const messageNeverSent: tipFunctionInterface = (
+    project,
+    projectJSON
+) => {
+    let result: Tip[] = [];
+
+    // проверяем сообщения отправляемые сценой
+    project.broadcasts.forEach((br) => {
+        if (
+            !(
+                project.allScripts.includes(`broadcast [${escapeSB(br)} v]`) ||
+                project.allScripts.includes(
+                    `broadcast [${escapeSB(br)} v] and wait`
+                )
+            ) &&
+            project.stage.allScripts.includes(
+                `when I receive [${escapeSB(br)} v]`
+            )
+        ) {
+            const codeExample = `when I receive [${escapeSB(br)} v]`;
+            result.push({
+                code: codeExample,
+                payload: { target: project.stage.name, broadcast: br },
+                type: "error",
+                title: "error.messageNeverSentTitle",
+                message: "error.messageNeverSent",
+            });
+        }
+    });
+
+    // проверяем сообщения, отправляемые спрайтами
+    project.sprites.forEach((sp) => {
+        project.broadcasts.forEach((br) => {
+            const spriteScripts = sp.allScripts;
+            if (
+                !(
+                    project.allScripts.includes(
+                        `broadcast [${escapeSB(br)} v]`
+                    ) ||
+                    project.allScripts.includes(
+                        `broadcast [${escapeSB(br)} v] and wait`
+                    )
+                ) &&
+                sp.allScripts.includes(`when I receive [${escapeSB(br)} v]`)
+            ) {
+                const codeExample = `when I receive [${escapeSB(br)} v]`;
+                result.push({
+                    code: codeExample,
+                    payload: { target: sp.name, broadcast: br },
+                    type: "error",
+                    title: "error.messageNeverSentTitle",
+                    message: "error.messageNeverSent",
+                });
+            }
+        });
+    });
+
     return result;
 };
