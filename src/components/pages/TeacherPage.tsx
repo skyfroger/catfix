@@ -80,6 +80,12 @@ function TeacherPage() {
                     })
                     .then(function (txt) {
                         const projectJSON: ScratchProject = JSON.parse(txt);
+
+                        // по-ошибке могут загрузить проект из Scratch 2.0
+                        // такой проект пропускаем
+                        if ("info" in projectJSON) {
+                            throw new Error("Загружен проект второй версии.");
+                        }
                         // получаем хэш нового проекта
                         const projectHash = hash.sha1(projectJSON);
                         // если такого проекта пока нет в таблице - добавляем
@@ -121,28 +127,30 @@ function TeacherPage() {
         // перебираем загруженные проекты
         projectsData.forEach((project, index) => {
             // парсим проект
-            const parsedProject = parseProject(project.projectJSON);
-            // оцениваем проект
-            const grades = grader(parsedProject);
+            try {
+                const parsedProject = parseProject(project.projectJSON);
+                // оцениваем проект
+                const grades = grader(parsedProject);
 
-            // суммарная оценка
-            const totalGrade = getTotalGrade(grades);
+                // суммарная оценка
+                const totalGrade = getTotalGrade(grades);
 
-            // получаем массив советов (ошибок и предупреждений)
-            const tips: Tip[] = [
-                ...scanForErrors(parsedProject, project.projectJSON),
-                ...scanForWarnings(parsedProject, project.projectJSON),
-            ];
+                // получаем массив советов (ошибок и предупреждений)
+                const tips: Tip[] = [
+                    ...scanForErrors(parsedProject, project.projectJSON),
+                    ...scanForWarnings(parsedProject, project.projectJSON),
+                ];
 
-            // сохраняем данные для строки в таблице (порядок колонок определяется тут)
-            tableData.push({
-                key: project.key,
-                projectAuthor: project.projectAuthor,
-                projectName: project.projectName,
-                grades: grades,
-                tips: tips,
-                totalGrade: totalGrade,
-            });
+                // сохраняем данные для строки в таблице (порядок колонок определяется тут)
+                tableData.push({
+                    key: project.key,
+                    projectAuthor: project.projectAuthor,
+                    projectName: project.projectName,
+                    grades: grades,
+                    tips: tips,
+                    totalGrade: totalGrade,
+                });
+            } catch (e) {}
         });
 
         // меняем state

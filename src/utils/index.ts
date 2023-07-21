@@ -196,6 +196,12 @@ function parseProject(scratchProject: ScratchProject): Project {
         allScripts: "",
     };
 
+    // по-ошибке могут загрузить проект из Scratch 2.0
+    // такой проект пропускаем
+    if ("info" in scratchProject) {
+        throw new Error("Загружен проект второй версии.");
+    }
+
     // парсим сцену проекта
     const stage = scratchProject.targets.filter((t: Target) => t.isStage)[0];
     project.stage = parseTarget(stage);
