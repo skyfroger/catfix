@@ -15,6 +15,7 @@ import {
     waitCondAndBackdropRE,
     waitSecondsRE,
 } from "./searchPatterns";
+import { escapeSB } from "../utils";
 
 /*
 Интерфейс для описания типа оценки
@@ -258,11 +259,21 @@ function abstractGrader(project: Project): graderResult {
         // проверяем собственные блоки на валидность (в них есть команды)
         sp.customBlocks.forEach((customB) => {
             const blockName = customB.split(" ")[0]; // оставляет имя блока без параметров
-            const customBRE = new RegExp(`define ${blockName}.*\\n(.+\\n)+`);
+
+            // Чтобы правильно работало регулярное выражение, когда в имени процедуры есть скобки
+            // приходится вызвать эскейп-функцию трижды. Другого решения у меня пока нет
+            const escapedBlockName = escapeSB(
+                escapeSB(escapeSB(blockName, false), false),
+                false
+            );
+
+            const customBRE = new RegExp(
+                `define ${escapedBlockName}.*\\n(.+\\n)+`
+            );
             if (customBRE.test(sp.allScripts)) {
                 // свой блок содержит команды
                 // создаём RE которое содержит название собственного блока
-                const re = new RegExp(`${blockName}.*::custom\\n`, "g");
+                const re = new RegExp(`${escapedBlockName}.*::custom\\n`, "g");
                 // находим все вызовы этого блока
                 const matches = sp.allScripts.matchAll(re);
                 // сохраняем в массиве broadcastsFlag значение true, если найдено больше 1 скрипта
@@ -300,10 +311,15 @@ function syncGrader(project: Project): graderResult {
     // проверяем список сообщений: каждое должно быть отправлено и получено хотя бы 1 раз
     let broadcastsFlag: boolean[] = [];
     project.broadcasts.forEach((b) => {
+        const escapedBroadcast = escapeSB(b);
         broadcastsFlag.push(
-            (project.allScripts.includes(`broadcast [${b} v]`) ||
-                project.allScripts.includes(`broadcast [${b} v] and wait`)) &&
-                project.allScripts.includes(`when I receive [${b} v]`)
+            (project.allScripts.includes(`broadcast [${escapedBroadcast} v]`) ||
+                project.allScripts.includes(
+                    `broadcast [${escapedBroadcast} v] and wait`
+                )) &&
+                project.allScripts.includes(
+                    `when I receive [${escapedBroadcast} v]`
+                )
         );
     });
     if (broadcastsFlag.includes(true)) {
