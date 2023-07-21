@@ -13,6 +13,7 @@ import {
     spriteStandardName,
 } from "./warnings";
 import {
+    literalComparison,
     messageNeverReceived,
     messageNeverSent,
     varWithoutInit,
@@ -31,7 +32,12 @@ const warningFunctions = [
 ];
 
 // храним функции для поиска ошибок
-const errorFunctions = [varWithoutInit, messageNeverReceived, messageNeverSent];
+const errorFunctions = [
+    varWithoutInit,
+    literalComparison,
+    messageNeverReceived,
+    messageNeverSent,
+];
 
 /**
  * Функция перебирает передаваемый в неё массив функций,

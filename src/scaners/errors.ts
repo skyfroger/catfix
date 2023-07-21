@@ -4,6 +4,7 @@ import { escapeSB, sbCode } from "../utils";
  * Набор функций которые находят ошибки (error)
  */
 import { Tip, tipFunctionInterface } from "./types";
+import { Sprite } from "../../@types/parsedProject";
 
 /**
  * Ищем сообщения, которые никогда не принимаются
@@ -196,5 +197,56 @@ export const messageNeverSent: tipFunctionInterface = (
         });
     });
 
+    return result;
+};
+
+/**
+ * Поиск сравнения двух буквальных значений
+ * @param project
+ * @param projectJSON
+ */
+export const literalComparison: tipFunctionInterface = (
+    project,
+    projectJSON
+) => {
+    const result: Tip[] = [];
+
+    function findLiteralComparison(sprite: Sprite): Tip[] {
+        const result: Tip[] = [];
+
+        const literalRE = new RegExp(
+            ".+(<\\[.*\\] (\\\\[><]|=) \\[.*\\]>|<\\[.*\\] contains \\[.*\\]\\?::operators>)(.)*"
+        );
+
+        sprite.scripts.forEach((script) => {
+            const scriptLines = script.split("\n");
+
+            scriptLines.every((line) => {
+                if (line.match(literalRE)) {
+                    try {
+                        result.push({
+                            code: `${scriptLines[0]}\n\n${line}`,
+                            type: "error",
+                            payload: { target: sprite.name },
+                            title: "error.literalComparisonTitle",
+                            message: "error.literalComparison",
+                        });
+                    } catch (e) {}
+                    return false;
+                }
+                return true;
+            });
+        });
+
+        return result;
+    }
+
+    // перебираем скрипты сцены
+    result.push(...findLiteralComparison(project.stage));
+
+    // перебираем скрипты спрайтов
+    project.sprites.forEach((sprite) => {
+        result.push(...findLiteralComparison(sprite));
+    });
     return result;
 };

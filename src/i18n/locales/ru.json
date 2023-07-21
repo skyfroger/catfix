@@ -110,6 +110,8 @@
         "varWithoutInitTitle": "Переменная без начального значения",
         "varWithoutInit": "В <strong>{{target}}</strong> есть переменная <strong>{{variable}}</strong>, которая используется без присваивания начального значения. Используй блок <strong>Задать значение</strong>.",
         "messageNeverSentTitle": "Неотправленное сообщение",
-        "messageNeverSent": "<strong>{{target}}</strong> получает сообщение с именем <strong>{{broadcast}}</strong>, которое никто не отправляет."
+        "messageNeverSent": "<strong>{{target}}</strong> получает сообщение с именем <strong>{{broadcast}}</strong>, которое никто не отправляет.",
+        "literalComparisonTitle": "Сравнение буквальных значений",
+        "literalComparison": "В <strong>{{target}}</strong> есть условие, в котором сравниваются буквальные значения. Результат такого сравнения всегда будет одинаковым."
     }
 }
