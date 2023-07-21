@@ -272,3 +272,46 @@ function findLostBlocks(sp: Target): Tip | null {
     }
     return null;
 }
+
+export const scriptIsTooLong: tipFunctionInterface = (project, projectJSON) => {
+    // считаем скрипт длинным после этого количества строк
+    const MAX_LENGTH = 80;
+
+    const result: Tip[] = [];
+
+    function findLongScripts(sprite: Sprite): Tip[] {
+        const result: Tip[] = [];
+
+        // перебираем все скрипты
+        sprite.scripts.forEach((script) => {
+            // получаем массив строк без end и else
+            const lines = script
+                .split("\n")
+                .filter((line) => !["end", "else"].includes(line));
+            if (lines.length > MAX_LENGTH) {
+                result.push({
+                    code: lines[0],
+                    payload: {
+                        target: sprite.name,
+                        length: String(lines.length),
+                    },
+                    type: "warning",
+                    title: "warning.scriptIsTooLongTitle",
+                    message: "warning.scriptIsTooLong",
+                });
+            }
+        });
+
+        return result;
+    }
+
+    // перебираем все спрайты
+    project.sprites.forEach((sp) => {
+        result.push(...findLongScripts(sp));
+    });
+
+    // проверяем скрипты сцены
+    result.push(...findLongScripts(project.stage));
+
+    return result;
+};

@@ -9,6 +9,7 @@ import {
     unusedVariables,
     noComments,
     scriptsOverlap,
+    scriptIsTooLong,
 } from "./warnings";
 import { messageNeverReceived, varWithoutInit } from "./errors";
 
@@ -18,6 +19,7 @@ const warningFunctions = [
     lostCode,
     unusedVariables,
     scriptsOverlap,
+    scriptIsTooLong,
     noComments,
     emptySprite,
 ];
