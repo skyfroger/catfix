@@ -5,6 +5,9 @@
 import react from "react";
 import { WarningFilled, BugFilled } from "@ant-design/icons";
 import { Tip } from "../../scaners/types";
+import TipsSummary from "../tips/TipsSummary";
+import React from "react";
+import { Popover } from "antd";
 
 interface tipsCountProps {
     tips: Tip[];
@@ -17,17 +20,22 @@ function TipsCount({ tips }: tipsCountProps) {
 
     return (
         <>
-            {bugsNumber !== 0 && (
-                <span>
-                    <BugFilled style={{ color: "#FF6D60" }} /> {bugsNumber}
-                </span>
-            )}{" "}
-            {warningsNumber !== 0 && (
-                <span>
-                    <WarningFilled style={{ color: "#F7D060" }} />{" "}
-                    {warningsNumber}
-                </span>
-            )}
+            <Popover
+                placement="bottomRight"
+                content={<TipsSummary tips={tips} />}
+            >
+                {bugsNumber !== 0 && (
+                    <span>
+                        <BugFilled style={{ color: "#FF6D60" }} /> {bugsNumber}
+                    </span>
+                )}{" "}
+                {warningsNumber !== 0 && (
+                    <span>
+                        <WarningFilled style={{ color: "#F7D060" }} />{" "}
+                        {warningsNumber}
+                    </span>
+                )}
+            </Popover>
         </>
     );
 }

@@ -1,5 +1,5 @@
 import react, { SyntheticEvent, useEffect, useState } from "react";
-import { Button, Empty, Modal, Popconfirm, Table } from "antd";
+import { Empty, Modal, Table } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
