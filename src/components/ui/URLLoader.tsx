@@ -35,7 +35,6 @@ function URLLoader({ onUpload }: urlLoaderProps) {
             try {
                 const { projectJSON, projectName, projectAuthor } =
                     await projectAPI.get(projectId);
-                console.log(projectJSON, projectName, projectAuthor);
                 onUpload(projectJSON, projectName);
             } catch (e) {
                 onUpload(null, null);
