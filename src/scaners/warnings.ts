@@ -320,3 +320,86 @@ export const scriptIsTooLong: tipFunctionInterface = (project, projectJSON) => {
 
     return result;
 };
+
+/**
+ * Ищем спрайты со стандартными именами
+ * @param project
+ * @param projectJSON
+ */
+export const spriteStandardName: tipFunctionInterface = (
+    project,
+    projectJSON
+) => {
+    // начальные названия спрайтов на разных языках
+    // взял в репозитории программы LitterBox
+    const STANDARD_SPRITE_NAMES = [
+        "Actor",
+        "Ator",
+        "Ciplun",
+        "Duszek",
+        "Figur",
+        "Figura",
+        "Gariņš",
+        "Hahmo",
+        "Kihusika",
+        "Kukla",
+        "Lik",
+        "Nhân",
+        "Objeto",
+        "Parehe",
+        "Personaj",
+        "Personatge",
+        "Pertsonaia",
+        "Postava",
+        "Pêlîstik",
+        "Sprait",
+        "Sprajt",
+        "Sprayt",
+        "Sprid",
+        "Sprite",
+        "Sprìd",
+        "Szereplő",
+        "Teikning",
+        "Umlingisi",
+        "Veikėjas",
+        "Αντικείμενο",
+        "Анагӡаҩ",
+        "Дүрс",
+        "Лик",
+        "Спрайт",
+        "Կերպար",
+        "דמות",
+        "الكائن",
+        "تەن",
+        "شکلک",
+        "สไปรต์",
+        "სპრაიტი",
+        "ገፀ-ባህርይ",
+        "តួអង្គ",
+        "スプライト",
+        "角色",
+        "스프라이트",
+    ];
+
+    const result: Tip[] = [];
+
+    project.sprites.forEach((sprite) => {
+        // перебираем стандартные имена
+        STANDARD_SPRITE_NAMES.every((name) => {
+            // имя спрайта похоже на стандартное
+            if (sprite.name.includes(name)) {
+                result.push({
+                    type: "warning",
+                    code: null,
+                    payload: { target: sprite.name },
+                    title: "warning.spriteStandardNameTitle",
+                    message: "warning.spriteStandardName",
+                });
+                return false; // останавливаем перебор стандартных имён
+            }
+            return true;
+        });
+    });
+
+    return result;
+};

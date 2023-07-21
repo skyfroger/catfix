@@ -10,6 +10,7 @@ import {
     noComments,
     scriptsOverlap,
     scriptIsTooLong,
+    spriteStandardName,
 } from "./warnings";
 import {
     messageNeverReceived,
@@ -21,6 +22,7 @@ import {
 // за получения списка предупреждений
 const warningFunctions = [
     lostCode,
+    spriteStandardName,
     unusedVariables,
     scriptsOverlap,
     scriptIsTooLong,
