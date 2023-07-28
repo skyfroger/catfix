@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Empty, List, Popover, Space } from "antd";
 import { ToolOutlined } from "@ant-design/icons";
-import { Tip } from "../../scaners/types";
+import { Tip } from "catfix-utils/dist/scaners/types";
 import TipItem from "./TipItem";
 import { useTranslation } from "react-i18next";
 import TipsSummary from "./TipsSummary";

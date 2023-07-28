@@ -5,7 +5,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { WarningFilled, BugFilled } from "@ant-design/icons";
-import { Tip } from "../../scaners/types";
+import { Tip } from "catfix-utils/dist/scaners/types";
 import { Divider, Space } from "antd";
 import parse from "html-react-parser";
 import ScratchCode from "../ui/ScratchCode";

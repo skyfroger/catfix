@@ -8,10 +8,10 @@ import { Card, Col, message, Row, Space } from "antd";
 import UploadProject from "../ui/UploadProject";
 import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";
-import parseProject from "../../utils";
+import { parseProject } from "catfix-utils/dist";
 
-import { ScratchProject } from "../../../@types/scratch";
-import { Project } from "../../../@types/parsedProject";
+import { ScratchProject } from "catfix-utils/dist/scratch";
+import { Project } from "catfix-utils/dist/parsedProject";
 import Loader from "../ui/Loader";
 import { useTranslation } from "react-i18next";
 import URLLoader from "../ui/URLLoader";

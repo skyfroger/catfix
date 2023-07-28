@@ -2,7 +2,7 @@
  * API для доступа к онлайн-версии проекта
  */
 
-import { ScratchProject } from "../../@types/scratch";
+import { ScratchProject } from "catfix-utils/dist/scratch";
 import hash from "object-hash";
 
 export type APIResponce = {

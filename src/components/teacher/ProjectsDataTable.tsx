@@ -3,8 +3,12 @@ import { Empty, Modal, Table } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
-import { categories, getMaxGrade, graderResult } from "../../graders";
-import { Tip } from "../../scaners/types";
+import {
+    categories,
+    getMaxGrade,
+    graderResult,
+} from "catfix-utils/dist/graders";
+import { Tip } from "catfix-utils/dist/scaners/types";
 import { useTranslation } from "react-i18next";
 import FullProjectInfo from "./FullProjectInfo";
 import TipsCount from "./TipsCount";

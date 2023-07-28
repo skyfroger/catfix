@@ -4,7 +4,7 @@
 
 import react, { useState } from "react";
 import { Button, Card, Form, Input } from "antd";
-import { ScratchProject } from "../../../@types/scratch";
+import { ScratchProject } from "catfix-utils/dist/scratch";
 import { useTranslation } from "react-i18next";
 import projectAPI from "../../utils/httpAPI";
 

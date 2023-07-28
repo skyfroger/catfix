@@ -3,11 +3,11 @@
  */
 
 import react, { useEffect, useState } from "react";
-import { Project } from "../../../@types/parsedProject";
-import { ScratchProject } from "../../../@types/scratch";
+import { Project } from "catfix-utils/dist/parsedProject";
+import { ScratchProject } from "catfix-utils/dist/scratch";
 import { usePostHog } from "posthog-js/react";
-import { Tip } from "../../scaners/types";
-import { scanForErrors, scanForWarnings } from "../../scaners";
+import { Tip } from "catfix-utils/dist/scaners/types";
+import { scanForErrors, scanForWarnings } from "catfix-utils/dist";
 import ScanResultsList from "./ScanResultsList";
 
 interface scanContainerProps {

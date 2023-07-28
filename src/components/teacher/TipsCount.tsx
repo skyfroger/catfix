@@ -4,7 +4,7 @@
 
 import react from "react";
 import { WarningFilled, BugFilled } from "@ant-design/icons";
-import { Tip } from "../../scaners/types";
+import { Tip } from "catfix-utils/dist/scaners/types";
 import TipsSummary from "../tips/TipsSummary";
 import React from "react";
 import { Popover } from "antd";

@@ -10,7 +10,7 @@ import {
     getTotalGrade,
     graderResult,
     gradesEnum,
-} from "../../graders";
+} from "catfix-utils/dist/graders";
 import { useTranslation } from "react-i18next";
 import GradeItem from "./GradeItem";
 import { Card, Empty } from "antd";

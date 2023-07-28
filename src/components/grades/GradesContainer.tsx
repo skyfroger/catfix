@@ -3,14 +3,14 @@
  */
 
 import react, { useEffect } from "react";
-import { Project } from "../../../@types/parsedProject";
+import { Project } from "catfix-utils/dist/parsedProject";
 import { usePostHog } from "posthog-js/react";
 import grader, {
     categories,
     getMaxGrade,
     getTotalGrade,
     graderResult,
-} from "../../graders";
+} from "catfix-utils/dist/graders";
 import GradesList from "./GradesList";
 
 interface gradesContainerProps {

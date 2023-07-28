@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { categories, gradesEnum } from "../../graders";
+import { categories, gradesEnum } from "catfix-utils/dist/graders";
 import { Col, Divider, Progress, Row, Space, theme } from "antd";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";

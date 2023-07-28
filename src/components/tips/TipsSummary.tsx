@@ -1,6 +1,6 @@
 import react from "react";
 import { WarningFilled, BugFilled } from "@ant-design/icons";
-import { Tip } from "../../scaners/types";
+import { Tip } from "catfix-utils/dist/scaners/types";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
