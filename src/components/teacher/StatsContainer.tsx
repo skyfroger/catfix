@@ -1,8 +1,9 @@
-import react, { useEffect } from "react";
+import react, { useEffect, useState } from "react";
 import { APIResponce } from "../../utils/httpAPI";
 import { TableData } from "./ProjectsDataTable";
 import { useTranslation } from "react-i18next";
-import { Card, Space } from "antd";
+import { Card, Col, Row, Space } from "antd";
+import { Chart } from "react-google-charts";
 
 interface statsContainerProps {
     projects: APIResponce[];
@@ -10,57 +11,122 @@ interface statsContainerProps {
 }
 
 function StatsContainer({ projects, tableData }: statsContainerProps) {
+    const [warnGraphData, setWarnGraphData] = useState<string | number[][]>([
+        [],
+    ]);
+    const [errGraphData, setErrGraphData] = useState<string | number[][]>([[]]);
+
     const { t } = useTranslation();
 
-    const totalNumberOfSprites = projects.reduce((prev, cur) => {
-        return prev + cur.projectJSON.targets.length + 1;
-    }, 0);
+    // пересчитываем данные для графиков, если добавили/удалили проект или сменили язык
+    useEffect(() => {
+        // считаем общее количество спрайтов
+        const totalNumberOfSprites = projects.reduce((prev, cur) => {
+            return prev + cur.projectJSON.targets.length + 1;
+        }, 0);
 
-    const warningTitles = countTipsByType(
-        tableData,
-        "warning",
-        totalNumberOfSprites
-    );
-    const errorTitles = countTipsByType(
-        tableData,
-        "error",
-        totalNumberOfSprites
-    );
+        const warningTitles = countTipsByType(
+            tableData,
+            "warning",
+            totalNumberOfSprites
+        );
+        const errorTitles = countTipsByType(
+            tableData,
+            "error",
+            totalNumberOfSprites
+        );
 
-    const sortedWarnings = Array.from(warningTitles.entries()).sort(
-        (a, b) => b[1] - a[1]
-    );
-    const sortedErrors = Array.from(errorTitles.entries()).sort(
-        (a, b) => b[1] - a[1]
-    );
+        const sortedWarnings = Array.from(warningTitles.entries()).sort(
+            (a, b) => b[1] - a[1]
+        );
+        const sortedErrors = Array.from(errorTitles.entries()).sort(
+            (a, b) => b[1] - a[1]
+        );
+
+        // данные для графика с предупреждениями
+        const warnData = [
+            ["hi", ""],
+            ...sortedWarnings.map((warn) => [t(warn[0] as any), warn[1]]),
+        ];
+
+        // данные для графика с ошибками
+        const errData = [
+            ["hi", ""],
+            ...sortedErrors.map((err) => [t(err[0] as any), err[1]]),
+        ];
+
+        setWarnGraphData(warnData);
+        setErrGraphData(errData);
+    }, [tableData, t]);
+
+    const warnOptions = {
+        title: "Предупреждения",
+        chartArea: { width: "50%" },
+        hAxis: {
+            title: "Количество (на 1 спрайт)",
+            minValue: 0,
+        },
+        vAxis: {
+            title: "Название",
+        },
+        animation: {
+            duration: 1000,
+            easing: "out",
+            startup: true,
+        },
+        colors: ["#F7D060"],
+    };
+
+    const errOptions = {
+        title: "Ошибки",
+        chartArea: { width: "50%" },
+        hAxis: {
+            title: "Количество (на 1 спрайт)",
+            minValue: 0,
+        },
+        vAxis: {
+            title: "Название",
+        },
+        animation: {
+            duration: 1000,
+            easing: "out",
+            startup: true,
+        },
+        colors: ["#FF6D60"],
+    };
 
     return (
         <>
-            <Space
-                direction="horizontal"
-                style={{
-                    width: "100%",
-                    justifyContent: "start",
-                    alignItems: "start",
-                    flexWrap: "wrap",
-                }}
-            >
-                <Card title={"Предупреждения: от более частых к более редким"}>
-                    <ol>
-                        {sortedWarnings.map((tip, index) => {
-                            return <li key={index}>{t(tip[0] as any)}</li>;
-                        })}
-                    </ol>
-                </Card>
-
-                <Card title={"Ошибки: от более частых к более редким"}>
-                    <ol>
-                        {sortedErrors.map((tip, index) => {
-                            return <li key={index}>{t(tip[0] as any)}</li>;
-                        })}
-                    </ol>
-                </Card>
-            </Space>
+            <Row gutter={16}>
+                <Col sm={24} lg={12}>
+                    <Card
+                        title={"Предупреждения: от более частых к более редким"}
+                    >
+                        {warnGraphData.length > 1 && (
+                            <Chart
+                                chartType="BarChart"
+                                width="100%"
+                                height="400px"
+                                data={warnGraphData}
+                                options={warnOptions}
+                            />
+                        )}
+                    </Card>
+                </Col>
+                <Col sm={24} lg={12}>
+                    <Card title={"Ошибки: от более частых к более редким"}>
+                        {errGraphData.length > 1 && (
+                            <Chart
+                                chartType="BarChart"
+                                width="100%"
+                                height="400px"
+                                data={errGraphData}
+                                options={errOptions}
+                            />
+                        )}
+                    </Card>
+                </Col>
+            </Row>
         </>
     );
 }
