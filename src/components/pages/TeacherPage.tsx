@@ -34,11 +34,15 @@ function TeacherPage() {
     const handleURLUpload = (projects: APIResponce[]) => {
         // хеши уже загруженных проектов
         const hashes = projectsData.map((pd) => pd.key);
+        // id проектов, которые уже находятся в таблице
+        const siteIds: number[] = projectsData.map((pd) =>
+            pd.siteId ? pd.siteId : 0
+        );
 
         // фильтруем новые загруженные по сети проекты
-        // хэш нового проекта должен быть уникальным
+        // хэш нового проекта и его siteId должны быть уникальными
         const uniqUploadedProjects = projects.filter(
-            (p) => !hashes.includes(p.key)
+            (p) => !hashes.includes(p.key) && !siteIds.includes(p.siteId ?? 0)
         );
         // добавляем новые проекты к уже существующим
         setProjectsData(() => [...projectsData, ...uniqUploadedProjects]);
