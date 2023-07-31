@@ -1,6 +1,6 @@
 import react, { SyntheticEvent, useEffect, useState } from "react";
-import { Empty, Modal, Table } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { Button, Empty, Modal, Table } from "antd";
+import { DeleteOutlined, RedoOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
 import {
@@ -17,6 +17,7 @@ import DeleteConfirmButton from "../ui/DeleteConfirmButton";
 // интерфейс для описания одной строки таблицы
 export interface TableData {
     key: string;
+    siteId: number | null;
     projectAuthor: string;
     projectName: string;
     totalGrade: number;
@@ -29,9 +30,15 @@ interface propsDataTable {
     data: TableData[];
     onClear: () => void;
     onFilter: (key: string) => void;
+    onUpdate: (record: TableData) => void;
 }
 
-function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
+function ProjectsDataTable({
+    data,
+    onClear,
+    onFilter,
+    onUpdate,
+}: propsDataTable) {
     // текущий проект, которые нужно показать в модальном окне
     const [currentProject, setCurrentProject] = useState<TableData>(
         {} as TableData
@@ -84,6 +91,24 @@ function ProjectsDataTable({ data, onClear, onFilter }: propsDataTable) {
             sortDirections: ["descend", "ascend"],
             align: "center",
             onCell: onCellHandle,
+        },
+        {
+            title: t("table.update"),
+            dataIndex: "update",
+            align: "center",
+            render: (_, record: TableData) => {
+                return (
+                    record.projectAuthor !== "-" && (
+                        <Button
+                            style={{ color: "#4C4C6D" }}
+                            type="dashed"
+                            onClick={() => onUpdate(record)}
+                        >
+                            <RedoOutlined />
+                        </Button>
+                    )
+                );
+            },
         },
         {
             title: t("ui.deleteTitle"),

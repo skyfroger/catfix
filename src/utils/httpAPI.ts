@@ -7,6 +7,7 @@ import hash from "object-hash";
 
 export type APIResponce = {
     key: string;
+    siteId: number | null;
     projectJSON: ScratchProject;
     projectName: string;
     projectAuthor: string;
@@ -42,6 +43,7 @@ export const projectAPI = {
         // таким образом удостоверимся, что все проекты в таблице будут уникальными
         return {
             key: hash.sha1(projectJSON),
+            siteId: projectId,
             projectJSON: projectJSON,
             projectName: projectName,
             projectAuthor: projectAuthor,

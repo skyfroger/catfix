@@ -1,8 +1,8 @@
 import react, { useEffect, useState } from "react";
-import { Card, Col, Row } from "antd";
+import { Card, Col, Row, message } from "antd";
 import MassURLLoader from "../ui/MassURLLoader";
 import ProjectsDataTable, { TableData } from "../teacher/ProjectsDataTable";
-import { APIResponce } from "../../utils/httpAPI";
+import { APIResponce, projectAPI } from "../../utils/httpAPI";
 import { parseProject } from "catfix-utils/dist";
 import { grader, getTotalGrade } from "catfix-utils/dist";
 import { Tip } from "catfix-utils/dist/scaners/types";
@@ -25,6 +25,7 @@ function TeacherPage() {
     const [isLoading, setIsLoading] = useState(false);
 
     const { t } = useTranslation();
+    const [messageApi, contextHolder] = message.useMessage();
 
     /**
      * Сохранение в state массива проектов
@@ -55,10 +56,28 @@ function TeacherPage() {
      * @param key ключ записи
      */
     const handleFilter = (key: React.Key) => {
-        const newProjectData = projectsData.filter(
-            (record) => record.key !== key
+        setProjectsData((projectsData) =>
+            projectsData.filter((record) => record.key !== key)
         );
-        setProjectsData(newProjectData);
+    };
+
+    const handleUpdate = (updatedRecord: TableData) => {
+        if (!updatedRecord.siteId) return;
+
+        const data = projectsData.filter(
+            (project) => project.siteId !== updatedRecord.siteId
+        );
+
+        async function load(projectId: number) {
+            const updateProject = await projectAPI.get(projectId);
+            setProjectsData([...data, updateProject]);
+            messageApi.open({
+                type: "success",
+                content: t("ui.uploadFinished"),
+            });
+        }
+
+        load(updatedRecord.siteId);
     };
 
     const handleUpload = (project: RcFile, projects: RcFile[]) => {
@@ -92,6 +111,7 @@ function TeacherPage() {
                         if (!hashes.includes(projectHash)) {
                             loadedProjects.push({
                                 key: hash.sha1(projectJSON),
+                                siteId: null,
                                 projectJSON: projectJSON,
                                 projectName: file.name,
                                 projectAuthor: "-",
@@ -125,6 +145,7 @@ function TeacherPage() {
         const tableData: TableData[] = [];
 
         // перебираем загруженные проекты
+        // todo проверка начинается заново, как только удаляется или обновляется проект (нужно оптимизировать)
         projectsData.forEach((project, index) => {
             // парсим проект
             try {
@@ -144,6 +165,7 @@ function TeacherPage() {
                 // сохраняем данные для строки в таблице (порядок колонок определяется тут)
                 tableData.push({
                     key: project.key,
+                    siteId: project.siteId,
                     projectAuthor: project.projectAuthor,
                     projectName: project.projectName,
                     grades: grades,
@@ -159,6 +181,7 @@ function TeacherPage() {
 
     return (
         <>
+            {contextHolder}
             <motion.div
                 initial="hidden"
                 animate="visible"
@@ -198,6 +221,7 @@ function TeacherPage() {
                         data={tableData}
                         onClear={handleTableClearing}
                         onFilter={handleFilter}
+                        onUpdate={handleUpdate}
                     />
                 </Card>
             </motion.div>

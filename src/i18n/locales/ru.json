@@ -37,6 +37,7 @@
         "projectName": "Название проекта",
         "projectAuthor": "Автор",
         "totalGrade": "Оценка ({{maxGrade}})",
+        "update": "Обновить",
         "tips": "Рекомендации"
     },
     "flow": {
