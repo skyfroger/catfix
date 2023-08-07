@@ -10,6 +10,7 @@ import MainPage from "./components/pages/MainPage";
 import LangSelector from "./components/ui/LangSelector";
 import TeacherPage from "./components/pages/TeacherPage";
 import { useTranslation } from "react-i18next";
+import ExtensionPage from "./components/pages/ExtensionPage";
 
 const { Header, Content, Footer } = Layout;
 
@@ -73,6 +74,11 @@ function App() {
                                 {t("ui.menuMassUpload")}
                             </NavLink>
                         </Menu.Item>
+                        <Menu.Item key={3}>
+                            <NavLink to="/extension">
+                                {t("ui.extensionPageTitle")}
+                            </NavLink>
+                        </Menu.Item>
                     </Menu>
 
                     <LangSelector />
@@ -81,6 +87,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<MainPage />} />
                         <Route path="/teacher" element={<TeacherPage />} />
+                        <Route path="/extension" element={<ExtensionPage />} />
                     </Routes>
                 </Content>
                 <Footer>
