@@ -6,26 +6,14 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import { PostHogProvider } from "posthog-js/react";
-
-const options = {
-    api_host: process.env.REACT_APP_PUBLIC_POSTHOG_HOST,
-    autocapture: false,
-};
-
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
 root.render(
     <React.StrictMode>
-        <PostHogProvider
-            apiKey={process.env.REACT_APP_PUBLIC_POSTHOG_KEY}
-            options={options}
-        >
-            <Router>
-                <App />
-            </Router>
-        </PostHogProvider>
+        <Router>
+            <App />
+        </Router>
     </React.StrictMode>
 );
 

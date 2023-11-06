@@ -23,6 +23,7 @@ function LangSelector() {
                     options={[
                         { value: "ru", label: "Русский" },
                         { value: "be", label: "Беларуская" },
+                        { value: "en", label: "English" },
                     ]}
                 />
             </Space>

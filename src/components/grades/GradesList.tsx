@@ -16,7 +16,6 @@ import GradeItem from "./GradeItem";
 import { Card, Empty } from "antd";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { usePostHog } from "posthog-js/react";
 import { basicAnimations } from "../../utils/animations";
 
 interface gradesListProps {
@@ -25,7 +24,6 @@ interface gradesListProps {
 
 function GradesList({ grades }: gradesListProps) {
     const { t } = useTranslation();
-    const posthog = usePostHog(); // для отправки статистики
 
     const gradeKeys = Array.from(grades.keys());
 

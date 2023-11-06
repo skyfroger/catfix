@@ -1,0 +1,120 @@
+{
+    "ui": {
+        "menuMainPage": "Home",
+        "maiPageTitle": "Project review",
+        "extensionPageTitle": "Browser extension",
+        "extensionDesc": "<p>The extension helps you to check your Scratch project while working on it. To do so, you need to open the extension window, and after a while, a set of recommendations will appear.</p><p>Checking is run by the user and automatically happens every 10 minutes.</p>",
+        "mainPageDesc": "Upload your Scratch project from the file or link to see its complexity rating and list of recommendations.",
+        "massUploadTitle": "Checking multiple projects",
+        "massUploadDesc": "All uploaded projects are added to the table. Clicking on a row displays detailed information about the project.",
+        "menuMassUpload": "Teacher",
+        "uploadFromFile": "Checking a project from a file",
+        "uploadFromURL": "Online project check",
+        "upload": "Click to upload or drag and drop the project file here",
+        "tips": "What can be improved",
+        "noTips": "No notices or errors",
+        "showNextTips": "Show the next tips",
+        "loading": "The project is loading",
+        "uploadError": "Failed to load the project. Check the file format",
+        "parsingError": "Failed to read the project.",
+        "uploadFinished": "The project loaded",
+        "urlLabel": "Project link",
+        "loadFromURLButton": "Run review",
+        "urlRequired": "The field must be filled in before uploading",
+        "projectURLRequired": "Provide the correct project address",
+        "fileName": "Project Name: {{fileName}}",
+        "noGrade": "Upload a project to see its grade",
+        "totalGrade": "Total Grade: {{totalGrade}} of {{maxGrade}}}",
+        "massUploadFromFile": "Uploading multiple local files",
+        "massUploadFromURL": "Uploading multiple online projects",
+        "massURLUploadHint": "Specify here a set of links to the projects you want to check (maximum {{maxNumberOfLinks}})",
+        "openProjectModalTooltip": "Click to see details about the project",
+        "deleteTitle": "Delete",
+        "ok": "Yes",
+        "cancel": "No",
+        "deleteConfirm": "Are you sure?",
+        "clearTable": "Clear table"
+    },
+    "table": {
+        "projectName": "Project name",
+        "projectAuthor": "Author",
+        "totalGrade": "Grade ({{maxGrade}})",
+        "update": "Update",
+        "tips": "Tips"
+    },
+    "flow": {
+        "title": "Поток данных",
+        "0": "В проекте нет скриптов",
+        "1": "В проекте есть скрипты, но нет циклов",
+        "2": "В проекте есть бесконечный цикл и/или цикл с определённым количеством повторений",
+        "3": "В проекте есть цикл с предусловием"
+    },
+    "data": {
+        "title": "Использование переменных",
+        "0": "В проекте нет переменных",
+        "1": "Стартовые значения описаны без переменных",
+        "2": "В проекте переменным задаются начальные значения. Переменные используются в скриптах проекта",
+        "3": "В проекте используются списки"
+    },
+    "logic": {
+        "title": "Логика",
+        "0": "В проекте не используется блок Если ... то",
+        "1": "В проекте используется блок Если ... то",
+        "2": "В проекте используется блок Если ... то ... иначе",
+        "3": "В проекте есть составные условия - И, ИЛИ, НЕ"
+    },
+    "parallel": {
+        "title": "Параллельность",
+        "0": "В проекте нет скриптов, которые запускаются одновременно",
+        "1": "Больше одного спрайта и в каждом есть скрипт, запускающийся по зелёному флажку",
+        "2": "Щелчок по спрайту или одна клавиша на клавиатуре запускают больше одного скрипта",
+        "3": "Одно сообщение запускает больше одного скрипта"
+    },
+    "abstract": {
+        "title": "Абстракция",
+        "0": "У каждого спрайта только один скрипт",
+        "1": "Есть спрайты у которых больше одного скрипта",
+        "2": "Есть собственных блоки, которые вызываются больше одного раза",
+        "3": "В проекте создаются клоны спрайта"
+    },
+    "sync": {
+        "title": "Синхронизация",
+        "0": "Синхронизации между спрайтами нет",
+        "1": "Используется блок Ждать ... секунд",
+        "2": "Есть отправка и получение сообщений",
+        "3": "Используется блок Ждать до ... или запуск крипта по смене фона"
+    },
+    "interactivity": {
+        "title": "Интерактивность",
+        "0": "Запуск скриптов, в основном, по зелёному флажку",
+        "1": "Есть скрипты, которые запускаются после щелчка по спрайту",
+        "2": "Есть управление с помощью мыши или ввод текста с клавиатуры",
+        "3": "Используются камера или микрофон"
+    },
+    "warning": {
+        "emptySpriteTitle": "Пустой спрайт",
+        "emptySprite": "В спрайте <strong>{{spriteName}}</strong> нет скриптов. Возможно этот спрайт можно удалить.",
+        "unusedVariableTitle": "Неиспользуемая переменная",
+        "unusedVariable": "Переменная <strong>{{variable}}</strong> в <strong>{{target}}</strong> объявлена, но не используется.",
+        "lostCodeTitle": "Потерянный код",
+        "lostCode": "В <strong>{{target}}</strong> есть потерянные блоки.",
+        "noCommentsTitle": "Нет комментариев",
+        "noComments": "В <strong>{{target}}</strong> нет комментариев в скриптах. Добавь комментарии, чтобы сделать код понятнее.",
+        "scriptsOverlapTitle": "Наложение скриптов",
+        "scriptsOverlap": "Скрипты в <strong>{{target}}</strong> возможно накладываются друг на друга.",
+        "scriptIsTooLongTitle": "Слишком длинный скрипт",
+        "scriptIsTooLong": "Скрипт в <strong>{{target}}</strong> очень длинный (количество команд около <strong>{{length}}</strong>). Возможно стоит разбить его на несколько собственных блоков или использовать цикл, если есть повторяющиеся команды.",
+        "spriteStandardNameTitle": "Стандартное имя спрайта",
+        "spriteStandardName": "Имя спрайта <strong>{{target}}</strong> похоже на то, которое Scratch даёт всем новым спрайтам. Стоит переименовать спрайт согласно его назначению или внешнему виду."
+    },
+    "error": {
+        "messageNeverReceivedTitle": "Сообщение никто не получает",
+        "messageNeverReceived": "<strong>{{target}}</strong> отправляет сообщение с именем <strong>{{broadcast}}</strong>, которое никто не получает.",
+        "varWithoutInitTitle": "Переменная без начального значения",
+        "varWithoutInit": "В <strong>{{target}}</strong> есть переменная <strong>{{variable}}</strong>, которая используется без присваивания начального значения. Используй блок <strong>Задать значение</strong>.",
+        "messageNeverSentTitle": "Неотправленное сообщение",
+        "messageNeverSent": "<strong>{{target}}</strong> получает сообщение с именем <strong>{{broadcast}}</strong>, которое никто не отправляет.",
+        "literalComparisonTitle": "Сравнение буквальных значений",
+        "literalComparison": "В <strong>{{target}}</strong> есть условие, в котором сравниваются буквальные значения. Результат такого сравнения всегда будет одинаковым."
+    }
+}

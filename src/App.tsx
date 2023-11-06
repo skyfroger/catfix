@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import logo from "./logo.png";
 import { Layout, ConfigProvider, Menu, FloatButton } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
 import { Routes, Route, NavLink, useLocation } from "react-router-dom";
-import posthog from "posthog-js";
+import { YMInitializer } from "@appigram/react-yandex-metrika";
 
 import MainPage from "./components/pages/MainPage";
 import LangSelector from "./components/ui/LangSelector";
 import TeacherPage from "./components/pages/TeacherPage";
 import { useTranslation } from "react-i18next";
 import ExtensionPage from "./components/pages/ExtensionPage";
+import ym from "@appigram/react-yandex-metrika";
 
 const { Header, Content, Footer } = Layout;
 
@@ -18,9 +19,8 @@ function App() {
     const { t } = useTranslation();
     let location = useLocation(); // new
 
-    React.useEffect(() => {
-        // new
-        posthog.capture("$pageview");
+    useEffect(() => {
+        ym("hit", location.pathname);
     }, [location]);
 
     return (
@@ -100,6 +100,7 @@ function App() {
                     </a>
                 </Footer>
                 <FloatButton.BackTop type="primary" />
+                <YMInitializer accounts={[95485638]} />
             </Layout>
         </ConfigProvider>
     );

@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 
 import ru from "./locales/ru.json";
 import be from "./locales/be.json";
+import en from "./locales/en.json";
 
 export const resources = {
     ru: {
@@ -11,6 +12,9 @@ export const resources = {
     be: {
         main: be,
     },
+    en: {
+        main: en,
+    }
 };
 
 i18n.use(initReactI18next).init({
