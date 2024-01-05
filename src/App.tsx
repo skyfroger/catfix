@@ -28,6 +28,7 @@ function App() {
             theme={{
                 token: {
                     fontSize: 15,
+                    colorTextBase: "#293241",
                     colorPrimary: "#4C4C6D",
                     fontFamily: "Noto Sans",
                 },
