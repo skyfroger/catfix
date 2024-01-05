@@ -28,6 +28,7 @@ function UploadProject({ multiple, onUpload }: uploadProjectProps) {
         showUploadList: false,
         maxCount: 1,
         action: "",
+        accept: ".sb3",
         beforeUpload(file: RcFile, fileList: RcFile[]) {
             onUpload(file, fileList);
             return false; // отменяем загрузку файла
