@@ -1,5 +1,5 @@
 import react, { useEffect, useState } from "react";
-import { Card, Col, Row, message } from "antd";
+import { Card, Col, Row, Typography, message } from "antd";
 import MassURLLoader from "../ui/MassURLLoader";
 import ProjectsDataTable, { TableData } from "../teacher/ProjectsDataTable";
 import { APIResponce, projectAPI } from "../../utils/httpAPI";
@@ -195,8 +195,12 @@ function TeacherPage() {
                 <Card style={{ marginBottom: 16 }}>
                     <Row gutter={16}>
                         <Col span={24}>
-                            <h1>{t("ui.massUploadTitle")}</h1>
-                            <p>{t("ui.massUploadDesc")}</p>
+                            <Typography.Title>
+                                {t("ui.massUploadTitle")}
+                            </Typography.Title>
+                            <Typography.Paragraph>
+                                {t("ui.massUploadDesc")}
+                            </Typography.Paragraph>
                         </Col>
                     </Row>
                     <Row gutter={16}>
