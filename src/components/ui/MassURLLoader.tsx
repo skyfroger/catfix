@@ -3,7 +3,7 @@
  */
 
 import react, { useState } from "react";
-import { Button, Card, Form, Input } from "antd";
+import { Button, Card, Form, Input, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import projectAPI, { APIResponce } from "../../utils/httpAPI";
 const { TextArea } = Input;
@@ -63,7 +63,10 @@ function MassURLLoader({ onUpload }: massUrlLoaderProps) {
     };
 
     return (
-        <Card title={t("ui.massUploadFromURL")}>
+        <div style={{ display: "flex", gap: "8px", flexDirection: "column" }}>
+            <Typography.Title level={4}>
+                {t("ui.massUploadFromURL")}
+            </Typography.Title>
             <Form
                 form={form}
                 layout="vertical"
@@ -101,7 +104,7 @@ function MassURLLoader({ onUpload }: massUrlLoaderProps) {
                     </Button>
                 </Form.Item>
             </Form>
-        </Card>
+        </div>
     );
 }
 

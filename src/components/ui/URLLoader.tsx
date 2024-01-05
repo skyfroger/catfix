@@ -3,7 +3,7 @@
  */
 
 import react, { useState } from "react";
-import { Button, Card, Form, Input } from "antd";
+import { Button, Form, Input, Typography } from "antd";
 import { ScratchProject } from "catfix-utils/dist/scratch";
 import { useTranslation } from "react-i18next";
 import projectAPI from "../../utils/httpAPI";
@@ -47,12 +47,16 @@ function URLLoader({ onUpload }: urlLoaderProps) {
     };
 
     return (
-        <Card title={t("ui.uploadFromURL")}>
+        <div style={{ display: "flex", gap: "8px", flexDirection: "column" }}>
+            <Typography.Title level={4}>
+                {t("ui.uploadFromURL")}
+            </Typography.Title>
             <Form
                 form={form}
                 layout="vertical"
                 onFinish={handleSend}
                 autoComplete="off"
+                style={{ width: "100%" }}
             >
                 <Form.Item
                     name="url"
@@ -79,7 +83,7 @@ function URLLoader({ onUpload }: urlLoaderProps) {
                     </Button>
                 </Form.Item>
             </Form>
-        </Card>
+        </div>
     );
 }
 

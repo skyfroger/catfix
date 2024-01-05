@@ -29,6 +29,7 @@ function App() {
                 token: {
                     fontSize: 15,
                     colorPrimary: "#4C4C6D",
+                    fontFamily: "Noto Sans",
                 },
             }}
         >

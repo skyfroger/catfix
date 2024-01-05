@@ -8,7 +8,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd";
-import { Upload, Card } from "antd";
+import { Upload, Typography } from "antd";
 
 import { RcFile } from "antd/es/upload";
 
@@ -35,18 +35,17 @@ function UploadProject({ multiple, onUpload }: uploadProjectProps) {
         },
     };
     return (
-        <Card
-            title={
-                multiple ? t("ui.massUploadFromFile") : t("ui.uploadFromFile")
-            }
-        >
+        <div style={{ display: "flex", gap: "8px", flexDirection: "column" }}>
+            <Typography.Title level={4}>
+                {multiple ? t("ui.massUploadFromFile") : t("ui.uploadFromFile")}
+            </Typography.Title>
             <Dragger {...uploadProps}>
                 <p className="ant-upload-drag-icon">
                     <UploadOutlined />{" "}
                 </p>
                 <p className="ant-upload-text">{t("ui.upload")}</p>
             </Dragger>
-        </Card>
+        </div>
     );
 }
 

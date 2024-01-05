@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Card, Col, message, Row, Space } from "antd";
+import { Card, Col, message, Row, Divider, Typography } from "antd";
 import UploadProject from "../ui/UploadProject";
 import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";
@@ -119,8 +119,12 @@ function MainPage() {
                 <Card style={{ marginBottom: 16 }}>
                     <Row gutter={16}>
                         <Col span={24}>
-                            <h1>{t("ui.maiPageTitle")}</h1>
-                            <p>{t("ui.mainPageDesc")}</p>
+                            <Typography.Title>
+                                {t("ui.maiPageTitle")}
+                            </Typography.Title>
+                            <Typography.Paragraph>
+                                {t("ui.mainPageDesc")}
+                            </Typography.Paragraph>
                         </Col>
                     </Row>
                     <Row gutter={16}>
@@ -136,10 +140,10 @@ function MainPage() {
                     </Row>
                     <Row gutter={16}>
                         <Col span={24}>
-                            <h1>
+                            <Typography.Title level={4}>
                                 <FileOutlined />{" "}
                                 {t("ui.fileName", { fileName: fileName })}
-                            </h1>
+                            </Typography.Title>
                             {uploadState === "loading" && <Loader />}
                         </Col>
                     </Row>
