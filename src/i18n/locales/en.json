@@ -24,7 +24,7 @@
         "projectURLRequired": "Provide the correct project address",
         "fileName": "Project Name: {{fileName}}",
         "noGrade": "Upload a project to see its grade",
-        "totalGrade": "Total Grade: {{totalGrade}} of {{maxGrade}}}",
+        "totalGrade": "Total Grade: {{totalGrade}} out of {{maxGrade}}",
         "massUploadFromFile": "Uploading multiple local files",
         "massUploadFromURL": "Uploading multiple online projects",
         "massURLUploadHint": "Specify here a set of links to the projects you want to check (maximum {{maxNumberOfLinks}})",
