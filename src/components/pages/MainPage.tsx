@@ -116,7 +116,7 @@ function MainPage() {
                 exit="hidden"
                 variants={basicAnimations}
             >
-                <Card style={{ marginBottom: 16 }}>
+                <Card style={{ marginBottom: 16, backgroundColor: "#D7E5CA" }}>
                     <Row gutter={16}>
                         <Col span={24}>
                             <Typography.Title>
@@ -138,6 +138,7 @@ function MainPage() {
                             <URLLoader onUpload={handleURLUpload} />
                         </Col>
                     </Row>
+                    <Divider />
                     <Row gutter={16}>
                         <Col span={24}>
                             <Typography.Title level={4}>

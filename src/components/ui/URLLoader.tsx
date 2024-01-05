@@ -2,7 +2,8 @@
  * Компонент предназначен для загрузки проекта через URL
  */
 
-import react, { useState } from "react";
+import react, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Button, Form, Input, Typography } from "antd";
 import { ScratchProject } from "catfix-utils/dist/scratch";
 import { useTranslation } from "react-i18next";
@@ -23,25 +24,40 @@ function URLLoader({ onUpload }: urlLoaderProps) {
     const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(false);
 
+    let [searchParams, setSearchParams] = useSearchParams(); // GET-параметры
+
     const { t } = useTranslation();
+
+    useEffect(() => {
+        /*
+        После получения параметра id из URL проверяем его валидность.
+        Если id подходящий и не запущена загрузка проекта, пробуем
+        загрузить проект с полученным id.
+        */
+        const id = Number(searchParams.get("id"));
+        console.log(id);
+        if (!isLoading && id) {
+            load(id);
+        }
+    }, []);
+
+    async function load(projectId: number) {
+        setIsLoading(() => true); // загрузка запущена
+        try {
+            const { projectJSON, projectName, projectAuthor } =
+                await projectAPI.get(projectId);
+            onUpload(projectJSON, projectName);
+        } catch (e) {
+            onUpload(null, null);
+        } finally {
+            setIsLoading(false); // загрузка остановлена
+        }
+    }
 
     const handleSend = (values: formData) => {
         // ищем id проекта в url
         const match = values.url.match(/\d{4,}/);
         const projectId = match ? Number(match[0]) : 0;
-
-        async function load(projectId: number) {
-            setIsLoading(true); // загрузка запущена
-            try {
-                const { projectJSON, projectName, projectAuthor } =
-                    await projectAPI.get(projectId);
-                onUpload(projectJSON, projectName);
-            } catch (e) {
-                onUpload(null, null);
-            } finally {
-                setIsLoading(false); // загрузка остановлена
-            }
-        }
 
         load(projectId);
     };
@@ -60,7 +76,6 @@ function URLLoader({ onUpload }: urlLoaderProps) {
             >
                 <Form.Item
                     name="url"
-                    label={t("ui.urlLabel")}
                     rules={[
                         { required: true, message: t("ui.urlRequired") },
                         {
@@ -70,7 +85,7 @@ function URLLoader({ onUpload }: urlLoaderProps) {
                         },
                     ]}
                 >
-                    <Input allowClear />
+                    <Input placeholder={t("ui.urlLabel")} allowClear />
                 </Form.Item>
                 <Form.Item>
                     <Button

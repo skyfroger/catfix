@@ -75,7 +75,6 @@ function MassURLLoader({ onUpload }: massUrlLoaderProps) {
             >
                 <Form.Item
                     name="urls"
-                    label={t("ui.urlLabel")}
                     rules={[
                         { required: true, message: t("ui.urlRequired") },
                         {

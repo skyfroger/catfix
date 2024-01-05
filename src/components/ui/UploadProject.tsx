@@ -39,7 +39,7 @@ function UploadProject({ multiple, onUpload }: uploadProjectProps) {
             <Typography.Title level={4}>
                 {multiple ? t("ui.massUploadFromFile") : t("ui.uploadFromFile")}
             </Typography.Title>
-            <Dragger {...uploadProps}>
+            <Dragger {...uploadProps} style={{ backgroundColor: "#FAF8ED" }}>
                 <p className="ant-upload-drag-icon">
                     <UploadOutlined />{" "}
                 </p>

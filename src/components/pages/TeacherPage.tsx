@@ -192,7 +192,7 @@ function TeacherPage() {
                 exit="hidden"
                 variants={basicAnimations}
             >
-                <Card style={{ marginBottom: 16 }}>
+                <Card style={{ marginBottom: 16, backgroundColor: "#C0DBEA" }}>
                     <Row gutter={16}>
                         <Col span={24}>
                             <Typography.Title>
