@@ -41,7 +41,7 @@ function App() {
                         gap: "12px",
                         justifyContent: "space-between",
                         alignItems: "stretch",
-                        backgroundColor: "#4C4C6D",
+                        backgroundColor: "#f5f5f5",
                     }}
                 >
                     <NavLink to="/">
@@ -65,8 +65,8 @@ function App() {
                     <Menu
                         mode={"horizontal"}
                         defaultSelectedKeys={["1"]}
-                        theme={"dark"}
-                        style={{ flex: "auto", backgroundColor: "#4C4C6D" }}
+                        theme={"light"}
+                        style={{ flex: "auto", backgroundColor: "#f5f5f5" }}
                     >
                         <Menu.Item key={1}>
                             <NavLink to="/">{t("ui.menuMainPage")}</NavLink>

@@ -15,7 +15,7 @@ function LangSelector() {
     return (
         <div>
             <Space>
-                <GlobalOutlined style={{ color: "#fff", fontSize: 20 }} />
+                <GlobalOutlined style={{ color: "#4C4C6D", fontSize: 20 }} />
                 <Select
                     defaultValue="ru"
                     style={{ width: 130 }}
