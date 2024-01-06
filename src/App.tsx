@@ -64,19 +64,20 @@ function App() {
                     </NavLink>
                     <Menu
                         mode={"horizontal"}
-                        defaultSelectedKeys={["1"]}
+                        selectedKeys={[location.pathname]}
+                        defaultSelectedKeys={["/"]}
                         theme={"light"}
                         style={{ flex: "auto", backgroundColor: "#f5f5f5" }}
                     >
-                        <Menu.Item key={1}>
+                        <Menu.Item key="/">
                             <NavLink to="/">{t("ui.menuMainPage")}</NavLink>
                         </Menu.Item>
-                        <Menu.Item key={2}>
+                        <Menu.Item key="/teacher">
                             <NavLink to="/teacher">
                                 {t("ui.menuMassUpload")}
                             </NavLink>
                         </Menu.Item>
-                        <Menu.Item key={3}>
+                        <Menu.Item key="/extension">
                             <NavLink to="/extension">
                                 {t("ui.extensionPageTitle")}
                             </NavLink>
