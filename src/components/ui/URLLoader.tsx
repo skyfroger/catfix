@@ -85,7 +85,11 @@ function URLLoader({ onUpload }: urlLoaderProps) {
                         },
                     ]}
                 >
-                    <Input placeholder={t("ui.urlLabel")} allowClear />
+                    <Input
+                        placeholder={t("ui.urlLabel")}
+                        allowClear
+                        size="large"
+                    />
                 </Form.Item>
                 <Form.Item>
                     <Button
