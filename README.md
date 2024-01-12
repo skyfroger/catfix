@@ -90,3 +90,7 @@ npm install git+https://github.com/skyfroger/parse-sb3-blocks.git
 ```
 
 Если возникают ошибки, нужно добавить к команде ключ ` --force`
+
+### Переменные окружения
+
+Чтобы указать код скрипта Yandex Метрики, используется переменная окружения `REACT_APP_YM`.

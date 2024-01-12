@@ -108,7 +108,9 @@ function App() {
                         </a>
                     </Footer>
                     <FloatButton.BackTop type="primary" />
-                    <YMInitializer accounts={[95485638]} />
+                    <YMInitializer
+                        accounts={[Number(process.env.REACT_APP_YM)]}
+                    />
                 </Layout>
             </ConfigProvider>
         </HelmetProvider>
