@@ -90,14 +90,3 @@ npm install git+https://github.com/skyfroger/parse-sb3-blocks.git
 ```
 
 Если возникают ошибки, нужно добавить к команде ключ ` --force`
-
-### Сбор статистики
-
-Для сбора статистики используется сервис [PostHog](https://posthog.com). Для его работы нужны две переменные окружения:
-
-```
-REACT_APP_PUBLIC_POSTHOG_KEY=<API ключ>
-REACT_APP_PUBLIC_POSTHOG_HOST=<хост posthog>
-```
-
-Для локального запуска нужно создать файл `.env.local` и поместить туда описания этих переменных.
