@@ -20,6 +20,7 @@ import { motion } from "framer-motion";
 import { basicAnimations } from "../../utils/animations";
 import GradesContainer from "../grades/GradesContainer";
 import ScanContainer from "../tips/ScanContainer";
+import { Helmet } from "react-helmet-async";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -109,6 +110,13 @@ function MainPage() {
 
     return (
         <>
+            <Helmet>
+                <title>КотФикс - Проверка Scratch проектов | Главная</title>
+                <meta
+                    name="description"
+                    content="Приложение для автоматической проверки Scratch-проектов. Поможет оценить сложность проекта, покажет замечания и ошибки в проекте."
+                />
+            </Helmet>
             {contextHolder}
             <motion.div
                 initial="hidden"

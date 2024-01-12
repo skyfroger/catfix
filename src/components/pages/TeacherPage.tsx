@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import hash from "object-hash";
 import Loader from "../ui/Loader";
 import StatsContainer from "../teacher/StatsContainer";
+import { Helmet } from "react-helmet-async";
 
 function TeacherPage() {
     const [projectsData, setProjectsData] = useState<APIResponce[]>([]);
@@ -185,6 +186,15 @@ function TeacherPage() {
 
     return (
         <>
+            <Helmet>
+                <title>
+                    КотФикс - Проверка Scratch проектов | Страница учителя
+                </title>
+                <meta
+                    name="description"
+                    content="Приложение для автоматической проверки Scratch-проектов. Проверка нескольких проектов. Статистика по частоте появления ошибок."
+                />
+            </Helmet>
             {contextHolder}
             <motion.div
                 initial="hidden"
