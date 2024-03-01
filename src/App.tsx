@@ -9,6 +9,7 @@ import { YMInitializer } from "@appigram/react-yandex-metrika";
 import MainPage from "./components/pages/MainPage";
 import LangSelector from "./components/ui/LangSelector";
 import TeacherPage from "./components/pages/TeacherPage";
+import AboutPage from "./components/pages/AboutPage";
 import { useTranslation } from "react-i18next";
 import ExtensionPage from "./components/pages/ExtensionPage";
 import ym from "@appigram/react-yandex-metrika";
@@ -84,6 +85,11 @@ function App() {
                                     {t("ui.extensionPageTitle")}
                                 </NavLink>
                             </Menu.Item>
+                            <Menu.Item key="/about">
+                                <NavLink to="/about">
+                                    {t("ui.menuAbout")}
+                                </NavLink>
+                            </Menu.Item>
                         </Menu>
 
                         <LangSelector />
@@ -96,6 +102,7 @@ function App() {
                                 path="/extension"
                                 element={<ExtensionPage />}
                             />
+                            <Route path="/about" element={<AboutPage />} />
                         </Routes>
                     </Content>
                     <Footer>

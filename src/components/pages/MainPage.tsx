@@ -128,7 +128,7 @@ function MainPage() {
                     <Row gutter={16}>
                         <Col span={24}>
                             <Typography.Title>
-                                {t("ui.maiPageTitle")}
+                                {t("ui.mainPageTitle")}
                             </Typography.Title>
                             <Typography.Paragraph>
                                 {t("ui.mainPageDesc")}
