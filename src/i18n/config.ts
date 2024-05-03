@@ -1,4 +1,5 @@
 import i18n from "i18next";
+import detector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
 import ru from "./locales/ru.json";
@@ -14,10 +15,10 @@ export const resources = {
     },
     en: {
         main: en,
-    }
+    },
 };
 
-i18n.use(initReactI18next).init({
+i18n.use(detector).use(initReactI18next).init({
     resources,
     defaultNS: "main",
     debug: true,
