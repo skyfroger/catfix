@@ -28,19 +28,10 @@ function ExtensionPage() {
             >
                 <Card>
                     <Typography.Title>
-                        Браузерное расширение КотФикс
+                        {t("ui.extensionPageTitle")}
                     </Typography.Title>
                     <Divider />
                     {parse(t("ui.extensionDesc"))}
-                    <a
-                        href={
-                            "https://github.com/skyfroger/catfix-browser-extension"
-                        }
-                        target={"_blank"}
-                    >
-                        Перейдите по ссылке
-                    </a>{" "}
-                    чтобы скачать расширение.
                 </Card>
             </motion.div>
         </>

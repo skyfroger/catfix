@@ -3,7 +3,7 @@
         "menuMainPage": "Main",
         "mainPageTitle": "Project Check",
         "extensionPageTitle": "Browser Extension",
-        "extensionDesc": "<p>The extension helps to check a Scratch project while working on it. To do this, open the extension window, and after some time, a set of recommendations will appear.</p><p>The check is launched by the user and automatically every 10 minutes.</p>",
+        "extensionDesc": "<p>The extension helps to check a Scratch project while working on it. To do this, open the extension window, and after some time, a set of recommendations will appear.</p><p>The check is launched by the user and automatically every 10 minutes.</p><p><a href='https://github.com/skyfroger/catfix-browser-extension' target='_blank'>Click the link</a> to download the extension.</p>",
         "mainPageDesc": "Upload your Scratch project from a file or link to see its complexity assessment and list of recommendations. A saved file or link to the project is suitable for checking.",
         "massUploadTitle": "Checking Multiple Projects",
         "massUploadDesc": "All uploaded projects are added to the table. Clicking on a row displays detailed information about the project.",
