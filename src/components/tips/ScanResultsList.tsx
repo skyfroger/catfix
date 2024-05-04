@@ -90,7 +90,7 @@ function ScanResultsList({ errorsWithWarnings }: scanResultsListProps) {
                                         />
                                     }
                                 >
-                                    <Button>Сводка</Button>
+                                    <Button>{t("ui.summary")}</Button>
                                 </Popover>
                             )}
                         </Space>

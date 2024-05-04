@@ -60,14 +60,14 @@ function StatsContainer({ projects, tableData }: statsContainerProps) {
     }, [tableData, t]);
 
     const warnOptions = {
-        title: "Предупреждения",
+        title: t("plots.warnTitle"),
         chartArea: { width: "50%" },
         hAxis: {
-            title: "Количество (на 1 спрайт)",
+            title: t("plots.xAxis"),
             minValue: 0,
         },
         vAxis: {
-            title: "Название",
+            title: t("plots.yAxis"),
         },
         animation: {
             duration: 1000,
@@ -78,14 +78,14 @@ function StatsContainer({ projects, tableData }: statsContainerProps) {
     };
 
     const errOptions = {
-        title: "Ошибки",
+        title: t("plots.errTitle"),
         chartArea: { width: "50%" },
         hAxis: {
-            title: "Количество (на 1 спрайт)",
+            title: t("plots.xAxis"),
             minValue: 0,
         },
         vAxis: {
-            title: "Название",
+            title: t("plots.yAxis"),
         },
         animation: {
             duration: 1000,
@@ -100,7 +100,7 @@ function StatsContainer({ projects, tableData }: statsContainerProps) {
             <Row gutter={16}>
                 <Col sm={24} lg={12}>
                     <Card
-                        title={"Предупреждения: от более частых к более редким"}
+                        title={t("plots.warnCardTitle")}
                     >
                         {warnGraphData.length > 1 && (
                             <Chart
@@ -114,7 +114,7 @@ function StatsContainer({ projects, tableData }: statsContainerProps) {
                     </Card>
                 </Col>
                 <Col sm={24} lg={12}>
-                    <Card title={"Ошибки: от более частых к более редким"}>
+                    <Card title={t("plots.errCardTitle")}>
                         {errGraphData.length > 1 && (
                             <Chart
                                 chartType="BarChart"
