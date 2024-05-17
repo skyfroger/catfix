@@ -24,6 +24,7 @@
     "parse-sb3-blocks": "github:skyfroger/parse-sb3-blocks",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.13",
     "react-google-charts": "^4.0.1",
     "react-helmet-async": "^2.0.4",
     "react-i18next": "^13.0.1",

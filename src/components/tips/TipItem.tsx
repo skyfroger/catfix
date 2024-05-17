@@ -11,6 +11,7 @@ import parse from "html-react-parser";
 import ScratchCode from "../ui/ScratchCode";
 import { motion } from "framer-motion";
 import { basicAnimations } from "../../utils/animations";
+import { ErrorBoundary } from "react-error-boundary";
 
 function TipItem({ type, message, payload, code, title }: Tip) {
     const { t } = useTranslation();
@@ -32,7 +33,11 @@ function TipItem({ type, message, payload, code, title }: Tip) {
                     {type === "warning" ? <WarningFilled /> : <BugFilled />}
                 </p>
                 <p>{parse(t(message, { ...payload }))}</p>
-                <div>{code && <ScratchCode code={code} />}</div>
+                <ErrorBoundary
+                    fallback={<div>Не удалось показать код ошибки</div>}
+                >
+                    <div>{code && <ScratchCode code={code} />}</div>
+                </ErrorBoundary>
             </Space>
         </motion.div>
     );
