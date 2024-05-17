@@ -1,5 +1,5 @@
 import i18n from "i18next";
-// import detector from "i18next-browser-languagedetector";
+import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
 import ru from "./locales/ru.json";
@@ -18,7 +18,11 @@ export const resources = {
     },
 };
 
-i18n.use(initReactI18next).init({
+const languageDetector = new LanguageDetector(null, {
+    convertDetectedLanguage: (lng) => lng.slice(0, 2).toLowerCase()
+});
+
+i18n.use(languageDetector).use(initReactI18next).init({
     resources,
     defaultNS: "main",
     debug: true,

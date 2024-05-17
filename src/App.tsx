@@ -106,13 +106,7 @@ function App() {
                         </Routes>
                     </Content>
                     <Footer>
-                        <span>Разработчик: Хорошевич Павел</span>{" "}
-                        <a
-                            href={"https://github.com/skyfroger/catfix"}
-                            target={"_blank"}
-                        >
-                            <GithubOutlined />
-                        </a>
+                        <span>© 2023</span>
                     </Footer>
                     <FloatButton.BackTop type="primary" />
                     <YMInitializer

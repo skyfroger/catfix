@@ -20,6 +20,7 @@ function LangSelector() {
                     defaultValue="ru"
                     style={{ width: 130 }}
                     onChange={handleLangChange}
+                    value={i18n.language}
                     options={[
                         { value: "ru", label: "Русский" },
                         { value: "be", label: "Беларуская" },
