@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <Router>
+        <Router basename={process.env.REACT_APP_BASE_URL || "/"}>
             <App />
         </Router>
     </React.StrictMode>
