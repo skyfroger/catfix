@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import logo from "./logo.png";
-import { Layout, ConfigProvider, Menu, FloatButton } from "antd";
+import { Layout, ConfigProvider, Menu, FloatButton, Row, Col } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
 import { Routes, Route, NavLink, useLocation } from "react-router-dom";
 import { YMInitializer } from "@appigram/react-yandex-metrika";
@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import ExtensionPage from "./components/pages/ExtensionPage";
 import ym from "@appigram/react-yandex-metrika";
 import { HelmetProvider } from "react-helmet-async";
+import AppFooter from "./components/ui/AppFooter";
 
 const { Header, Content, Footer } = Layout;
 
@@ -105,9 +106,9 @@ function App() {
                             <Route path="/about" element={<AboutPage />} />
                         </Routes>
                     </Content>
-                    <Footer>
-                        <span>© 2023</span>
-                    </Footer>
+                    
+                    <AppFooter />
+                    
                     <FloatButton.BackTop type="primary" />
                     <YMInitializer
                         accounts={[Number(process.env.REACT_APP_YM)]}
