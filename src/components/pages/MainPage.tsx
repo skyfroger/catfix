@@ -168,7 +168,10 @@ function MainPage() {
                         transition={{ delay: 0.8 }}
                     >
                         {uploadState === "loaded" && (
-                            <GradesContainer project={project} />
+                            <GradesContainer
+                                projectJson={projectJSON}
+                                project={project}
+                            />
                         )}
                     </motion.div>
                 </Col>

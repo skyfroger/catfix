@@ -11,14 +11,16 @@ import grader, {
     graderResult,
 } from "catfix-utils/dist/graders";
 import GradesList from "./GradesList";
+import { ScratchProject } from "catfix-utils/dist/scratch";
 
 interface gradesContainerProps {
+    projectJson: ScratchProject | null;
     project: Project | null;
 }
-function GradesContainer({ project }: gradesContainerProps) {
+function GradesContainer({ projectJson, project }: gradesContainerProps) {
     let grades: Map<categories, graderResult> = new Map();
-    if (project) {
-        grades = grader(project);
+    if (project && projectJson) {
+        grades = grader(projectJson, project);
     }
 
     return <GradesList grades={grades} />;

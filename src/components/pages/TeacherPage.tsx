@@ -156,7 +156,7 @@ function TeacherPage() {
             try {
                 const parsedProject = parseProject(project.projectJSON);
                 // оцениваем проект
-                const grades = grader(parsedProject);
+                const grades = grader(project.projectJSON, parsedProject);
 
                 // суммарная оценка
                 const totalGrade = getTotalGrade(grades);
