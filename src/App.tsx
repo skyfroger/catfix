@@ -106,12 +106,12 @@ function App() {
                             <Route path="/about" element={<AboutPage />} />
                         </Routes>
                     </Content>
-                    
+
                     <AppFooter />
-                    
+
                     <FloatButton.BackTop type="primary" />
                     <YMInitializer
-                        accounts={[Number(process.env.REACT_APP_YM)]}
+                        accounts={[Number(import.meta.env.VITE_YM)]}
                     />
                 </Layout>
             </ConfigProvider>

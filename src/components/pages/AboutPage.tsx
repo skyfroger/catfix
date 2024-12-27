@@ -12,14 +12,14 @@ function AboutPage() {
     const { t, i18n } = useTranslation();
     const [content, setContent] = useState<string | null>(null);
 
-    useEffect(() => {
-        import(`../../content/about.${i18n.language}.md`).then((res) => {
-            fetch(res.default)
-                .then((res) => res.text())
-                .then((res) => setContent(res))
-                .catch((err) => console.log(err));
-        });
-    });
+    // useEffect(() => {
+    //     import(`../../content/about.${i18n.language}.md`).then((res) => {
+    //         fetch(res.default)
+    //             .then((res) => res.text())
+    //             .then((res) => setContent(res))
+    //             .catch((err) => console.log(err));
+    //     });
+    // });
 
     return (
         <>
@@ -39,7 +39,7 @@ function AboutPage() {
                 <Card>
                     <Typography.Title>{t("ui.menuAbout")}</Typography.Title>
                     <Divider />
-                    <ReactMarkdown children={content} />
+                    {/* <ReactMarkdown children={content} /> */}
                 </Card>
             </motion.div>
         </>
