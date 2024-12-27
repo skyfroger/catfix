@@ -8,6 +8,14 @@ import viteCompression from "vite-plugin-compression";
 export default defineConfig({
     plugins: [
         react(),
+        {
+            name: "markdown-loader",
+            transform(code, id) {
+                if (id.endsWith(".md")) {
+                    return `export default ${JSON.stringify(code)};`;
+                }
+            },
+        },
         viteCompression({
             verbose: true,
             disable: false,
