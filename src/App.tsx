@@ -15,6 +15,7 @@ import ExtensionPage from "./components/pages/ExtensionPage";
 import ym from "@appigram/react-yandex-metrika";
 import { HelmetProvider } from "react-helmet-async";
 import AppFooter from "./components/ui/AppFooter";
+import DocsPage from "./components/pages/DocsPage";
 
 const { Header, Content, Footer } = Layout;
 
@@ -81,6 +82,9 @@ function App() {
                                     {t("ui.menuMassUpload")}
                                 </NavLink>
                             </Menu.Item>
+                            <Menu.Item key="/docs">
+                                <NavLink to="/docs">{t("ui.menuDocs")}</NavLink>
+                            </Menu.Item>
                             <Menu.Item key="/extension">
                                 <NavLink to="/extension">
                                     {t("ui.extensionPageTitle")}
@@ -99,6 +103,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<MainPage />} />
                             <Route path="/teacher" element={<TeacherPage />} />
+                            <Route path="/docs" element={<DocsPage />} />
                             <Route
                                 path="/extension"
                                 element={<ExtensionPage />}

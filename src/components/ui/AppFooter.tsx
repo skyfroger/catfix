@@ -11,7 +11,8 @@ const AppFooter = () => {
     return (
         <Footer
             style={{
-                background: "linear-gradient(135deg, #a1c1ed, #2C4261), linear-gradient(to top, #242A33, rgba(255, 255, 255, 0.1))",
+                background:
+                    "linear-gradient(135deg, #a1c1ed, #2C4261), linear-gradient(to top, #242A33, rgba(255, 255, 255, 0.1))",
                 color: "white",
                 padding: "20px 40px",
             }}
@@ -96,6 +97,19 @@ const AppFooter = () => {
                                         }}
                                     >
                                         Для учителя
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/docs"
+                                        style={{
+                                            color: "white",
+                                            textDecoration: "none",
+                                            display: "block",
+                                            marginBottom: "10px",
+                                        }}
+                                    >
+                                        Документация
                                     </Link>
                                 </li>
                                 <li>
