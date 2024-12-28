@@ -1,5 +1,6 @@
-import ReactMarkdown, { Components } from "react-markdown";
+import Markdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkToc from "remark-toc";
 
 interface MarkdownRendererProps {
     source: string | null;
@@ -8,11 +9,15 @@ interface MarkdownRendererProps {
 
 const MarkdownRenderer = ({ source, components }: MarkdownRendererProps) => {
     return (
-        <ReactMarkdown
-            children={source}
+        <Markdown
             components={components}
-            remarkPlugins={[remarkGfm]}
-        />
+            remarkPlugins={[
+                remarkGfm,
+                [remarkToc, { heading: "[Сс]одержание" }],
+            ]}
+        >
+            {source}
+        </Markdown>
     );
 };
 

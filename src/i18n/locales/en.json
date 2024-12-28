@@ -35,7 +35,7 @@
         "deleteConfirm": "Are You Sure?",
         "clearTable": "Clear Table",
         "menuAbout": "About",
-        "menuDocs": "Docs",
+        "menuDocs": "Guide",
         "aboutDescription": "<p>The application helps to assess a Scratch project and find errors in scripts.</p><p>Developer: Pavel Horoshevich, senior lecturer at the Department of Informatics and Methods of Teaching Informatics, Belarusian State Pedagogical University named after Maxim Tank.</p><p>Read more about the project on my <a target='_blank' href='https://cs-labs.netlify.app/blog/posts/2023/08/kotfix/'>blog</a>. The project's source code is hosted on <a target='_blank' href='https://github.com/skyfroger/catfix'>GitHub</a>.</p>",
         "summary": "Summary"
     },
