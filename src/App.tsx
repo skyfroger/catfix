@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import logo from "./logo.png";
+import logoEn from "./logo_en.png";
+
 import { Layout, ConfigProvider, Menu, FloatButton, Row, Col } from "antd";
-import { GithubOutlined } from "@ant-design/icons";
 import { Routes, Route, NavLink, useLocation } from "react-router-dom";
 import { YMInitializer } from "@appigram/react-yandex-metrika";
 
@@ -17,10 +18,10 @@ import { HelmetProvider } from "react-helmet-async";
 import AppFooter from "./components/ui/AppFooter";
 import DocsPage from "./components/pages/DocsPage";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 function App() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     let location = useLocation(); // new
 
     useEffect(() => {
@@ -58,7 +59,7 @@ function App() {
                                 }}
                             >
                                 <img
-                                    src={logo}
+                                    src={i18n.language === "en" ? logoEn : logo}
                                     alt={"КотФикс - проверка Scratch проектов"}
                                     style={{
                                         verticalAlign: "text-bottom",
