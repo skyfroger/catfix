@@ -96,6 +96,19 @@
         "2": "Mouse or Keyboard Input is Used with Ask and Wait Blocks",
         "3": "Camera or Microphone are Used"
     },
+    "math": {
+        "title": "Mathematical Operators",
+        "0": "The project does not use arithmetic operators",
+        "1": "Simple arithmetic operators +, -, /, * are used",
+        "2": "A block for generating random numbers is used",
+        "3": "Mathematical functions, rounding, and the modulus operator are used"
+    },
+    "strings": {
+        "title": "String Variables",
+        "0": "The project does not use blocks for string processing",
+        "1": "Blocks Join, Letter, Length are used",
+        "2": "The block 'String contains?' is used"
+    },
     "warning": {
         "emptySpriteTitle": "Empty Sprite",
         "emptySprite": "Sprite <strong>{{spriteName}}</strong> has no scripts. It may be possible to delete this sprite.",
