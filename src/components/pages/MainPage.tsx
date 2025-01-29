@@ -111,7 +111,7 @@ function MainPage() {
     return (
         <>
             <Helmet>
-                <title>КотФикс - Проверка Scratch проектов | Главная</title>
+                <title>{t("meta.home")}</title>
                 <meta
                     name="description"
                     content="Приложение для автоматической проверки Scratch-проектов. Поможет оценить сложность проекта, покажет замечания и ошибки в проекте."

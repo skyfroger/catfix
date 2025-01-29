@@ -187,9 +187,7 @@ function TeacherPage() {
     return (
         <>
             <Helmet>
-                <title>
-                    КотФикс - Проверка Scratch проектов | Страница учителя
-                </title>
+                <title>{t("meta.teacher")}</title>
                 <meta
                     name="description"
                     content="Приложение для автоматической проверки Scratch-проектов. Проверка нескольких проектов. Статистика по частоте появления ошибок."

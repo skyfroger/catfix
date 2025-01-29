@@ -142,5 +142,12 @@
         "errTitle": "Errors",
         "warnCardTitle": "Warnings: from most frequent to least frequent",
         "errCardTitle": "Errors: from most frequent to least frequent"
+    },
+    "meta": {
+        "home": "CatFix - Grading Scratch Projects | Home",
+        "teacher": "CatFix - Grading Scratch Projects | Teacher's page",
+        "extension": "CatFix - Grading Scratch Projects | Browser extension",
+        "about": "CatFix - Grading Scratch Projects | About",
+        "docs": "CatFix - Grading Scratch Projects | Documentation"
     }
 }

@@ -11,10 +11,7 @@ function ExtensionPage() {
     return (
         <>
             <Helmet>
-                <title>
-                    КотФикс - Проверка Scratch проектов | Расширение для
-                    браузера
-                </title>
+                <title>{t("meta.extension")}</title>
                 <meta
                     name="description"
                     content="Браузерное расширение для поиска ошибок в Scratch-проекте."

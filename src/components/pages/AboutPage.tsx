@@ -33,7 +33,7 @@ function AboutPage() {
     return (
         <>
             <Helmet>
-                <title>КотФикс - Проверка Scratch проектов | О проекте</title>
+                <title>{t("meta.about")}</title>
                 <meta
                     name="description"
                     content="Автор проекта - Хорошевич Павел Александрович"

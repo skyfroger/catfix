@@ -33,9 +33,7 @@ function DocsPage() {
     return (
         <>
             <Helmet>
-                <title>
-                    КотФикс - Проверка Scratch проектов | Документация
-                </title>
+                <title>{t("meta.docs")}</title>
                 <meta
                     name="description"
                     content="Автор проекта - Хорошевич Павел Александрович"
