@@ -48,14 +48,14 @@
         "tips": "Recommendations"
     },
     "flow": {
-        "title": "Data Flow",
+        "title": "Flow Control",
         "0": "No Scripts in the Project",
         "1": "Scripts Exist, but No Loops",
         "2": "Infinite Loop and/or Loop with a Fixed Number of Iterations",
         "3": "Loop with a Condition"
     },
     "data": {
-        "title": "Variable Usage",
+        "title": "Data Representation",
         "0": "No Variables in the Project",
         "1": "Initial Values are Described Without Variables",
         "2": "Variables are Assigned Initial Values and Used in Scripts",
@@ -73,21 +73,21 @@
         "0": "No Scripts Run Simultaneously",
         "1": "More than One Sprite has a Script Running on the Green Flag",
         "2": "Clicking on a Sprite or a Single Key Press Triggers More than One Script",
-        "3": "A Single Message, Event, or Background Change Triggers More than One Script"
+        "3": "A Single Message, Event, or Backdrop Change Triggers More than One Script"
     },
     "abstract": {
         "title": "Abstraction",
-        "0": "Other Blocks are Not Used",
-        "1": "Other Blocks are Used to Shorten the Main Code",
+        "0": "My Blocks are Not Used",
+        "1": "My Blocks are Used to Shorten the Main Code",
         "2": "Sprite Clones are Created",
-        "3": "Other Blocks are Used as a Function (Subprogram)"
+        "3": "My Blocks are Used as a Function (Subprogram)"
     },
     "sync": {
         "title": "Synchronization",
         "0": "No Synchronization Between Sprites",
-        "1": "Wait ... Seconds, Say ... Seconds, or Think ... Seconds Blocks are Used",
+        "1": "Wait ... Second, Say ... Second, or Think ... Second Blocks are Used",
         "2": "Message Sending and Receiving are Used",
-        "3": "Wait Until ... or Script Launch on Background Change Blocks are Used"
+        "3": "Wait Until ... or Script Launch on 'when backdrop switches to ...' block are Used"
     },
     "interactivity": {
         "title": "Interactivity",
@@ -104,10 +104,10 @@
         "3": "Mathematical functions, rounding, and the modulus operator are used"
     },
     "strings": {
-        "title": "String Variables",
+        "title": "String Operators",
         "0": "The project does not use blocks for string processing",
         "1": "Blocks Join, Letter, Length are used",
-        "2": "The block 'String contains?' is used"
+        "2": "The block '__ contains__ ?' is used"
     },
     "warning": {
         "emptySpriteTitle": "Empty Sprite",
