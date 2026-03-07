@@ -12,7 +12,11 @@ function AboutPage() {
     const [content, setContent] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch(`/content/about.${i18n.language}.md`)
+        fetch(
+            `${import.meta.env.VITE_BASE_URL || "/"}content/about.${
+                i18n.language
+            }.md`
+        )
             .then((response) => response.text())
             .then((text) => {
                 // Обрабатываем оба варианта путей: с ./ и без
@@ -22,7 +26,9 @@ function AboutPage() {
                         // Если путь начинается с ./, убираем его
                         const cleanPath = path.replace(/^\.\//, "");
                         // Добавляем префикс /content/
-                        return `![${alt}](/content/${cleanPath})`;
+                        return `![${alt}](${
+                            import.meta.env.VITE_BASE_URL || "/"
+                        }content/${cleanPath})`;
                     }
                 );
                 setContent(processedText);
