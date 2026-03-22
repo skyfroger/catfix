@@ -104,5 +104,5 @@ npm install git+https://github.com/skyfroger/catfix-utils.git --force
 Например для размещения в подкаталоге `build` нужно задать переменной значение `/build/`.
 
 ```powershell
-$env:VITE_BASE_URL="/kotfix"; npm run build
+$env:VITE_BASE_URL="/kotfix/"; npm run build
 ```
