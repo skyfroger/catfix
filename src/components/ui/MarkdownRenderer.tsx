@@ -1,7 +1,8 @@
 import Markdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
-import ScratchCode from "./ScratchCode"; // путь к вашему компоненту
+import rehypeSlug from "rehype-slug";
+import ScratchCode from "./ScratchCode";
 
 interface MarkdownRendererProps {
     source: string | null;
@@ -45,6 +46,7 @@ const MarkdownRenderer = ({ source, components }: MarkdownRendererProps) => {
                 remarkGfm,
                 [remarkToc, { heading: "[Сс]одержание" }],
             ]}
+            rehypePlugins={[rehypeSlug]}
         >
             {source}
         </Markdown>
