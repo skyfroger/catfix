@@ -8,11 +8,12 @@ import { useTranslation } from "react-i18next"; // Русский
 
 interface ScratchCodeProps {
     code: string;
+    inline?: boolean; // Опциональный проп для определения, является ли код строчным
 }
 
 scratchblocks.loadLanguages({ be, ru });
 
-function ScratchCode({ code }: ScratchCodeProps) {
+function ScratchCode({ code, inline }: ScratchCodeProps) {
     const { t, i18n } = useTranslation();
     let parsedBlocks = scratchblocks.parse(code, {
         languages: Object.keys(scratchblocks.allLanguages),
@@ -22,6 +23,7 @@ function ScratchCode({ code }: ScratchCodeProps) {
 
     return (
         <ScratchBlocks
+            className={inline ? "scratch-blocks__inline" : ""}
             blockStyle="scratch3"
             languages={["en", "be", "ru"]} // Choose which languages to allow
         >
