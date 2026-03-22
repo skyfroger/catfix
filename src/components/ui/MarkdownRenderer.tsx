@@ -44,7 +44,7 @@ const MarkdownRenderer = ({ source, components }: MarkdownRendererProps) => {
             components={mergedComponents}
             remarkPlugins={[
                 remarkGfm,
-                [remarkToc, { heading: "[Сс]одержание" }],
+                [remarkToc, { heading: "[Сс]одержание|Contents|Змест" }],
             ]}
             rehypePlugins={[rehypeSlug]}
         >
