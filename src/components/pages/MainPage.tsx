@@ -5,21 +5,21 @@
 
 import React, { useState, useEffect } from "react";
 import { Card, Col, message, Row, Divider, Typography } from "antd";
-import UploadProject from "../ui/UploadProject.js";
+import UploadProject from "../ui/UploadProject";
 import { loadAsync } from "jszip";
-import { RcFile } from "antd/es/upload/index.js";
-import { parseProject } from "catfix-utils/dist/index.js";
+import { RcFile } from "antd/es/upload";
+import { parseProject } from "catfix-utils/dist";
 
-import { ScratchProject } from "catfix-utils/dist/scratch.js";
-import { Project } from "catfix-utils/dist/parsedProject.js";
-import Loader from "../ui/Loader.js";
+import { ScratchProject } from "catfix-utils/dist/scratch";
+import { Project } from "catfix-utils/dist/parsedProject";
+import Loader from "../ui/Loader";
 import { useTranslation } from "react-i18next";
-import URLLoader from "../ui/URLLoader.js";
+import URLLoader from "../ui/URLLoader";
 import { FileOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
-import { basicAnimations } from "../../utils/animations.js";
-import GradesContainer from "../grades/GradesContainer.js";
-import ScanContainer from "../tips/ScanContainer.js";
+import { basicAnimations } from "../../utils/animations";
+import GradesContainer from "../grades/GradesContainer";
+import ScanContainer from "../tips/ScanContainer";
 import { Helmet } from "react-helmet-async";
 
 // статусы загрузки файла

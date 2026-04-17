@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { basicAnimations } from "../../utils/animations.js";
+import { basicAnimations } from "../../utils/animations";
 import { useTranslation } from "react-i18next";
 import { Divider, Card, Typography } from "antd";
 import { Helmet } from "react-helmet-async";
 
 import { useEffect, useState } from "react";
-import MarkdownRenderer from "../ui/MarkdownRenderer.js";
+import MarkdownRenderer from "../ui/MarkdownRenderer";
 
 function AboutPage() {
     const { t, i18n } = useTranslation();

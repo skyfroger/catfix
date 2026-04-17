@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Col, Row, Typography, message } from "antd";
 import MassURLLoader from "../ui/MassURLLoader";
 import ProjectsDataTable, { TableData } from "../teacher/ProjectsDataTable";
