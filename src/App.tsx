@@ -12,6 +12,7 @@ import {
     Drawer,
     Button,
     MenuProps,
+    theme,
 } from "antd";
 
 import { Routes, Route, NavLink, useLocation } from "react-router-dom";
@@ -113,11 +114,39 @@ function App() {
         <HelmetProvider>
             <ConfigProvider
                 theme={{
+                    algorithm: theme.defaultAlgorithm,
                     token: {
+                        colorText: "#2C2C2C",
                         fontSize: 15,
                         colorTextBase: "#293241",
                         colorPrimary: "#4C4C6D",
                         fontFamily: "Noto Sans",
+                        colorBorder: "#121b33cf",
+                        colorBorderSecondary: "#121b33cf",
+                        lineWidth: 2,
+                        lineWidthBold: 2,
+                        borderRadius: 12,
+                        borderRadiusLG: 16,
+                        borderRadiusSM: 8,
+                        controlHeight: 40,
+                        controlHeightSM: 34,
+                        controlHeightLG: 48,
+                    },
+                    components: {
+                        Button: {
+                            primaryShadow: "none",
+                            dangerShadow: "none",
+                            defaultShadow: "none",
+                            fontWeight: 600,
+                        },
+                        Modal: {
+                            boxShadow: "none",
+                        },
+                        Tooltip: {
+                            colorBorder: "#2C2C2C",
+                            colorBgSpotlight: "rgba(100, 100, 100, 0.95)",
+                            borderRadius: 8,
+                        },
                     },
                 }}
                 locale={antdLocales[i18n.language]} // смена antd локали после выбора языка

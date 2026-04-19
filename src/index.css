@@ -23,7 +23,7 @@ h4 {
 }
 
 div.ant-card {
-    border-radius: 18px !important;
+    box-shadow: 3px 3px 0 #121b33cf;
 }
 
 .scratch-blocks__inline {
