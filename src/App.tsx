@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import logo from "./logo.png";
 import logoEn from "./logo_en.png";
@@ -8,15 +8,16 @@ import {
     ConfigProvider,
     Menu,
     FloatButton,
-    Row,
-    Col,
+    Grid,
+    Drawer,
+    Button,
     MenuProps,
 } from "antd";
+
 import { Routes, Route, NavLink, useLocation } from "react-router-dom";
 import { YMInitializer } from "@appigram/react-yandex-metrika";
 
 import MainPage from "./components/pages/MainPage";
-import LangSelector from "./components/ui/LangSelector";
 import TeacherPage from "./components/pages/TeacherPage";
 import AboutPage from "./components/pages/AboutPage";
 import { useTranslation } from "react-i18next";
@@ -26,7 +27,7 @@ import { HelmetProvider } from "react-helmet-async";
 import AppFooter from "./components/ui/AppFooter";
 import DocsPage from "./components/pages/DocsPage";
 
-import { GlobalOutlined } from "@ant-design/icons";
+import { GlobalOutlined, MenuOutlined } from "@ant-design/icons";
 
 // Локализация встроенных в antd меток
 import { Locale } from "antd/es/locale";
@@ -42,16 +43,22 @@ const antdLocales: Record<string, Locale> = {
 };
 
 const { Header, Content } = Layout;
+const { useBreakpoint } = Grid;
 
 function App() {
     const { t, i18n } = useTranslation();
     let location = useLocation(); // new
 
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
+    const [drawerVisible, setDrawerVisible] = useState(false);
+
     useEffect(() => {
         ym("hit", location.pathname);
     }, [location]);
 
-    const items: MenuProps["items"] = [
+    // Пункты меню
+    const menuItems: MenuProps["items"] = [
         { key: "/", label: <NavLink to="/">{t("ui.menuMainPage")}</NavLink> },
         {
             key: "/teacher",
@@ -94,6 +101,7 @@ function App() {
                     onClick: () => i18n.changeLanguage("en"),
                 },
             ],
+            style: { marginLeft: "auto" },
         },
     ];
 
@@ -113,10 +121,9 @@ function App() {
                 <Layout style={{ minHeight: "100vh" }}>
                     <Header
                         style={{
-                            display: "inline-flex",
-                            gap: "12px",
-                            justifyContent: "space-between",
-                            alignItems: "stretch",
+                            display: "flex",
+                            alignItems: "center",
+                            padding: "0 16px",
                             backgroundColor: "#f5f5f5",
                         }}
                     >
@@ -133,21 +140,48 @@ function App() {
                                     alt={"КотФикс - проверка Scratch проектов"}
                                     style={{
                                         verticalAlign: "text-bottom",
-                                        maxHeight: "50%",
+                                        height: "2.5em",
                                     }}
                                 />
                             </span>
                         </NavLink>
-                        <Menu
-                            mode="horizontal"
-                            selectedKeys={[location.pathname]}
-                            defaultSelectedKeys={["/"]}
-                            theme="light"
-                            style={{ flex: "auto", backgroundColor: "#f5f5f5" }}
-                            items={items}
-                            overflowedIndicator={<span>⋯</span>} // можно настроить иконку «ещё»
-                        />
+
+                        {isMobile ? (
+                            // Если мобильное устройство, нужно заменить меню на боковой Drawer
+                            <Button
+                                type="text"
+                                icon={<MenuOutlined />}
+                                onClick={() => setDrawerVisible(true)}
+                            />
+                        ) : (
+                            <Menu
+                                mode="horizontal"
+                                selectedKeys={[location.pathname]}
+                                items={menuItems}
+                                overflowedIndicator={<MenuOutlined />}
+                                style={{
+                                    flex: 1,
+                                    minWidth: 0,
+                                    border: "none",
+                                    background: "transparent",
+                                }}
+                            />
+                        )}
                     </Header>
+
+                    <Drawer
+                        placement="right"
+                        onClose={() => setDrawerVisible(false)}
+                        open={drawerVisible}
+                    >
+                        <Menu
+                            mode="inline"
+                            selectedKeys={[location.pathname]}
+                            items={menuItems}
+                            onClick={() => setDrawerVisible(false)}
+                        />
+                    </Drawer>
+
                     <Content style={{ margin: 32 }}>
                         <Routes>
                             <Route path="/" element={<MainPage />} />
