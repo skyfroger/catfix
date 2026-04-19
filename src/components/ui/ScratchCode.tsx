@@ -15,11 +15,18 @@ scratchblocks.loadLanguages({ be, ru });
 
 function ScratchCode({ code, inline }: ScratchCodeProps) {
     const { t, i18n } = useTranslation();
-    let parsedBlocks = scratchblocks.parse(code, {
-        languages: Object.keys(scratchblocks.allLanguages),
-    });
 
-    parsedBlocks.translate(scratchblocks.allLanguages[i18n.language]);
+    let parsedBlocks;
+
+    try {
+        parsedBlocks = scratchblocks.parse(code, {
+            languages: Object.keys(scratchblocks.allLanguages),
+        });
+
+        parsedBlocks.translate(scratchblocks.allLanguages[i18n.language]);
+    } catch (e) {
+        return <code>{code}</code>;
+    }
 
     return (
         <ScratchBlocks
