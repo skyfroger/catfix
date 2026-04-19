@@ -3,7 +3,15 @@ import "./App.css";
 import logo from "./logo.png";
 import logoEn from "./logo_en.png";
 
-import { Layout, ConfigProvider, Menu, FloatButton, Row, Col } from "antd";
+import {
+    Layout,
+    ConfigProvider,
+    Menu,
+    FloatButton,
+    Row,
+    Col,
+    MenuProps,
+} from "antd";
 import { Routes, Route, NavLink, useLocation } from "react-router-dom";
 import { YMInitializer } from "@appigram/react-yandex-metrika";
 
@@ -17,6 +25,8 @@ import ym from "@appigram/react-yandex-metrika";
 import { HelmetProvider } from "react-helmet-async";
 import AppFooter from "./components/ui/AppFooter";
 import DocsPage from "./components/pages/DocsPage";
+
+import { GlobalOutlined } from "@ant-design/icons";
 
 // Локализация встроенных в antd меток
 import { Locale } from "antd/es/locale";
@@ -40,6 +50,52 @@ function App() {
     useEffect(() => {
         ym("hit", location.pathname);
     }, [location]);
+
+    const items: MenuProps["items"] = [
+        { key: "/", label: <NavLink to="/">{t("ui.menuMainPage")}</NavLink> },
+        {
+            key: "/teacher",
+            label: <NavLink to="/teacher">{t("ui.menuMassUpload")}</NavLink>,
+        },
+        {
+            key: "/docs",
+            label: <NavLink to="/docs">{t("ui.menuDocs")}</NavLink>,
+        },
+        {
+            key: "/extension",
+            label: (
+                <NavLink to="/extension">{t("ui.extensionPageTitle")}</NavLink>
+            ),
+        },
+        {
+            key: "/about",
+            label: <NavLink to="/about">{t("ui.menuAbout")}</NavLink>,
+        },
+        {
+            key: "lang",
+            icon: <GlobalOutlined style={{ color: "#4C4C6D", fontSize: 20 }} />,
+            label:
+                t(`languages.${i18n.language}` as any) ||
+                i18n.language.toUpperCase(),
+            children: [
+                {
+                    key: "ru",
+                    label: "Русский",
+                    onClick: () => i18n.changeLanguage("ru"),
+                },
+                {
+                    key: "be",
+                    label: "Беларуская",
+                    onClick: () => i18n.changeLanguage("be"),
+                },
+                {
+                    key: "en",
+                    label: "English",
+                    onClick: () => i18n.changeLanguage("en"),
+                },
+            ],
+        },
+    ];
 
     return (
         <HelmetProvider>
@@ -83,36 +139,14 @@ function App() {
                             </span>
                         </NavLink>
                         <Menu
-                            mode={"horizontal"}
+                            mode="horizontal"
                             selectedKeys={[location.pathname]}
                             defaultSelectedKeys={["/"]}
-                            theme={"light"}
+                            theme="light"
                             style={{ flex: "auto", backgroundColor: "#f5f5f5" }}
-                        >
-                            <Menu.Item key="/">
-                                <NavLink to="/">{t("ui.menuMainPage")}</NavLink>
-                            </Menu.Item>
-                            <Menu.Item key="/teacher">
-                                <NavLink to="/teacher">
-                                    {t("ui.menuMassUpload")}
-                                </NavLink>
-                            </Menu.Item>
-                            <Menu.Item key="/docs">
-                                <NavLink to="/docs">{t("ui.menuDocs")}</NavLink>
-                            </Menu.Item>
-                            <Menu.Item key="/extension">
-                                <NavLink to="/extension">
-                                    {t("ui.extensionPageTitle")}
-                                </NavLink>
-                            </Menu.Item>
-                            <Menu.Item key="/about">
-                                <NavLink to="/about">
-                                    {t("ui.menuAbout")}
-                                </NavLink>
-                            </Menu.Item>
-                        </Menu>
-
-                        <LangSelector />
+                            items={items}
+                            overflowedIndicator={<span>⋯</span>} // можно настроить иконку «ещё»
+                        />
                     </Header>
                     <Content style={{ margin: 32 }}>
                         <Routes>
