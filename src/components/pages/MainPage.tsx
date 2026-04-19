@@ -21,6 +21,7 @@ import { basicAnimations } from "../../utils/animations";
 import GradesContainer from "../grades/GradesContainer";
 import ScanContainer from "../tips/ScanContainer";
 import { Helmet } from "react-helmet-async";
+import ChatPopover from "../ui/ChatPopover";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -192,6 +193,7 @@ function MainPage() {
                     </motion.div>
                 </Col>
             </Row>
+            <ChatPopover />
         </>
     );
 }
