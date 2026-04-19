@@ -18,6 +18,19 @@ import { HelmetProvider } from "react-helmet-async";
 import AppFooter from "./components/ui/AppFooter";
 import DocsPage from "./components/pages/DocsPage";
 
+// Локализация встроенных в antd меток
+import { Locale } from "antd/es/locale";
+import ruRU from "antd/locale/ru_RU";
+import byBY from "antd/locale/by_BY";
+import enUS from "antd/locale/en_US";
+
+// словарь доступных в приложении локалей на выбор
+const antdLocales: Record<string, Locale> = {
+    ru: ruRU,
+    be: byBY,
+    en: enUS,
+};
+
 const { Header, Content } = Layout;
 
 function App() {
@@ -39,6 +52,7 @@ function App() {
                         fontFamily: "Noto Sans",
                     },
                 }}
+                locale={antdLocales[i18n.language]} // смена antd локали после выбора языка
             >
                 <Layout style={{ minHeight: "100vh" }}>
                     <Header
