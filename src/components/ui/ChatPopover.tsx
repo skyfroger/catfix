@@ -1,5 +1,5 @@
 import { FloatButton, Popover } from "antd";
-import { useCallback, useState, useRef } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { Bubble, Sender, Prompts } from "@ant-design/x";
 import type { PromptsProps } from "@ant-design/x";
 import { CodeHighlighter, Mermaid } from "@ant-design/x";
@@ -123,7 +123,7 @@ function ChatPopover() {
     const popoverContent = (
         <div
             style={{
-                width: 600,
+                width: 650,
                 height: 550,
                 display: "flex",
                 flexDirection: "column",
