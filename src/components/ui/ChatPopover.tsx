@@ -17,7 +17,8 @@ interface MessageItem {
 
 const openai = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
-    apiKey: import.meta.env["OPEN_ROUTER_API_KEY"],
+    apiKey: import.meta.env.VITE_OPEN_ROUTER_API_KEY,
+    dangerouslyAllowBrowser: true,
 });
 
 const promptSuggestions: PromptsProps["items"] = [
