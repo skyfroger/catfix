@@ -27,7 +27,11 @@ import { HelmetProvider } from "react-helmet-async";
 import AppFooter from "./components/ui/AppFooter";
 import DocsPage from "./components/pages/DocsPage";
 
-import { GlobalOutlined, MenuOutlined } from "@ant-design/icons";
+import {
+    GlobalOutlined,
+    MenuOutlined,
+    VerticalAlignTopOutlined,
+} from "@ant-design/icons";
 
 // Локализация встроенных в antd меток
 import { Locale } from "antd/es/locale";
@@ -197,7 +201,15 @@ function App() {
 
                     <AppFooter />
 
-                    <FloatButton.BackTop type="primary" />
+                    <FloatButton.BackTop
+                        type="primary"
+                        style={{
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            bottom: 24,
+                        }}
+                        icon={<VerticalAlignTopOutlined />}
+                    ></FloatButton.BackTop>
                     <YMInitializer
                         accounts={[Number(import.meta.env.VITE_YM)]}
                     />
