@@ -139,14 +139,6 @@ function App() {
                             defaultShadow: "none",
                             fontWeight: 600,
                         },
-                        Modal: {
-                            boxShadow: "none",
-                        },
-                        Tooltip: {
-                            colorBorder: "#2C2C2C",
-                            colorBgSpotlight: "rgba(100, 100, 100, 0.95)",
-                            borderRadius: 8,
-                        },
                     },
                 }}
                 locale={antdLocales[i18n.language]} // смена antd локали после выбора языка
