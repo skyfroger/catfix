@@ -24,11 +24,11 @@ const openai = new OpenAI({
 const promptSuggestions: PromptsProps["items"] = [
     {
         key: "1",
-        label: "Как описать свой блок?",
+        label: "Как сделать клоны спрайта?",
     },
     {
         key: "2",
-        label: "Как работает цикл?",
+        label: "Для чего используются списки?",
     },
 ];
 
@@ -80,7 +80,7 @@ function ChatPopover() {
                 setMessagesHistory(updatedHistory);
 
                 const completion = await openai.chat.completions.create({
-                    model: "nvidia/nemotron-3-super-120b-a12b:free",
+                    model: "openai/gpt-oss-120b:free",
                     messages: updatedHistory.map(({ role, content }) => ({
                         role,
                         content,
@@ -123,7 +123,7 @@ function ChatPopover() {
     const popoverContent = (
         <div
             style={{
-                width: 650,
+                width: "min(85vw, 720px)",
                 height: 550,
                 display: "flex",
                 flexDirection: "column",
@@ -140,7 +140,6 @@ function ChatPopover() {
                     alignItems: "center",
                 }}
             >
-                <span>КотИИк</span>
                 <CloseOutlined
                     style={{ cursor: "pointer", color: "#8c8c8c" }}
                     onClick={() => setOpen(false)}
@@ -159,11 +158,26 @@ function ChatPopover() {
                         key: msg.key,
                         role: msg.role,
                         placement: msg.role === "user" ? "end" : "start",
+                        styles:
+                            msg.role === "assistant"
+                                ? {
+                                      content: {
+                                          padding: 0,
+                                          background: "transparent",
+                                          border: "none",
+                                          borderRadius: 0,
+                                      },
+                                      bubble: {
+                                          maxWidth: "100%",
+                                      },
+                                  }
+                                : undefined,
                         content: (
                             <XMarkdown
                                 components={{
                                     code: Code,
                                 }}
+                                paragraphTag="div"
                             >
                                 {msg.content}
                             </XMarkdown>
@@ -173,7 +187,8 @@ function ChatPopover() {
 
                 {messagesHistory.length <= 1 && (
                     <Prompts
-                        title="Частые вопросы"
+                        vertical
+                        title="Возможные вопросы:"
                         onItemClick={(prompt) => {
                             handleSubmit(`${prompt.data.label}`);
                         }}
@@ -191,6 +206,7 @@ function ChatPopover() {
                     onChange={setUserPrompt}
                     onSubmit={handleSubmit}
                     autoSize={{ minRows: 1, maxRows: 6 }}
+                    style={{ border: "1px solid #2C2C2C" }}
                 />
             </div>
         </div>
@@ -202,8 +218,15 @@ function ChatPopover() {
             open={open}
             onOpenChange={setOpen}
             placement="topRight"
-            arrow={true}
+            arrow={false}
             destroyOnHidden={false} // сохраняем состояние при закрытии
+            styles={{
+                container: {
+                    backgroundColor: "#f8f3f2",
+                    boxShadow: "2px 2px 0 #121b33cf",
+                    border: "2px solid #121b33",
+                },
+            }}
         >
             <FloatButton
                 icon={<MessageOutlined />}
