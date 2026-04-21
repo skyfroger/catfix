@@ -28,7 +28,7 @@ function TipItem({ type, message, payload, code, title }: Tip) {
             transition={{ duration: 0.5 }}
         >
             <Divider>{t(title)}</Divider>
-            <Space direction={"horizontal"}>
+            <Space orientation={"horizontal"}>
                 <p style={{ fontSize: 32, color: color }}>
                     {type === "warning" ? <WarningFilled /> : <BugFilled />}
                 </p>
