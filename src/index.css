@@ -32,3 +32,7 @@ div.ant-card {
     margin: 0 -1.1em;
     scale: 0.75;
 }
+
+text.sb3-label.sb3-comment-label {
+    fill: #121b33;
+}

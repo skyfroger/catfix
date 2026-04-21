@@ -177,7 +177,6 @@ function ChatPopover() {
                                 components={{
                                     code: Code,
                                 }}
-                                paragraphTag="div"
                             >
                                 {msg.content}
                             </XMarkdown>
@@ -222,7 +221,7 @@ function ChatPopover() {
             destroyOnHidden={false} // сохраняем состояние при закрытии
             styles={{
                 container: {
-                    backgroundColor: "#f8f3f2",
+                    backgroundColor: "hsl(10, 30%, 98%)",
                     boxShadow: "2px 2px 0 #121b33cf",
                     border: "2px solid #121b33",
                 },
