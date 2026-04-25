@@ -1,8 +1,8 @@
 import { FloatButton, Popover } from "antd";
-import { useCallback, useState, useRef, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { Bubble, Sender, Prompts } from "@ant-design/x";
 import type { PromptsProps } from "@ant-design/x";
-import { CodeHighlighter, Mermaid } from "@ant-design/x";
+import { CodeHighlighter, Mermaid, Actions } from "@ant-design/x";
 import { XMarkdown, type ComponentProps } from "@ant-design/x-markdown";
 import OpenAI from "openai";
 import { MessageOutlined, CloseOutlined } from "@ant-design/icons";
@@ -16,7 +16,7 @@ interface MessageItem {
 }
 
 const openai = new OpenAI({
-    baseURL: "https://openrouter.ai/api/v1",
+    baseURL: import.meta.env.VITE_BASE_OPEN_AI_URL,
     apiKey: import.meta.env.VITE_OPEN_ROUTER_API_KEY,
     dangerouslyAllowBrowser: true,
 });
@@ -29,6 +29,16 @@ const promptSuggestions: PromptsProps["items"] = [
     {
         key: "2",
         label: "Для чего используются списки?",
+    },
+];
+
+const actionItems = (content: string) => [
+    {
+        key: "copy",
+        label: "copy",
+        actionRender: () => {
+            return <Actions.Copy text={content} />;
+        },
     },
 ];
 
@@ -64,8 +74,6 @@ function ChatPopover() {
             key: Date.now(),
         },
     ]);
-
-    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const getAiResponce = useCallback(
         async (userMessage: string) => {
@@ -123,7 +131,7 @@ function ChatPopover() {
     const popoverContent = (
         <div
             style={{
-                width: "min(85vw, 720px)",
+                width: "min(85vw, 730px)",
                 height: 550,
                 display: "flex",
                 flexDirection: "column",
@@ -158,20 +166,12 @@ function ChatPopover() {
                         key: msg.key,
                         role: msg.role,
                         placement: msg.role === "user" ? "end" : "start",
-                        styles:
-                            msg.role === "assistant"
-                                ? {
-                                      content: {
-                                          padding: 0,
-                                          background: "transparent",
-                                          border: "none",
-                                          borderRadius: 0,
-                                      },
-                                      bubble: {
-                                          maxWidth: "100%",
-                                      },
-                                  }
-                                : undefined,
+                        footer: (content) => (
+                            <Actions items={actionItems(msg.content)} />
+                        ),
+                        footerPlacement:
+                            msg.role === "user" ? "outer-end" : "outer-start",
+                        variant: msg.role === "user" ? "filled" : "borderless",
                         content: (
                             <XMarkdown
                                 components={{
@@ -194,8 +194,6 @@ function ChatPopover() {
                         items={promptSuggestions}
                     />
                 )}
-
-                <div ref={messagesEndRef} />
             </div>
             <div style={{ borderTop: "1px solid #f0f0f0", padding: 12 }}>
                 <Sender
