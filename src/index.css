@@ -36,3 +36,8 @@ div.ant-card {
 text.sb3-label.sb3-comment-label {
     fill: #121b33;
 }
+
+/* Ответ ассистента в чате без отступа справа */
+div.ant-bubble.ant-bubble-start {
+    padding-inline-end: 1em !important;
+}

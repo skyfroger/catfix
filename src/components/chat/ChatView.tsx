@@ -76,18 +76,17 @@ function ChatView({
     return (
         <div
             style={{
-                width: "min(85vw, 730px)",
-                height: 550,
+                width: "100%",
+                height: "100%",
                 display: "flex",
                 flexDirection: "column",
+                justifyContent: "space-between",
             }}
         >
             <div
                 style={{
                     flex: 1,
-                    maxHeight: 400,
                     overflowY: "auto",
-                    padding: 16,
                 }}
             >
                 <Bubble.List
@@ -100,7 +99,16 @@ function ChatView({
                         ),
                         footerPlacement:
                             msg.role === "user" ? "outer-end" : "outer-start",
-                        variant: msg.role === "user" ? "filled" : "borderless",
+                        variant:
+                            msg.role === "user" ? "outlined" : "borderless",
+                        styles:
+                            msg.role === "user"
+                                ? {
+                                      content: {
+                                          boxShadow: "2px 2px 0 #121b33cf",
+                                      },
+                                  }
+                                : undefined,
                         content: (
                             <XMarkdown
                                 components={{
