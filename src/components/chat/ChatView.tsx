@@ -1,0 +1,143 @@
+import { Dispatch, SetStateAction } from "react";
+import { Bubble, Sender, Prompts } from "@ant-design/x";
+import type { PromptsProps } from "@ant-design/x";
+import { CodeHighlighter, Mermaid, Actions } from "@ant-design/x";
+import { XMarkdown, type ComponentProps } from "@ant-design/x-markdown";
+import Latex from "@ant-design/x-markdown/plugins/Latex";
+import ScratchCode from "../ui/ScratchCode";
+import { MessageItem } from "./ChatHOC";
+
+// Рядом с каждыйм сообщением будет кнопко "Копировать"
+const actionItems = (content: string) => [
+    {
+        key: "copy",
+        label: "copy",
+        actionRender: () => {
+            return <Actions.Copy text={content} />;
+        },
+    },
+];
+
+// Примеры запросов
+const promptSuggestions: PromptsProps["items"] = [
+    {
+        key: "1",
+        label: "Как сделать клоны спрайта?",
+    },
+    {
+        key: "2",
+        label: "Для чего используются списки?",
+    },
+];
+
+// Компонент для отрисовки Scratch-кода и Mermaid-диаграмм
+const Code: React.FC<ComponentProps> = (props) => {
+    const { className, children } = props;
+    const lang = className?.match(/language-(\w+)/)?.[1] || "";
+
+    if (typeof children !== "string") return null;
+    if (lang === "mermaid") {
+        return <Mermaid>{children}</Mermaid>;
+    }
+    // Блочный scratch
+    if (lang === "scratchblocks") {
+        return <ScratchCode code={children} />;
+    }
+
+    // Строчный scratch — по префиксу "scratch:"
+    if (!lang && children.startsWith("scratch:")) {
+        const code = children.replace(/^scratch:/, "").trim();
+        return <ScratchCode inline={true} code={code} />;
+    }
+    return <CodeHighlighter lang={lang}>{children}</CodeHighlighter>;
+};
+
+// пропсы компонента
+interface ChatViewProps {
+    messagesHistory: MessageItem[];
+    isLoading: boolean;
+    userPrompt: string;
+    handleSubmit: (text: string) => void;
+    setUserPrompt: Dispatch<SetStateAction<string>>;
+}
+
+function ChatView({
+    messagesHistory,
+    isLoading,
+    userPrompt,
+    handleSubmit,
+    setUserPrompt,
+}: ChatViewProps) {
+    // Фильтруем сообщения для отображения (исключаем системные промпты - роль system)
+    const visibleMessages = messagesHistory.filter(
+        (msg) => msg.role !== "system"
+    );
+
+    return (
+        <div
+            style={{
+                width: "min(85vw, 730px)",
+                height: 550,
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
+            <div
+                style={{
+                    flex: 1,
+                    maxHeight: 400,
+                    overflowY: "auto",
+                    padding: 16,
+                }}
+            >
+                <Bubble.List
+                    items={visibleMessages.map((msg) => ({
+                        key: msg.key,
+                        role: msg.role,
+                        placement: msg.role === "user" ? "end" : "start",
+                        footer: (content: string) => (
+                            <Actions items={actionItems(msg.content)} />
+                        ),
+                        footerPlacement:
+                            msg.role === "user" ? "outer-end" : "outer-start",
+                        variant: msg.role === "user" ? "filled" : "borderless",
+                        content: (
+                            <XMarkdown
+                                components={{
+                                    code: Code,
+                                }}
+                                config={{ extensions: Latex() }}
+                            >
+                                {msg.content}
+                            </XMarkdown>
+                        ),
+                    }))}
+                />
+
+                {messagesHistory.length <= 1 && (
+                    <Prompts
+                        vertical
+                        title="Возможные вопросы:"
+                        onItemClick={(prompt) => {
+                            handleSubmit(`${prompt.data.label}`);
+                        }}
+                        items={promptSuggestions}
+                    />
+                )}
+            </div>
+            <div style={{ borderTop: "1px solid #f0f0f0", padding: 12 }}>
+                <Sender
+                    loading={isLoading}
+                    value={userPrompt}
+                    placeholder="Задай свой вопрос по Scratch..."
+                    onChange={setUserPrompt}
+                    onSubmit={handleSubmit}
+                    autoSize={{ minRows: 1, maxRows: 6 }}
+                    style={{ border: "1px solid #2C2C2C" }}
+                />
+            </div>
+        </div>
+    );
+}
+
+export default ChatView;
