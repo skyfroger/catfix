@@ -22,6 +22,7 @@ import GradesContainer from "../grades/GradesContainer";
 import ScanContainer from "../tips/ScanContainer";
 import { Helmet } from "react-helmet-async";
 import ChatPopover from "../ui/ChatPopover";
+import ChatDrawer from "../ui/ChatDrawer";
 
 // статусы загрузки файла
 type fileStatus = "loading" | "loaded";
@@ -193,7 +194,9 @@ function MainPage() {
                     </motion.div>
                 </Col>
             </Row>
-            <ChatPopover />
+            {/* Выбор контейнера для чата может быть настройков по выбору */}
+            {/* <ChatPopover /> */}
+            <ChatDrawer />
         </>
     );
 }
