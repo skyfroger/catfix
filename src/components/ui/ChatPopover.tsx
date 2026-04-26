@@ -4,6 +4,7 @@ import { Bubble, Sender, Prompts } from "@ant-design/x";
 import type { PromptsProps } from "@ant-design/x";
 import { CodeHighlighter, Mermaid, Actions } from "@ant-design/x";
 import { XMarkdown, type ComponentProps } from "@ant-design/x-markdown";
+import Latex from "@ant-design/x-markdown/plugins/Latex";
 import OpenAI from "openai";
 import { MessageOutlined, CloseOutlined } from "@ant-design/icons";
 import ScratchCode from "./ScratchCode";
@@ -177,6 +178,7 @@ function ChatPopover() {
                                 components={{
                                     code: Code,
                                 }}
+                                config={{ extensions: Latex() }}
                             >
                                 {msg.content}
                             </XMarkdown>
