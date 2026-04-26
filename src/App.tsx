@@ -195,7 +195,7 @@ function App() {
                     </Header>
 
                     <Drawer
-                        placement="right"
+                        placement="left"
                         onClose={() => setDrawerVisible(false)}
                         open={drawerVisible}
                     >
