@@ -39,7 +39,7 @@ function ChatHOC() {
                 setMessagesHistory(updatedHistory);
 
                 const completion = await openai.chat.completions.create({
-                    model: "openai/gpt-oss-120b:free",
+                    model: import.meta.env.VITE_LLM,
                     messages: updatedHistory.map(({ role, content }) => ({
                         role,
                         content,
