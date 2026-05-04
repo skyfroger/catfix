@@ -17,7 +17,7 @@ function ChatDrawer() {
     return (
         <>
             <Drawer
-                title="Ментор"
+                title="Ада: ИИ-репетитор"
                 closable={{ "aria-label": "Close Button" }}
                 onClose={onClose}
                 open={open}

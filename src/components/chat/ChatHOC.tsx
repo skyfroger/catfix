@@ -66,11 +66,24 @@ function ChatHOC() {
         [messagesHistory]
     );
 
+    // отправка сообщения
     const handleSubmit = (text: string) => {
         if (!text.trim()) return;
 
         setUserPrompt("");
         getAiResponce(text);
+    };
+
+    // Очистка чата
+    const handleClear = () => {
+        // возвращаем в массив сообщений системный запрос
+        setMessagesHistory([
+            {
+                content: systemPromptGenerator(),
+                role: "system",
+                key: Date.now(),
+            },
+        ]);
     };
 
     return (
@@ -79,6 +92,7 @@ function ChatHOC() {
             isLoading={isLoading}
             userPrompt={userPrompt}
             handleSubmit={handleSubmit}
+            handleClear={handleClear}
             setUserPrompt={setUserPrompt}
         />
     );

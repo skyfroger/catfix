@@ -22,7 +22,7 @@ function DeleteConfirmButton({ children, onConfirm }: deleteButtonProps) {
             cancelText={t("ui.cancel")}
             onConfirm={onConfirm}
         >
-            <Button style={{ color: "#FF6D60" }} type="dashed" danger>
+            <Button variant="dashed" color="danger">
                 {children}
             </Button>
         </Popconfirm>

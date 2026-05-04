@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { DeleteOutlined, SaveOutlined } from "@ant-design/icons";
 import { Bubble, Sender, Prompts } from "@ant-design/x";
 import type { PromptsProps } from "@ant-design/x";
 import { CodeHighlighter, Mermaid, Actions } from "@ant-design/x";
@@ -6,8 +7,10 @@ import { XMarkdown, type ComponentProps } from "@ant-design/x-markdown";
 import Latex from "@ant-design/x-markdown/plugins/Latex";
 import ScratchCode from "../ui/ScratchCode";
 import { MessageItem } from "./ChatHOC";
+import { Button, Divider, Flex } from "antd";
+import DeleteConfirmButton from "../ui/DeleteConfirmButton";
 
-// Рядом с каждыйм сообщением будет кнопко "Копировать"
+// Рядом с каждым сообщением будет кнопка "Копировать"
 const actionItems = (content: string) => [
     {
         key: "copy",
@@ -31,7 +34,7 @@ const promptSuggestions: PromptsProps["items"] = [
 ];
 
 // Компонент для отрисовки Scratch-кода и Mermaid-диаграмм
-const Code: React.FC<ComponentProps> = (props) => {
+const Code = (props: ComponentProps) => {
     const { className, children } = props;
     const lang = className?.match(/language-(\w+)/)?.[1] || "";
 
@@ -58,6 +61,7 @@ interface ChatViewProps {
     isLoading: boolean;
     userPrompt: string;
     handleSubmit: (text: string) => void;
+    handleClear: () => void;
     setUserPrompt: Dispatch<SetStateAction<string>>;
 }
 
@@ -66,6 +70,7 @@ function ChatView({
     isLoading,
     userPrompt,
     handleSubmit,
+    handleClear,
     setUserPrompt,
 }: ChatViewProps) {
     // Фильтруем сообщения для отображения (исключаем системные промпты - роль system)
@@ -140,7 +145,43 @@ function ChatView({
                     placeholder="Задай свой вопрос по Scratch..."
                     onChange={setUserPrompt}
                     onSubmit={handleSubmit}
-                    autoSize={{ minRows: 1, maxRows: 6 }}
+                    autoSize={{ minRows: 2, maxRows: 6 }}
+                    footer={(_, { components }) => {
+                        const { SendButton, LoadingButton, SpeechButton } =
+                            components;
+                        return (
+                            <Flex justify="space-between" align="center">
+                                <Flex gap="small" align="center">
+                                    <Button
+                                        variant="dashed"
+                                        color="primary"
+                                        icon={<SaveOutlined />}
+                                    ></Button>
+                                    <Divider orientation="vertical" />
+
+                                    <DeleteConfirmButton
+                                        onConfirm={handleClear}
+                                    >
+                                        <DeleteOutlined />
+                                    </DeleteConfirmButton>
+                                </Flex>
+                                <Flex align="center">
+                                    <SpeechButton />
+                                    <Divider orientation="vertical" />
+                                    {isLoading ? (
+                                        <LoadingButton type="default" />
+                                    ) : (
+                                        <SendButton
+                                            type="primary"
+                                            disabled={false}
+                                        />
+                                    )}
+                                </Flex>
+                            </Flex>
+                        );
+                    }}
+                    suffix={false}
+                    allowSpeech
                     style={{ border: "1px solid #2C2C2C" }}
                 />
             </div>
