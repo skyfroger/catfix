@@ -9,6 +9,8 @@ import ScratchCode from "../ui/ScratchCode";
 import { MessageItem } from "./ChatHOC";
 import { Button, Divider, Flex } from "antd";
 import DeleteConfirmButton from "../ui/DeleteConfirmButton";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { ChatPDFExport } from "../ui/ChatPDFExport";
 
 // Рядом с каждым сообщением будет кнопка "Копировать"
 const actionItems = (content: string) => [
@@ -152,11 +154,22 @@ function ChatView({
                         return (
                             <Flex justify="space-between" align="center">
                                 <Flex gap="small" align="center">
-                                    <Button
-                                        variant="dashed"
-                                        color="primary"
-                                        icon={<SaveOutlined />}
-                                    ></Button>
+                                    <PDFDownloadLink
+                                        document={
+                                            <ChatPDFExport
+                                                messagesHistory={
+                                                    messagesHistory
+                                                }
+                                            />
+                                        }
+                                    >
+                                        <Button
+                                            disabled={isLoading}
+                                            variant="dashed"
+                                            color="primary"
+                                            icon={<SaveOutlined />}
+                                        ></Button>
+                                    </PDFDownloadLink>
                                     <Divider orientation="vertical" />
 
                                     <DeleteConfirmButton

@@ -7,6 +7,7 @@
         "@ant-design/x": "^2.5.0",
         "@ant-design/x-markdown": "^2.5.0",
         "@appigram/react-yandex-metrika": "^2.8.6",
+        "@react-pdf/renderer": "^4.5.1",
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^13.5.0",
