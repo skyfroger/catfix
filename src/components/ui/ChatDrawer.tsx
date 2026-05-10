@@ -2,8 +2,13 @@ import { useState } from "react";
 import { Drawer, FloatButton } from "antd";
 import { MessageOutlined } from "@ant-design/icons";
 import ChatHOC from "../chat/ChatHOC";
+import { Project } from "catfix-utils/dist/parsedProject";
 
-function ChatDrawer() {
+interface ChatDrawerProps {
+    project: Project | null;
+}
+
+function ChatDrawer({ project }: ChatDrawerProps) {
     const [open, setOpen] = useState(false);
 
     const showDrawer = () => {
@@ -33,7 +38,7 @@ function ChatDrawer() {
                     },
                 }}
             >
-                <ChatHOC />
+                <ChatHOC project={project} />
             </Drawer>
 
             <FloatButton

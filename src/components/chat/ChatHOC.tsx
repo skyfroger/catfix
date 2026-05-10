@@ -1,7 +1,11 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import OpenAI from "openai";
 import ChatView from "../chat/ChatView";
-import systemPromptGenerator from "../../utils/chat";
+import {
+    systemPromptGenerator,
+    projectContentForPrompt,
+} from "../../utils/chat";
+import { Project } from "catfix-utils/dist/parsedProject";
 
 export interface MessageItem {
     content: string;
@@ -15,7 +19,11 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true,
 });
 
-function ChatHOC() {
+interface ChatHOCProps {
+    project: Project | null;
+}
+
+function ChatHOC({ project }: ChatHOCProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [userPrompt, setUserPrompt] = useState<string>("");
     const [messagesHistory, setMessagesHistory] = useState<Array<MessageItem>>([
@@ -25,6 +33,26 @@ function ChatHOC() {
             key: Date.now(),
         },
     ]);
+
+    useEffect(() => {
+        if (project) {
+            console.log("К чату добавлен проверяемый проект.");
+            setMessagesHistory([
+                ...messagesHistory,
+                {
+                    content: projectContentForPrompt(project),
+                    role: "system",
+                    key: Date.now(),
+                },
+                {
+                    content:
+                        "Теперь можно задать вопросы по загруженному проекту.",
+                    role: "assistant",
+                    key: Date.now(),
+                },
+            ]);
+        }
+    }, [project]);
 
     const getAiResponce = useCallback(
         async (userMessage: string) => {

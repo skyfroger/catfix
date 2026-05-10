@@ -196,7 +196,7 @@ function MainPage() {
             </Row>
             {/* Выбор контейнера для чата может быть настройков по выбору */}
             {/* <ChatPopover /> */}
-            <ChatDrawer />
+            <ChatDrawer project={project} />
         </>
     );
 }
