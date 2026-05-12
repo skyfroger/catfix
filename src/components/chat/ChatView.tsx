@@ -158,7 +158,7 @@ function ChatView({
                                         document={
                                             <ChatPDFExport
                                                 messagesHistory={
-                                                    messagesHistory
+                                                    visibleMessages
                                                 }
                                             />
                                         }
@@ -173,6 +173,7 @@ function ChatView({
                                     <Divider orientation="vertical" />
 
                                     <DeleteConfirmButton
+                                        disabled={isLoading}
                                         onConfirm={handleClear}
                                     >
                                         <DeleteOutlined />
