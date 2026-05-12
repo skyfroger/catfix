@@ -9,10 +9,15 @@ import { useTranslation } from "react-i18next";
 
 interface deleteButtonProps {
     children: ReactElement;
+    disabled?: boolean;
     onConfirm: () => void;
 }
 
-function DeleteConfirmButton({ children, onConfirm }: deleteButtonProps) {
+function DeleteConfirmButton({
+    children,
+    onConfirm,
+    disabled,
+}: deleteButtonProps) {
     const { t } = useTranslation();
     return (
         <Popconfirm
@@ -22,7 +27,7 @@ function DeleteConfirmButton({ children, onConfirm }: deleteButtonProps) {
             cancelText={t("ui.cancel")}
             onConfirm={onConfirm}
         >
-            <Button variant="dashed" color="danger">
+            <Button disabled={disabled} variant="dashed" color="danger">
                 {children}
             </Button>
         </Popconfirm>
