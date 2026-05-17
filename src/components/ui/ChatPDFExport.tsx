@@ -36,7 +36,6 @@ ${htmlContent}
 </html>
 `;
 
-    console.log(html);
     return (
         <Document>
             <Page>
