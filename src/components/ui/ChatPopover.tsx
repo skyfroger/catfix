@@ -2,13 +2,18 @@ import { FloatButton, Popover } from "antd";
 import { useState } from "react";
 import { MessageOutlined } from "@ant-design/icons";
 import ChatHOC from "../chat/ChatHOC";
+import { Project } from "catfix-utils/dist/parsedProject";
 
-function ChatPopover() {
+interface ChatPopoverProps {
+    project: Project | null;
+}
+
+function ChatPopover({ project }: ChatPopoverProps) {
     const [open, setOpen] = useState(false);
 
     return (
         <Popover
-            content={<ChatHOC />}
+            content={<ChatHOC project={project} />}
             trigger="click"
             open={open}
             onOpenChange={setOpen}
