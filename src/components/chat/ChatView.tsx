@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Dispatch, SetStateAction } from "react";
 import { DeleteOutlined, SaveOutlined } from "@ant-design/icons";
 import { Bubble, Sender, Prompts } from "@ant-design/x";
@@ -20,18 +21,6 @@ const actionItems = (content: string) => [
         actionRender: () => {
             return <Actions.Copy text={content} />;
         },
-    },
-];
-
-// Примеры запросов
-const promptSuggestions: PromptsProps["items"] = [
-    {
-        key: "1",
-        label: "Как сделать клоны спрайта?",
-    },
-    {
-        key: "2",
-        label: "Для чего используются списки?",
     },
 ];
 
@@ -75,6 +64,20 @@ function ChatView({
     handleClear,
     setUserPrompt,
 }: ChatViewProps) {
+    const { t, i18n } = useTranslation();
+
+    // Примеры запросов
+    const promptSuggestions: PromptsProps["items"] = [
+        {
+            key: "1",
+            label: t("chat.suggestion1"),
+        },
+        {
+            key: "2",
+            label: t("chat.suggestion2"),
+        },
+    ];
+
     // Фильтруем сообщения для отображения (исключаем системные промпты - роль system)
     const visibleMessages = messagesHistory.filter(
         (msg) => msg.role !== "system"
@@ -132,7 +135,7 @@ function ChatView({
                 {messagesHistory.length <= 1 && (
                     <Prompts
                         vertical
-                        title="Возможные вопросы:"
+                        title={t("chat.promptsTitle")}
                         onItemClick={(prompt) => {
                             handleSubmit(`${prompt.data.label}`);
                         }}
@@ -144,7 +147,7 @@ function ChatView({
                 <Sender
                     loading={isLoading}
                     value={userPrompt}
-                    placeholder="Задай свой вопрос по Scratch..."
+                    placeholder={t("chat.senderPlaceholder")}
                     onChange={setUserPrompt}
                     onSubmit={handleSubmit}
                     autoSize={{ minRows: 2, maxRows: 6 }}

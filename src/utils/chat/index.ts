@@ -1,5 +1,5 @@
 import { Project } from "catfix-utils/dist/parsedProject";
-import systemPromptMarkdown from "./system.md";
+import systemPromptMarkdown from "./system_en.md";
 
 const systemPromptGenerator = () => {
     return systemPromptMarkdown;

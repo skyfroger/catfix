@@ -9,7 +9,6 @@ import UploadProject from "../ui/UploadProject";
 import { loadAsync } from "jszip";
 import { RcFile } from "antd/es/upload";
 import { parseProject } from "catfix-utils/dist";
-
 import { ScratchProject } from "catfix-utils/dist/scratch";
 import { Project } from "catfix-utils/dist/parsedProject";
 import Loader from "../ui/Loader";
@@ -28,6 +27,7 @@ import ChatDrawer from "../ui/ChatDrawer";
 type fileStatus = "loading" | "loaded";
 
 function MainPage() {
+    const { t, i18n } = useTranslation();
     // json со структурой проекта
     const [projectJSON, setProjectJSON] = useState<ScratchProject | null>(null);
     const [project, setProject] = useState<Project | null>(null);
@@ -35,7 +35,6 @@ function MainPage() {
     const [fileName, setFileName] = useState<string | null>("-");
 
     const [messageApi, contextHolder] = message.useMessage();
-    const { t } = useTranslation();
 
     const handleUpload = (project: RcFile, projects: RcFile[]) => {
         /**

@@ -1,3 +1,5 @@
+import { message } from "antd";
+import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import OpenAI from "openai";
 import ChatView from "../chat/ChatView";
@@ -24,6 +26,8 @@ interface ChatHOCProps {
 }
 
 function ChatHOC({ project }: ChatHOCProps) {
+    const { t, i18n } = useTranslation();
+    const [messageApi, contextHolder] = message.useMessage();
     const [isLoading, setIsLoading] = useState(false);
     const [userPrompt, setUserPrompt] = useState<string>("");
     const [messagesHistory, setMessagesHistory] = useState<Array<MessageItem>>([
@@ -45,8 +49,7 @@ function ChatHOC({ project }: ChatHOCProps) {
                     key: Date.now(),
                 },
                 {
-                    content:
-                        "Теперь можно задать вопросы по загруженному проекту.",
+                    content: t("chat.projectUploaded"),
                     role: "assistant",
                     key: Date.now(),
                 },
@@ -86,6 +89,10 @@ function ChatHOC({ project }: ChatHOCProps) {
                     },
                 ]);
             } catch (error) {
+                messageApi.open({
+                    type: "error",
+                    content: t("chat.llmRateError"),
+                });
                 console.log("Ошибка получения ответа от LLM", error);
             } finally {
                 setIsLoading(false);

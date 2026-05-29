@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Drawer, FloatButton } from "antd";
 import { MessageOutlined } from "@ant-design/icons";
 import ChatHOC from "../chat/ChatHOC";
@@ -10,6 +11,7 @@ interface ChatDrawerProps {
 
 function ChatDrawer({ project }: ChatDrawerProps) {
     const [open, setOpen] = useState(false);
+    const { t, i18n } = useTranslation();
 
     const showDrawer = () => {
         setOpen(true);
@@ -22,7 +24,7 @@ function ChatDrawer({ project }: ChatDrawerProps) {
     return (
         <>
             <Drawer
-                title="Ада: ИИ-репетитор"
+                title={t("chat.name")}
                 closable={{ "aria-label": "Close Button" }}
                 onClose={onClose}
                 open={open}

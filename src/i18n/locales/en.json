@@ -149,5 +149,14 @@
         "extension": "CatFix - Grading Scratch Projects | Browser extension",
         "about": "CatFix - Grading Scratch Projects | About",
         "docs": "CatFix - Grading Scratch Projects | Documentation"
+    },
+    "chat": {
+        "name": "Ada: AI Tutor",
+        "promptsTitle": "Possible questions:",
+        "suggestion1": "How to create clones of a sprite?",
+        "suggestion2": "What are lists used for?",
+        "senderPlaceholder": "Ask your question about Scratch ...",
+        "llmRateError": "Error receiving response from LLM",
+        "projectUploaded": "Now you can ask questions about the uploaded project."
     }
 }
