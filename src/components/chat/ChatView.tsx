@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Dispatch, SetStateAction } from "react";
-import { DeleteOutlined, SaveOutlined } from "@ant-design/icons";
-import { Bubble, Sender, Prompts } from "@ant-design/x";
+import { DeleteOutlined, SaveOutlined, SmileOutlined } from "@ant-design/icons";
+import { Bubble, Sender, Prompts, Welcome } from "@ant-design/x";
 import type { PromptsProps } from "@ant-design/x";
 import { CodeHighlighter, Mermaid, Actions } from "@ant-design/x";
 import { XMarkdown, type ComponentProps } from "@ant-design/x-markdown";
@@ -64,7 +64,7 @@ function ChatView({
     handleClear,
     setUserPrompt,
 }: ChatViewProps) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     // Примеры запросов
     const promptSuggestions: PromptsProps["items"] = [
@@ -75,6 +75,10 @@ function ChatView({
         {
             key: "2",
             label: t("chat.suggestion2"),
+        },
+        {
+            key: "3",
+            label: t("chat.suggestion3"),
         },
     ];
 
@@ -133,14 +137,27 @@ function ChatView({
                 />
 
                 {messagesHistory.length <= 1 && (
-                    <Prompts
-                        vertical
-                        title={t("chat.promptsTitle")}
-                        onItemClick={(prompt) => {
-                            handleSubmit(`${prompt.data.label}`);
-                        }}
-                        items={promptSuggestions}
-                    />
+                    <>
+                        <Welcome
+                            icon={
+                                <SmileOutlined
+                                    style={{
+                                        fontSize: "3rem",
+                                    }}
+                                />
+                            }
+                            title={t("chat.name")}
+                            description={t("chat.description")}
+                        />
+                        <Prompts
+                            vertical
+                            title={t("chat.promptsTitle")}
+                            onItemClick={(prompt) => {
+                                handleSubmit(`${prompt.data.label}`);
+                            }}
+                            items={promptSuggestions}
+                        />
+                    </>
                 )}
             </div>
             <div style={{ borderTop: "1px solid #f0f0f0", padding: 12 }}>

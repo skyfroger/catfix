@@ -152,11 +152,13 @@
     },
     "chat": {
         "name": "Ada: AI Tutor",
-        "promptsTitle": "Possible questions:",
-        "suggestion1": "How to create clones of a sprite?",
+        "description": "I'm still learning too, so I might make a mistake sometimes. Let's learn to code in Scratch together!",
+        "promptsTitle": "Here are a few examples of questions I can help with:",
+        "suggestion1": "How do I make clones of a sprite?",
         "suggestion2": "What are lists used for?",
-        "senderPlaceholder": "Ask your question about Scratch ...",
-        "llmRateError": "Error receiving response from LLM",
-        "projectUploaded": "Now you can ask questions about the uploaded project."
+        "suggestion3": "How do I add a score to my game?",
+        "senderPlaceholder": "Ask your question about Scratch...",
+        "llmRateError": "Oops! I'm answering too many questions right now and need a quick break. Please try again in a moment!",
+        "projectUploaded": "Project uploaded! You can now ask me questions about it."
     }
 }

@@ -24,7 +24,6 @@ function ChatDrawer({ project }: ChatDrawerProps) {
     return (
         <>
             <Drawer
-                title={t("chat.name")}
                 closable={{ "aria-label": "Close Button" }}
                 onClose={onClose}
                 open={open}
