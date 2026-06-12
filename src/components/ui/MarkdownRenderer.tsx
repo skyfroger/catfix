@@ -1,7 +1,10 @@
 import Markdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
+import remarkDirective from "remark-directive";
+import remarkDirectiveRehype from "remark-directive-rehype";
 import rehypeSlug from "rehype-slug";
+import rehupeRaw from "rehype-raw";
 import ScratchCode from "./ScratchCode";
 
 interface MarkdownRendererProps {
@@ -43,10 +46,12 @@ const MarkdownRenderer = ({ source, components }: MarkdownRendererProps) => {
         <Markdown
             components={mergedComponents}
             remarkPlugins={[
+                remarkDirective,
+                remarkDirectiveRehype,
                 remarkGfm,
                 [remarkToc, { heading: "[Сс]одержание|Contents|Змест" }],
             ]}
-            rehypePlugins={[rehypeSlug]}
+            rehypePlugins={[rehypeSlug, rehupeRaw]}
         >
             {source}
         </Markdown>
