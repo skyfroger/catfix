@@ -41,3 +41,13 @@ text.sb3-label.sb3-comment-label {
 div.ant-bubble.ant-bubble-start {
     padding-inline-end: 1em !important;
 }
+
+.chat-drawer-wrapper {
+    width: 100% !important;
+}
+
+@media (min-width: 769px) {
+    .chat-drawer-wrapper {
+        max-width: 45vw !important;
+    }
+}

@@ -27,8 +27,11 @@ function ChatDrawer({ project }: ChatDrawerProps) {
                 closable={{ "aria-label": "Close Button" }}
                 onClose={onClose}
                 open={open}
-                size={"min(100vw, 45vw)"}
+                size="100%"
                 mask={{ blur: true }}
+                classNames={{
+                    wrapper: "chat-drawer-wrapper",
+                }}
                 style={{
                     backgroundColor: "hsl(10, 30%, 98%)",
                     borderLeft: "1px solid #121b33",
