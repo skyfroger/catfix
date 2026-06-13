@@ -6,6 +6,7 @@ import remarkDirectiveRehype from "remark-directive-rehype";
 import rehypeSlug from "rehype-slug";
 import rehupeRaw from "rehype-raw";
 import ScratchCode from "./ScratchCode";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface MarkdownRendererProps {
     source: string | null;
@@ -43,18 +44,20 @@ const MarkdownRenderer = ({ source, components }: MarkdownRendererProps) => {
     };
 
     return (
-        <Markdown
-            components={mergedComponents}
-            remarkPlugins={[
-                remarkDirective,
-                remarkDirectiveRehype,
-                remarkGfm,
-                [remarkToc, { heading: "[Сс]одержание|Contents|Змест" }],
-            ]}
-            rehypePlugins={[rehypeSlug, rehupeRaw]}
-        >
-            {source}
-        </Markdown>
+        <ErrorBoundary fallback={<p>Rendering error</p>}>
+            <Markdown
+                components={mergedComponents}
+                remarkPlugins={[
+                    remarkDirective,
+                    remarkDirectiveRehype,
+                    remarkGfm,
+                    [remarkToc, { heading: "[Сс]одержание|Contents|Змест" }],
+                ]}
+                rehypePlugins={[rehypeSlug, rehupeRaw]}
+            >
+                {source}
+            </Markdown>
+        </ErrorBoundary>
     );
 };
 
