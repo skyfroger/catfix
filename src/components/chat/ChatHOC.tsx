@@ -2,6 +2,7 @@ import { message } from "antd";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import OpenAI from "openai";
+import pRetry, { AbortError } from "p-retry";
 import ChatView from "../chat/ChatView";
 import {
     systemPromptGenerator,
@@ -25,8 +26,15 @@ interface ChatHOCProps {
     project: Project | null;
 }
 
+const MODELS: string[] = import.meta.env.VITE_LLM
+    ? String(import.meta.env.VITE_LLM)
+          .split(",")
+          .map((m) => m.trim())
+          .filter(Boolean)
+    : [];
+
 function ChatHOC({ project }: ChatHOCProps) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const [messageApi, contextHolder] = message.useMessage();
     const [isLoading, setIsLoading] = useState(false);
     const [userPrompt, setUserPrompt] = useState<string>("");
@@ -41,8 +49,9 @@ function ChatHOC({ project }: ChatHOCProps) {
     useEffect(() => {
         if (project) {
             console.log("К чату добавлен проверяемый проект.");
-            setMessagesHistory([
-                ...messagesHistory,
+            setMessagesHistory((prev) => [
+                ...prev,
+
                 {
                     content: projectContentForPrompt(project),
                     role: "system",
@@ -59,6 +68,11 @@ function ChatHOC({ project }: ChatHOCProps) {
 
     const getAiResponce = useCallback(
         async (userMessage: string) => {
+            if (MODELS.length === 0) {
+                messageApi.error("Список моделей пуст.");
+                return;
+            }
+
             setIsLoading(true);
 
             try {
@@ -66,22 +80,62 @@ function ChatHOC({ project }: ChatHOCProps) {
                     ...messagesHistory,
                     { content: userMessage, role: "user", key: Date.now() },
                 ];
-
                 setMessagesHistory(updatedHistory);
 
-                const completion = await openai.chat.completions.create({
-                    model: import.meta.env.VITE_LLM,
-                    messages: updatedHistory.map(({ role, content }) => ({
-                        role,
-                        content,
-                    })),
-                });
+                const apiMessages = updatedHistory.map(({ role, content }) => ({
+                    role,
+                    content,
+                }));
+
+                // p-retry сам переключает модель по attemptNumber
+                const completion = await pRetry(
+                    async (attemptNumber) => {
+                        const modelIndex = attemptNumber - 1; // attemptNumber начинается с 1
+                        const model = MODELS[modelIndex];
+
+                        if (!model) {
+                            throw new AbortError(
+                                "Все модели из списка исчерпаны"
+                            );
+                        }
+
+                        console.log(
+                            `[LLM] Попытка ${attemptNumber} → модель: ${model}`
+                        );
+                        return openai.chat.completions.create({
+                            model,
+                            messages: apiMessages,
+                        });
+                    },
+                    {
+                        retries: MODELS.length - 1, // fallback на оставшиеся модели
+                        minTimeout: 0, // мгновенное переключение, без задержек
+                        maxTimeout: 0,
+                        factor: 1,
+                        onFailedAttempt: ({
+                            error,
+                            attemptNumber,
+                            retriesLeft,
+                        }) => {
+                            const failedModel = MODELS[attemptNumber - 1];
+                            console.error(
+                                `[LLM] Модель ${failedModel} упала (попытка ${attemptNumber}):`,
+                                error
+                            );
+                            if (retriesLeft > 0) {
+                                console.log(
+                                    `[LLM] Переключаюсь на следующую модель...`
+                                );
+                            }
+                        },
+                    }
+                );
 
                 const assistantContent =
                     completion.choices[0].message.content ?? "";
 
-                setMessagesHistory([
-                    ...updatedHistory,
+                setMessagesHistory((prev) => [
+                    ...prev,
                     {
                         content: assistantContent,
                         role: "assistant",
@@ -98,7 +152,7 @@ function ChatHOC({ project }: ChatHOCProps) {
                 setIsLoading(false);
             }
         },
-        [messagesHistory]
+        [messagesHistory, messageApi, t]
     );
 
     // отправка сообщения
@@ -122,14 +176,18 @@ function ChatHOC({ project }: ChatHOCProps) {
     };
 
     return (
-        <ChatView
-            messagesHistory={messagesHistory}
-            isLoading={isLoading}
-            userPrompt={userPrompt}
-            handleSubmit={handleSubmit}
-            handleClear={handleClear}
-            setUserPrompt={setUserPrompt}
-        />
+        <>
+            {contextHolder}
+
+            <ChatView
+                messagesHistory={messagesHistory}
+                isLoading={isLoading}
+                userPrompt={userPrompt}
+                handleSubmit={handleSubmit}
+                handleClear={handleClear}
+                setUserPrompt={setUserPrompt}
+            />
+        </>
     );
 }
 

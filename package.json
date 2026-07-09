@@ -27,6 +27,7 @@
         "marked": "^18.0.3",
         "object-hash": "^3.0.0",
         "openai": "^6.33.0",
+        "p-retry": "^8.0.0",
         "parse-sb3-blocks": "github:skyfroger/parse-sb3-blocks",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
